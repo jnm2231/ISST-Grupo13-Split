@@ -83,7 +83,15 @@ button:focus-visible {
 
 .content {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-top: 2rem;
+  padding-right: 3rem;
+  padding-left: 3rem;
+}
+
+.boton{
+  background:#15738E;
+  color:#FFFFFF;
 }

@@ -15,11 +15,13 @@ function App() {
         <img src={logo} alt="logo" width="300px"></img>
       </div>
       <div className="content">
-        <h1>Bienvenido</h1>
+        <button className="boton">Unirse a un Grupo</button>
         <div id="conjuntoTarjeta">
+        <h1>Bienvenido</h1>
           <p className="tarjetaGrupo">Viaje a Italia</p>
           <p className="tarjetaGrupo">Viaje Francia</p>
         </div>
+        <button className="boton">Crear Grupo</button>
       </div>
     </div>
     </>

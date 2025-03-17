@@ -1,35 +1,24 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import GrupoGastos from './GrupoGastos'
 import logo from './assets/logo.png'
+import { Routes, Route } from 'react-router-dom';
+import Error from './Error'
+import Header from './Header'
+import { mockgrupos } from './constants/mockgrupos';
 
 //Holahola
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-      <div className="container">
-      <div className="blue-background">
-        <img src={logo} alt="logo" width="300px"></img>
-      </div>
-      <div className="content">
-        <button className="boton">Unirse a un Grupo</button>
-        <h1>Bienvenido</h1>
-
-        <button className="boton">Crear Grupo</button>
-      </div>
-      <div className="fila">     
-      <div id="conjuntoTarjeta">
-        
-        <p className="tarjetaGrupo">Viaje a Italia</p>
-        <p className="tarjetaGrupo">Viaje Francia</p>
-
-      </div>
-      </div>
-    </div>
-    </>
+  <>
+  <Header/>
+  <Routes>
+   <Route path="/" element={<GrupoGastos mockgrupos/>}/>
+   <Route path="*" element={<Error/>}/>
+  </Routes>
+  </>
   )
 }
 

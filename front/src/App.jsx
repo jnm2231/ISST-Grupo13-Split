@@ -15,7 +15,7 @@ function App() {
   <>
   <Header/>
   <Routes>
-   <Route path="/" element={<GrupoGastos mockgrupos/>}/>
+   <Route path="/" element={<GrupoGastos mockgrupos = {mockgrupos} />}/>
    <Route path="*" element={<Error/>}/>
   </Routes>
   </>

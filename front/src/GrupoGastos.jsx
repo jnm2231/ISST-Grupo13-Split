@@ -7,8 +7,11 @@ import logo from './assets/logo.png'
 //Pagina principal donde se mostraran todos los grupos a los que el usuario pertenece
 function GrupoGastos(props) {
 
+  console.log(props)
   function _imprimeGrupos(){
-    
+    return props.mockgrupos.Grupos.map((grupo,index) =>(
+      <button className="tarjetaGrupo">{grupo.Nombre}</button>
+    ));
   }
 
   return (
@@ -22,10 +25,7 @@ function GrupoGastos(props) {
       </div>
       <div className="fila">     
       <div id="conjuntoTarjeta">
-        
-        <button className="tarjetaGrupo">Viaje a Italia</button>
-        <button className="tarjetaGrupo">Viaje a Francia</button>
-
+        {_imprimeGrupos()}
       </div>
       </div>
     </div>

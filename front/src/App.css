@@ -56,3 +56,11 @@
   border-radius: 30px;
   color: #000;
 }
+
+.fila{
+  display:flex;
+  flex-direction:row;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+}

@@ -16,12 +16,17 @@ function App() {
       </div>
       <div className="content">
         <button className="boton">Unirse a un Grupo</button>
-        <div id="conjuntoTarjeta">
         <h1>Bienvenido</h1>
-          <p className="tarjetaGrupo">Viaje a Italia</p>
-          <p className="tarjetaGrupo">Viaje Francia</p>
-        </div>
+
         <button className="boton">Crear Grupo</button>
+      </div>
+      <div className="fila">     
+      <div id="conjuntoTarjeta">
+        
+        <p className="tarjetaGrupo">Viaje a Italia</p>
+        <p className="tarjetaGrupo">Viaje Francia</p>
+
+      </div>
       </div>
     </div>
     </>

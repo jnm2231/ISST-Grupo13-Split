@@ -15,7 +15,11 @@ function App() {
         <img src={logo} alt="logo" width="300px"></img>
       </div>
       <div className="content">
-        <p>Start prompting (or editing) to see magic happen :)</p>
+        <h1>Bienvenido</h1>
+        <div id="conjuntoTarjeta">
+          <p className="tarjetaGrupo">Viaje a Italia</p>
+          <p className="tarjetaGrupo">Viaje Francia</p>
+        </div>
       </div>
     </div>
     </>

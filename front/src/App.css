@@ -55,4 +55,13 @@
   font-size: 30px;
   border-radius: 30px;
   color: #000;
+  margin: 1rem;
+}
+
+.fila{
+  display:flex;
+  flex-direction:row;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
 }

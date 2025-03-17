@@ -1,7 +1,5 @@
 #root {
-  max-width: 1281px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 
@@ -39,4 +37,22 @@
 
 .read-the-docs {
   color: #888;
+}
+
+#conjuntoTarjeta{
+  display: flex;
+  flex: auto;
+  flex-direction: column;
+  align-content: center;
+  max-width: max-content;
+}
+
+.tarjetaGrupo{
+  background: #D9D9D9;
+  width: 60rem;
+  text-align: center;
+  padding: 4rem;
+  font-size: 30px;
+  border-radius: 30px;
+  color: #000;
 }

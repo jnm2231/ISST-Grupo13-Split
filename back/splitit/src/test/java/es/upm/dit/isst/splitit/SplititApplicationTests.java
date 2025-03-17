@@ -1,4 +1,4 @@
-package io.isst.group13.splitit.backend.splitit;
+package es.upm.dit.isst.splitit;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

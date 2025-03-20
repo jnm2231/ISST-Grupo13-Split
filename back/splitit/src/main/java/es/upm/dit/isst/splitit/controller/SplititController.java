@@ -41,6 +41,8 @@ public class SplititController {
         this.grupodeGastosRepository = g;
     }
 
+    
+
     @GetMapping("/grupos")
     List<GrupodeGastos> readAll() {
         log.info("Obteniendo todos los grupos de gastos");
@@ -49,7 +51,7 @@ public class SplititController {
 
     @PostMapping("/grupos")
     public String postMethodName(@RequestBody GrupodeGastos newGrupodeGastos) throws URISyntaxException {
-        //TODO: process POST request
+        //TODO: Comprobar el correcto funcionamiento del POST
         
         log.info("Creando un nuevo grupo de gastos: {}", newGrupodeGastos);
 

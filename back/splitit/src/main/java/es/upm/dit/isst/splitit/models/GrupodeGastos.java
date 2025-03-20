@@ -10,7 +10,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 
-
+/*
+ * TODO: Completar las relaciones entre usuarios y los gastos individuales
+ */
 @Entity
 @Table(name = "grupo_de_gastos")
 public class GrupodeGastos implements Serializable{

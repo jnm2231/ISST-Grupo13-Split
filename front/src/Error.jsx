@@ -1,18 +1,15 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import logo from './assets/logo.png'
 
-//Pagina de error de la web
-function Error() {
+import './App.css'
+
+//Pagina de error de la web, poner el error mas adelante
+function ErrorPagina() {
 
   return (
-    <>
+    
     <h1>Algo salio mal</h1>
-    </>
+    
 
   )
 }
 
-export default Error
+export default ErrorPagina

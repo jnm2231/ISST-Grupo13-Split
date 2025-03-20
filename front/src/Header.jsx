@@ -1,6 +1,4 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+
 import './App.css'
 import logo from './assets/logo.png'
 
@@ -8,11 +6,11 @@ import logo from './assets/logo.png'
 function Header() {
 
   return (
-    <>
+    
       <div className="blue-background">
         <img src={logo} alt="logo" width="300px"></img>
       </div>
-    </>
+    
   )
 }
 

@@ -1,20 +1,20 @@
 export const mockgrupos ={
     "Grupos":[
         {
-            "ID": 1,
-            "Nombre": "Viaje a Italia",
+            "id": 1,
+            "nombre": "Viaje a Italia",
         },
         {
-            "ID": 2,
-            "Nombre": "Viaje a Francia",
+            "id": 2,
+            "nombre": "Viaje a Francia",
         },
         {
-            "ID": 3,
-            "Nombre": "Viaje a España",
+            "id": 3,
+            "nombre": "Viaje a España",
         },
         {
-            "ID": 4,
-            "Nombre": "Viaje a Alemania",
+            "id": 4,
+            "nombre": "Viaje a Alemania",
         },
     ]
 

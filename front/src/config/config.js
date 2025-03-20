@@ -1,8 +1,7 @@
 const CONFIG = {
-    server_url: "https://dummyjson.com/products",
-    num_items: 30,  
+    api_grupos: "http://localhost:8080/myApi/grupos",
     use_server: true,
-    loading_timeout_ms: 300
+
   }
   
   export default CONFIG;

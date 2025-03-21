@@ -6,7 +6,7 @@ function ErrorPagina() {
 
   return (
     
-    <h1>Algo salio mal</h1>
+    <h1>La ruta no existe</h1>
     
 
   )

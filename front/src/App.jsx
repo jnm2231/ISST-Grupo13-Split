@@ -2,15 +2,17 @@ import { useState,useEffect } from 'react'
 import './App.css'
 import GrupoGastos from './GrupoGastos'
 import { Routes, Route } from 'react-router-dom';
-import Error from './Error'
 import Header from './Header'
 import { mockgrupos } from './constants/mockgrupos';
 import CONFIG from './config/config';
 import ErrorPagina from './ErrorPagina';
+import spin from './assets/spinner.png'
+import Gastos from './Gastos'
+
 
 //Holahola
 /*
-TODO: poner un spinner u otra cosa mientras carga en lugar de repetir 2 veces el header
+* Decidme si el spinner puesto esta bien o queda demasiado raro
 */ 
 function App() {
 
@@ -65,12 +67,12 @@ function App() {
   return (
   <div>
     <Header/>
-    {loading ? <Header/>
-    
+    {loading ? <img className='spin' src={spin} alt="spinner"></img>
     : 
   
   <Routes>
     <Route path="/" element={<GrupoGastos mockgrupos = {grupo} />}/>
+    <Route path="/gastos" element={<Gastos />} />
     <Route path="*" element={<ErrorPagina/>}/>
    </Routes>}
   </div>

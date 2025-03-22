@@ -97,3 +97,20 @@ button:focus-visible {
   background:#15738E;
   color:#FFFFFF;
 }
+
+.navegar ul{
+  list-style-type: none;
+  text-align: center;
+
+}
+
+.navegar li{
+  display: inline;
+  text-align: center;
+  padding: 2rem;
+  margin: 2rem;
+  font-size: 40px;
+  border-bottom-color: #B2B2B2;
+  border-bottom-style: solid;
+  border-bottom-width: 0.1rem;
+}

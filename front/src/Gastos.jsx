@@ -19,7 +19,15 @@ function Gastos() {
 
   return (
     
-      <div className="container">gastos del grupo {grupo.nombre} con id {grupo.id}</div>
+      <div className="container">
+        <h1>{grupo.nombre}</h1>
+        <div className="navegar">
+        <ul>
+          <li>Gastos</li>
+          <li>Balance</li>
+        </ul>
+        </div>
+      </div>
     
   )
 }

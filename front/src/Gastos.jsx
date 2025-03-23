@@ -14,7 +14,21 @@ function Gastos() {
   const location = useLocation();
   const grupo = location.state?.valor
 
+function _imprimegasto(){
+  return(
+    grupo.gastos.map((gasto,index) =>(
 
+      <button className="tarjetagastos" value={gasto}>
+        {gasto.concepto}
+        <div className='filagastos'>
+        <p className="pagado">Pagado por: {gasto.pagadopor}</p>
+        <p className="importe">{gasto.importe}</p>
+        </div>
+        </button>
+
+    ))
+  )
+}
 
 
   return (
@@ -23,9 +37,14 @@ function Gastos() {
         <h1>{grupo.nombre}</h1>
         <div className="navegar">
         <ul>
-          <li>Gastos</li>
+          <li className='seleccionado'>Gastos</li>
           <li>Balance</li>
         </ul>
+        </div>
+        <div className="fila">     
+        <div id="conjuntoTarjeta">
+        {_imprimegasto()}
+        </div>
         </div>
       </div>
     

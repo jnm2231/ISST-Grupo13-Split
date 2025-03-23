@@ -3,6 +3,26 @@ export const mockgrupos ={
         {
             "id": 1,
             "nombre": "Viaje a Italia",
+            "gastos":[
+                {
+                    "id": 1,
+                    "concepto": "Pago tren",
+                    "importe": 12.25,
+                    "pagadopor": "usuario1",
+                },
+                {
+                    "id": 2,
+                    "concepto": "Pago comida",
+                    "importe": 20,
+                    "pagadopor": "usuario2",
+                },
+                {
+                    "id": 3,
+                    "concepto": "Hotel",
+                    "importe": 70,
+                    "pagadopor": "usuario1",
+                }
+            ]
         },
         {
             "id": 2,

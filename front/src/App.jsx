@@ -51,7 +51,7 @@ function App() {
 
     }
     else{
-      setGrupo(mockgrupos)
+      setGrupo(mockgrupos.Grupos)
       console.log("me meto en false")
     }
   }

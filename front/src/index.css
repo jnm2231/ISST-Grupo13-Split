@@ -120,7 +120,7 @@ button:focus-visible {
 
 }
 
-.navegar li:not(.seleccionado){
+.navegar button:not(.seleccionado){
   display: inline;
   text-align: center;
   padding: 2rem;

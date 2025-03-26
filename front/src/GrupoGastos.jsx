@@ -4,15 +4,13 @@ import CONFIG from './config/config'
 import Gastos from './Gastos'
 import { useNavigate} from 'react-router-dom';
 //Pagina principal donde se mostraran todos los grupos a los que el usuario pertenece
-/*
-TODO: que carge aqui los datos en lugar de la app para ir incluyendo el tema de que cada usuario tenga sus grupos
-*/
+
 function GrupoGastos(props) {
 
   const navigate = useNavigate();
 
-  const [grupo, setGrupo] = useState()
-  const [grupoSelect, setGrupoSelect] = useState()
+  const [grupo, setGrupo] = useState() //no hace nada
+  const [grupoSelect, setGrupoSelect] = useState() //no hace nada
 
   console.log(props)
   //Imprime las tarjetas
@@ -23,6 +21,7 @@ function GrupoGastos(props) {
     ));
   }
 
+  //navega y pasa a la pagina gastos los datos que se le meten
   function _pasarPagina(valor){
     navigate(`/gastos`, { state: { valor } });
   }

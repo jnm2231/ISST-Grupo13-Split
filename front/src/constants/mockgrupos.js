@@ -1,20 +1,40 @@
 export const mockgrupos ={
     "Grupos":[
         {
-            "ID": 1,
-            "Nombre": "Viaje a Italia",
+            "id": 1,
+            "nombre": "Viaje a Italia",
+            "gastos":[
+                {
+                    "id": 1,
+                    "concepto": "Pago tren",
+                    "importe": 12.25,
+                    "pagadopor": "usuario1",
+                },
+                {
+                    "id": 2,
+                    "concepto": "Pago comida",
+                    "importe": 20,
+                    "pagadopor": "usuario2",
+                },
+                {
+                    "id": 3,
+                    "concepto": "Hotel",
+                    "importe": 70,
+                    "pagadopor": "usuario1",
+                }
+            ]
         },
         {
-            "ID": 2,
-            "Nombre": "Viaje a Francia",
+            "id": 2,
+            "nombre": "Viaje a Francia",
         },
         {
-            "ID": 3,
-            "Nombre": "Viaje a España",
+            "id": 3,
+            "nombre": "Viaje a España",
         },
         {
-            "ID": 4,
-            "Nombre": "Viaje a Alemania",
+            "id": 4,
+            "nombre": "Viaje a Alemania",
         },
     ]
 

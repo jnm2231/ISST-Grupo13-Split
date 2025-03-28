@@ -1,11 +1,20 @@
 package es.upm.dit.isst.splitit.models;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
@@ -36,6 +45,9 @@ public class Gasto implements Serializable {
     @JoinColumn(name = "grupo_id", nullable = false)
     @JsonBackReference
     private GrupodeGastos grupo;
+
+    @OneToMany(mappedBy = "gasto")
+    private List<ParticipacionGasto> participantes;
 
     /**
      * Constructor vacío necesario para JPA.
@@ -98,6 +110,14 @@ public class Gasto implements Serializable {
 
     public void setGrupo(GrupodeGastos grupo) {
         this.grupo = grupo;
+    }
+
+    public List<ParticipacionGasto> getParticipantes() {
+        return participantes;
+    }
+
+    public void setParticipaciones(List<ParticipacionGasto> participantes) {
+        this.participantes = participantes;
     }
 
     @Override

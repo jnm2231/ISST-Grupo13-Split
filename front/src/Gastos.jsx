@@ -12,7 +12,7 @@ function Gastos() {
   const grupo = location.state?.valor;
 
   function volverAGrupoGastos() {
-    navigate("/grupogastos"); // Redirige a la ruta de GrupoGastos
+    navigate("/"); // Redirige a la ruta de GrupoGastos
   }
 
   // Imprime las tarjetas pasando por el array de gastos dentro de grupo (esto solo se ve en gasto)

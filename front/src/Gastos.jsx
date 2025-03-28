@@ -60,7 +60,7 @@ function Gastos() {
   return (
     <div className="container">
       <h1>{grupo.nombre}</h1>
-      <button className="boton-volver" onClick={volverAGrupoGastos}>Volver</button> {/* Botón Volver */}
+      <button className="boton-volver" onClick={volverAGrupoGastos}>&lt; Volver</button> {/* Botón Volver */}
       <div className="navegar">
         <ul>
           <button className={boton1} onClick={() => cambio()}>Gastos</button>

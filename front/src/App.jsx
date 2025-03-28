@@ -8,6 +8,7 @@ import CONFIG from './config/config';
 import ErrorPagina from './ErrorPagina';
 import spin from './assets/spinner.png'
 import Gastos from './Gastos'
+import InfoGasto from './InfoGasto'
 
 
 //Holahola
@@ -81,6 +82,7 @@ function App() {
     <Route path="/" element={<GrupoGastos mockgrupos = {grupo} />}/>
     <Route path="/gastos" element={<Gastos />} />
     <Route path="*" element={<ErrorPagina/>}/>
+    <Route path="/infogasto" element={<InfoGasto />} />
    </Routes>}
   </div>
   )

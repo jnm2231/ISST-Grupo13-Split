@@ -1,82 +1,102 @@
 package es.upm.dit.isst.splitit.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 
-/*
- * TODO: Completar las relaciones entre usuarios y los gastos individuales
+/**
+ * Representa un grupo de gastos en la aplicación.
+ * Un grupo puede tener múltiples gastos asociados.
  */
 @Entity
 @Table(name = "grupo_de_gastos")
-public class GrupodeGastos implements Serializable{
+public class GrupodeGastos implements Serializable {
 
-@Id 
-@GeneratedValue(strategy = GenerationType.AUTO)
-private Integer ID;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Integer id;
 
-@NotEmpty
-@Column(nullable=false)
-private String Nombre;
+    @NotEmpty
+    @Column(nullable = false)
+    private String nombre;
 
-public GrupodeGastos() {
-}
+    @OneToMany(mappedBy = "grupo", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference 
+    private List<Gasto> gastos = new ArrayList<>();
 
-public GrupodeGastos(Integer iD, @NotEmpty String nombre) {
-    ID = iD;
-    Nombre = nombre;
-}
-public Integer getID() {
-    return ID;
-}
-public void setID(Integer iD) {
-    ID = iD;
-}
-public String getNombre() {
-    return Nombre;
-}
-public void setNombre(String nombre) {
-    Nombre = nombre;
-}
-@Override
-public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((ID == null) ? 0 : ID.hashCode());
-    result = prime * result + ((Nombre == null) ? 0 : Nombre.hashCode());
-    return result;
-}
-@Override
-public boolean equals(Object obj) {
-    if (this == obj)
-        return true;
-    if (obj == null)
-        return false;
-    if (getClass() != obj.getClass())
-        return false;
-    GrupodeGastos other = (GrupodeGastos) obj;
-    if (ID == null) {
-        if (other.ID != null)
-            return false;
-    } else if (!ID.equals(other.ID))
-        return false;
-    if (Nombre == null) {
-        if (other.Nombre != null)
-            return false;
-    } else if (!Nombre.equals(other.Nombre))
-        return false;
-    return true;
-}
-@Override
-public String toString() {
-    return "GrupodeGastos [ID=" + ID + ", Nombre=" + Nombre + "]";
-}
+    /**
+     * Constructor vacío necesario para JPA.
+     */
+    public GrupodeGastos() {
+    }
 
+    /**
+     * Constructor con parámetros.
+     * @param nombre Nombre del grupo de gastos.
+     */
+    public GrupodeGastos(String nombre) {
+        this.nombre = nombre;
+    }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public List<Gasto> getGastos() {
+        return gastos;
+    }
+
+    public void setGastos(List<Gasto> gastos) {
+        this.gastos = gastos;
+    }
+
+    public void addGasto(Gasto gasto) {
+        gastos.add(gasto);
+        gasto.setGrupo(this);
+    }
+
+    public void removeGasto(Gasto gasto) {
+        gastos.remove(gasto);
+        gasto.setGrupo(null);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GrupodeGastos that = (GrupodeGastos) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "GrupodeGastos{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", gastos=" + gastos.size() +
+                '}';
+    }
 }

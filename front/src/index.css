@@ -98,6 +98,15 @@ button:focus-visible {
   color:#FFFFFF;
 }
 
+.boton-volver {
+  align-self: flex-start; /* Alinea el botón a la izquierda */
+  margin: 1rem; /* Espaciado para que no quede pegado al borde */
+  padding: 0.5rem 1rem; /* Tamaño normal del botón */
+  width: auto; /* Evita que se estire a lo ancho */
+  background:#15738E;
+  color:#FFFFFF;
+}
+
 .navegar{
   margin-bottom: 2rem;
 }

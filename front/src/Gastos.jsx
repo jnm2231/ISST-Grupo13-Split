@@ -19,7 +19,7 @@ function Gastos() {
   function _imprimegasto() {
     return (
       grupo.gastos.map((gasto, index) => (
-        <button className="tarjetagastos" value={gasto} key={index}>
+        <button className="tarjetagastos" onClick={() => _pasarPagina(grupo)} value={gasto} key={index}>
           {gasto.concepto}
           <div className='filagastos'>
             <p className="pagado">Pagado por: {gasto.pagadopor}</p>
@@ -28,6 +28,10 @@ function Gastos() {
         </button>
       ))
     );
+  }
+  //navega y pasa a la pagina gastos los datos que se le meten
+  function _pasarPagina(valor){
+    navigate(`/infogasto`, { state: { valor } });
   }
 
   // Esto imprimiría y mostraría en balance el dinero debido a ti pero falta por hacer

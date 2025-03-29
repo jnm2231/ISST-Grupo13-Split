@@ -3,8 +3,10 @@ package es.upm.dit.isst.splitit.controller;
 import es.upm.dit.isst.splitit.models.Gasto;
 import es.upm.dit.isst.splitit.models.GrupodeGastos;
 import es.upm.dit.isst.splitit.service.BalanceService;
+import es.upm.dit.isst.splitit.models.Usuario;
 import es.upm.dit.isst.splitit.repository.GastoRepository;
 import es.upm.dit.isst.splitit.repository.GrupodeGastosRepository;
+import es.upm.dit.isst.splitit.repository.UsuarioRepository;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -27,12 +29,14 @@ public class SplititController {
     private final GrupodeGastosRepository grupodeGastosRepository;
     private final GastoRepository gastoRepository;
     private final BalanceService balanceService;
+    private final UsuarioRepository usuarioRepository;
 
     public static final Logger log = LoggerFactory.getLogger(SplititController.class);
 
-    public SplititController(GrupodeGastosRepository grupodeGastosRepository, GastoRepository gastoRepository, BalanceService balanceService) {
+    public SplititController(GrupodeGastosRepository grupodeGastosRepository, GastoRepository gastoRepository, UsuarioRepository usuarioRepository, BalanceService balanceService) {
         this.grupodeGastosRepository = grupodeGastosRepository;
         this.gastoRepository = gastoRepository;
+        this.usuarioRepository = usuarioRepository;
         this.balanceService = balanceService;
     }
 
@@ -103,6 +107,16 @@ public class SplititController {
         gastoRepository.save(gasto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Gasto agregado correctamente al grupo de gastos.");
+    }
+    
+    /**
+     * Endpoint para obtener todos los usuarios.
+     * @return Lista de todos los usuarios.
+     */
+    @GetMapping("/usuarios")
+    public List<Usuario> getAllUsers() {
+        log.info("Obteniendo todos los usuarios");
+        return (List<Usuario>) usuarioRepository.findAll();
     }
 
     @GetMapping("/grupos/{groupId}/balances")

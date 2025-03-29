@@ -173,6 +173,8 @@ button:focus-visible {
 
 .form-group {
   margin-bottom: 15px;
+  position: relative; /* Para el posicionamiento de la lista de sugerencias */
+  width: 100%; /* Asegura que ocupe el ancho completo del contenedor */
 }
 
 label {
@@ -183,7 +185,7 @@ label {
 
 input, textarea {
   color:#000000;
-  width: 15%;
+  width: 100%;
   padding: 10px;
   border: 2px solid #ccc;
   border-radius: 5px;
@@ -226,4 +228,63 @@ input:focus, textarea:focus {
   color: black;
   font-size: 25px;
   margin-bottom: 5px;
+}
+
+/* Lista de sugerencias */
+.suggestions {
+  list-style: none; /* Elimina los puntos de la lista */
+  padding: 0;
+  margin: 5px 0;
+  border: 1px solid #ccc; /* Borde alrededor de la lista */
+  border-radius: 5px; /* Bordes redondeados */
+  max-height: 150px; /* Altura máxima para evitar que sea demasiado larga */
+  overflow-y: auto; /* Habilita el scroll si hay muchas sugerencias */
+  background-color: white; /* Fondo blanco */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+  z-index: 10; /* Asegura que esté por encima de otros elementos */
+  position: absolute; /* Para que se posicione justo debajo del input */
+  width: 100%; /* Asegura que tenga el mismo ancho que el input */
+}
+
+/* Elementos individuales de la lista */
+.suggestions li {
+  color: black;
+  padding: 10px; /* Espaciado interno */
+  cursor: pointer; /* Cambia el cursor al pasar por encima */
+  transition: background-color 0.2s ease; /* Transición suave al pasar el mouse */
+}
+
+/* Hover sobre las sugerencias */
+.suggestions li:hover {
+  background-color: #f0f0f0; /* Cambia el fondo al pasar el mouse */
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Centra horizontalmente */
+  justify-content: center; /* Centra verticalmente */
+}
+
+.participants-list {
+  margin-top: 20px; /* Espaciado superior */
+  width: 100%; /* Asegura que ocupe todo el ancho disponible */
+  max-width: 400px; /* Limita el ancho máximo */
+  padding: 0;
+  list-style: none; /* Elimina los puntos de la lista */
+}
+
+.participant-item {
+  color: #000000;
+  display: flex;
+  justify-content: space-between; /* Espacio entre el nombre y el botón */
+  align-items: center; /* Centra verticalmente */
+  padding: 10px; /* Espaciado interno */
+  border-bottom: 1px solid #ccc; /* Línea divisoria entre participantes */
+  border: 1px solid #ccc; /* Borde alrededor del elemento */
+  border-radius: 15px; /* Bordes más redondeados */
+  background-color: #f9f9f9; /* Fondo claro */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* Sombra para dar profundidad */
+  margin-bottom: 10px; /* Espaciado entre elementos */
+  transition: transform 0.2s ease; /* Transición suave para efectos */
 }

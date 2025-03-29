@@ -24,7 +24,7 @@ public class Usuario {
     private String email;
 
     @Column(nullable = false)
-    private String contraseña;
+    private String password; // Contraseña del usuario
 
     @OneToMany(mappedBy = "usuario")
     private List<UsuarioGrupo> grupos; // Grupos en los que está
@@ -36,12 +36,12 @@ public class Usuario {
      * Constructor con parámetros.
      * @param nombre
      * @param email
-     * @param contraseña
+     * @param password
      */
-    public Usuario(String nombre, String email, String contraseña) {
+    public Usuario(String nombre, String email, String password) {
         this.nombre = nombre;
         this.email = email;
-        this.contraseña = contraseña;
+        this.password = password;
     }
 
     // Getters y Setters
@@ -61,12 +61,12 @@ public class Usuario {
         this.email = email;
     }
 
-    public String getContraseña() {
-        return contraseña;
+    public String getPassword() {
+        return password;
     }
 
-    public void setContraseña(String contraseña) {
-        this.contraseña = contraseña;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public List<UsuarioGrupo> getGrupos() {
@@ -82,7 +82,7 @@ public class Usuario {
         if (this == o) return true;
         if (!(o instanceof Usuario)) return false;
         Usuario usuario = (Usuario) o;
-        return nombre.equals(usuario.nombre) && email.equals(usuario.email) && contraseña.equals(usuario.contraseña);
+        return nombre.equals(usuario.nombre) && email.equals(usuario.email) && password.equals(usuario.password);
     }
 
     @Override

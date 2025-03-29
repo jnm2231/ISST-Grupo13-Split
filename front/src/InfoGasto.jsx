@@ -14,7 +14,7 @@ function InfoGasto() {
         <div className="container">
             <div className="content">
                 
-                <button className="boton-volver" onClick={volverAGastos}>&lt; Volver</button>
+                <button className="boton-volver" onClick={() => navigate(-1)}>&lt; Volver</button>
                 <h1>Info Gasto</h1>
                 </div>
         </div>

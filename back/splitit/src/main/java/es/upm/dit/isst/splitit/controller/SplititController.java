@@ -2,23 +2,20 @@ package es.upm.dit.isst.splitit.controller;
 
 import es.upm.dit.isst.splitit.models.Gasto;
 import es.upm.dit.isst.splitit.models.GrupodeGastos;
+import es.upm.dit.isst.splitit.service.BalanceService;
 import es.upm.dit.isst.splitit.repository.GastoRepository;
 import es.upm.dit.isst.splitit.repository.GrupodeGastosRepository;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import jakarta.transaction.Transactional;
@@ -29,13 +26,14 @@ public class SplititController {
 
     private final GrupodeGastosRepository grupodeGastosRepository;
     private final GastoRepository gastoRepository;
+    private final BalanceService balanceService;
 
     public static final Logger log = LoggerFactory.getLogger(SplititController.class);
 
-    // Inyección de dependencias
-    public SplititController(GrupodeGastosRepository grupodeGastosRepository, GastoRepository gastoRepository){
+    public SplititController(GrupodeGastosRepository grupodeGastosRepository, GastoRepository gastoRepository, BalanceService balanceService) {
         this.grupodeGastosRepository = grupodeGastosRepository;
         this.gastoRepository = gastoRepository;
+        this.balanceService = balanceService;
     }
 
     /**
@@ -106,4 +104,12 @@ public class SplititController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Gasto agregado correctamente al grupo de gastos.");
     }
+
+    @GetMapping("/grupos/{groupId}/balances")
+    public ResponseEntity<Map<String, Float>> getBalances(@PathVariable Integer groupId) {
+        log.info("Calculando balances para el grupo con ID: {}", groupId);
+        Map<String, Float> balances = balanceService.calcularBalances(groupId);
+        return ResponseEntity.ok(balances);
+    }
 }
+

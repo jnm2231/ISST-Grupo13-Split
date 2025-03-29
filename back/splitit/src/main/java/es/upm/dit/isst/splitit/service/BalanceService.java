@@ -13,14 +13,21 @@ import es.upm.dit.isst.splitit.repository.GastoRepository;
 import es.upm.dit.isst.splitit.repository.ParticipacionGastoRepository;
 import es.upm.dit.isst.splitit.repository.UsuarioGrupoRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class BalanceService {
+
+    private static final Logger log = LoggerFactory.getLogger(BalanceService.class);
 
     private final GastoRepository gastoRepository;
     private final ParticipacionGastoRepository participacionGastoRepository;
     private final UsuarioGrupoRepository usuarioGrupoRepository;
 
-    public BalanceService(GastoRepository gastoRepository, ParticipacionGastoRepository participacionGastoRepository, UsuarioGrupoRepository usuarioGrupoRepository) {
+    public BalanceService(GastoRepository gastoRepository, 
+                          ParticipacionGastoRepository participacionGastoRepository, 
+                          UsuarioGrupoRepository usuarioGrupoRepository) {
         this.gastoRepository = gastoRepository;
         this.participacionGastoRepository = participacionGastoRepository;
         this.usuarioGrupoRepository = usuarioGrupoRepository;
@@ -32,7 +39,8 @@ public class BalanceService {
      * @return Un mapa con el balance de cada usuario.
      */
     public Map<String, Float> calcularBalances(Integer groupId) {
-        // Obtener todos los gastos del grupo
+        log.info("Calculando balances para el grupo con ID: {}", groupId);
+
         List<Gasto> gastos = gastoRepository.findByGrupoId(groupId);
 
         // Obtener todos los miembros del grupo
@@ -44,24 +52,40 @@ public class BalanceService {
             balances.put(miembro.getUsuario().getNombre(), 0f);
         }
 
-        // Calcular balances
+        log.info("Miembros del grupo: {}", balances.keySet());
+
         for (Gasto gasto : gastos) {
             String pagador = gasto.getPagadopor();
             Float importe = gasto.getImporte();
 
-            // Dividir el gasto entre los participantes
+            log.info("Procesando gasto: ID={} | Concepto='{}' | Pagado por='{}' | Importe={}", 
+                     gasto.getId(), gasto.getConcepto(), pagador, importe);
+
             List<ParticipacionGasto> participaciones = participacionGastoRepository.findByGastoId(gasto.getId());
+
+            if (participaciones.isEmpty()) {
+                log.warn("El gasto ID={} no tiene participantes registrados. Saltando este gasto.", gasto.getId());
+                continue;
+            }
+
             float divisionEquitativa = importe / participaciones.size();
 
             for (ParticipacionGasto participacion : participaciones) {
                 String participante = participacion.getUsuario().getNombre();
-                balances.put(participante, balances.get(participante) - divisionEquitativa);
+                float nuevoBalance = balances.getOrDefault(participante, 0f) - divisionEquitativa;
+                balances.put(participante, nuevoBalance);
+
+                log.info("Usuario '{}' participa en el gasto. Debe pagar: {} | Nuevo balance: {}", 
+                         participante, divisionEquitativa, nuevoBalance);
             }
 
-            // Sumar el importe al pagador
-            balances.put(pagador, balances.get(pagador) + importe);
+            float nuevoBalancePagador = balances.getOrDefault(pagador, 0f) + importe;
+            balances.put(pagador, nuevoBalancePagador);
+
+            log.info("Pagador '{}' recibe el importe completo. Nuevo balance: {}", pagador, nuevoBalancePagador);
         }
 
+        log.info("Balances finales calculados: {}", balances);
         return balances;
     }
 }

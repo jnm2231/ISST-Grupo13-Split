@@ -7,12 +7,49 @@ function Gastos() {
   const [esgasto, setEsgasto] = useState(true);
   const [boton1, setBoton1] = useState("seleccionado");
   const [boton2, setBoton2] = useState("noseleccionado");
+  const [balance, setBalance] = useState();
   const location = useLocation();
   const navigate = useNavigate(); // Inicializa navigate
   const grupo = location.state?.valor;
+  const idGrupo = grupo.id;
 
   function volverAGrupoGastos() {
     navigate("/"); // Redirige a la ruta de GrupoGastos
+  }
+  async function cargarBalance(){
+    console.log("Ejecutando cargarBalance()");
+    //Comprueba si coge mock o del servidor
+      try{
+        //hace llamada a la api de /grupos
+        const response = await fetch(`${CONFIG.api_grupos}`+`/${idGrupo}/balances`)
+        console.log(CONFIG.api_grupos)
+        console.log(response)
+
+        //si responde ok (200) me lo guardo en grupo
+
+        if(response.status == 200){
+          console.log("responde ok")
+          console.log(response)
+          const data = await response.json();
+          setBalance(data);
+        }
+        //si falla hago un log y mando que error hubo de http
+        else{
+          console.log("respuesta de red ok pero respuesta de HTTP no ok")
+          console.log(response)
+          const dataError = await response.json();
+          console.log(`Error: ${response.status} - ${dataError.error.message}`);
+          
+        }
+
+      }
+      catch(e){
+        console.log("ERROR",e)
+      }
+      console.log("salgo del try")
+
+
+    
   }
 
   // Imprime las tarjetas pasando por el array de gastos dentro de grupo (esto solo se ve en gasto)
@@ -36,9 +73,10 @@ function Gastos() {
 
   // Esto imprimiría y mostraría en balance el dinero debido a ti pero falta por hacer
   function _imprimebalance() {
+    console.log(balance);
     return (
-      grupo.gastos.map((gasto, index) => (
-        <div key={index}>estoy en balance</div>
+      Object.entries(balance).map(([moroso, deuda], index) => (
+        <div key={index}>Los morosos son: {moroso} con deuda:{deuda}</div>
       ))
     );
   }
@@ -60,6 +98,12 @@ function Gastos() {
   useEffect(() => {
     console.log("Cambio detectado: esgasto ahora es", esgasto);
   }, [esgasto]);
+
+  useEffect(() => {
+    cargarBalance();
+    console.log("Cargando balance");
+  }, []);
+
 
   return (
     <div className="container">

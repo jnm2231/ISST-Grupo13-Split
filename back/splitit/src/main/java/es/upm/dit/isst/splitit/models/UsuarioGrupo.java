@@ -84,16 +84,16 @@ public class UsuarioGrupo implements Serializable {
     }
 
     @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            UsuarioGrupoId that = (UsuarioGrupoId) o;
-            return Objects.equals(usuarioNombre, that.usuarioNombre) &&
-                   Objects.equals(grupoId, that.grupoId);
-        }
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UsuarioGrupo that = (UsuarioGrupo) o;
+        return Objects.equals(usuarioNombre, that.usuarioNombre) &&
+               Objects.equals(grupoId, that.grupoId);
+    }
 
-        @Override
-        public int hashCode() {
-            return Objects.hash(usuarioNombre, grupoId);
-        }
+    @Override
+    public int hashCode() {
+        return Objects.hash(usuarioNombre, grupoId);
+    }
 }

@@ -1,17 +1,17 @@
 package es.upm.dit.isst.splitit.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Service;
+
 import es.upm.dit.isst.splitit.models.Gasto;
 import es.upm.dit.isst.splitit.models.ParticipacionGasto;
 import es.upm.dit.isst.splitit.models.UsuarioGrupo;
 import es.upm.dit.isst.splitit.repository.GastoRepository;
 import es.upm.dit.isst.splitit.repository.ParticipacionGastoRepository;
 import es.upm.dit.isst.splitit.repository.UsuarioGrupoRepository;
-
-import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class BalanceService {

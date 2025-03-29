@@ -170,3 +170,60 @@ button:focus-visible {
   align-items: center;
   justify-content: space-between;
 }
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input, textarea {
+  color:#000000;
+  width: 15%;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border 0.3s ease;
+  background-color: white;
+}
+
+input:focus, textarea:focus {
+  border-color: #007BFF;
+  outline: none;
+  background-color: #eef6ff;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.btn {
+  background-color: #007BFF;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-secondary:hover {
+  background-color: #b3b3b3;
+}
+
+.form-titles{
+  text-align: center;
+  color: black;
+  font-size: 25px;
+  margin-bottom: 5px;
+}

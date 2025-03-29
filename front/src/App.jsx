@@ -9,6 +9,7 @@ import ErrorPagina from './ErrorPagina';
 import spin from './assets/spinner.png'
 import Gastos from './Gastos'
 import InfoGasto from './InfoGasto'
+import CrearGrupo from './CrearGrupo'
 
 
 //Holahola
@@ -83,6 +84,7 @@ function App() {
     <Route path="/gastos" element={<Gastos />} />
     <Route path="*" element={<ErrorPagina/>}/>
     <Route path="/infogasto" element={<InfoGasto />} />
+    <Route path="/creargrupo" element={<CrearGrupo />} />
    </Routes>}
   </div>
   )

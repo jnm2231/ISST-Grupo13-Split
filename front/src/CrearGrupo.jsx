@@ -15,9 +15,9 @@ function CrearGrupo() {
       };
 
     return(
-        <div className="crear-grupo-container">
+        <div className="container">
             <button type="button" class="boton-volver" onClick={() => navigate(-1)}>
-                Volver
+                &lt; Volver
             </button>
             <h1>Crear Nuevo Grupo</h1>
             

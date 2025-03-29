@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function CrearGrupo() {
@@ -6,10 +6,30 @@ function CrearGrupo() {
     const [searchTerm, setSearchTerm] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const [participants, setParticipants] = useState([]);
+    const [allUsers, setAllUsers] = useState([]); // Estado para almacenar todos los usuarios
     const navigate = useNavigate();
 
     // Simulación de usuarios disponibles (esto debería venir del backend)
-    const allUsers = ['Olivia', 'Pedro', 'Cristina', 'Juan', 'Ana', 'Carlos'];
+    //const allUsers = ['Olivia', 'Pedro', 'Cristina', 'Juan', 'Ana', 'Carlos'];
+
+    // Obtener usuarios del backend al cargar el componente
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/myApi/usuarios'); // Cambia la URL si es necesario
+                if (!response.ok) {
+                    throw new Error('Error al obtener los usuarios');
+                }
+                const data = await response.json();
+                console.log(data);
+                setAllUsers(data); // Guardar los usuarios en el estado
+            } catch (error) {
+                console.error('Error al obtener los usuarios:', error);
+            }
+        };
+
+        fetchUsers();
+    }, []); // El array vacío asegura que esto se ejecute solo una vez al montar el componente
 
     // Manejar el cambio en el campo de búsqueda
     const handleSearchChange = (e) => {
@@ -19,7 +39,7 @@ function CrearGrupo() {
         // Filtrar sugerencias basadas en el término de búsqueda
         if (value) {
             const filteredSuggestions = allUsers.filter((user) =>
-                user.toLowerCase().includes(value.toLowerCase())
+                user.nombre.toLowerCase().includes(value.toLowerCase())
             );
             setSuggestions(filteredSuggestions);
             //console.log(filteredSuggestions);
@@ -87,8 +107,8 @@ function CrearGrupo() {
                     {suggestions.length > 0 && (
                         <ul className="suggestions">
                             {suggestions.map((user) => (
-                                <li key={user} onClick={() => addParticipant(user)}>
-                                    {user}
+                                <li key={user.nombre} onClick={() => addParticipant(user.nombre)}>
+                                    {user.nombre}
                                 </li>
                             ))}
                         </ul>

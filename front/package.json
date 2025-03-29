@@ -25,5 +25,5 @@
     "globals": "^15.15.0",
     "vite": "^6.2.0"
   },
-   "proxy": "http://localhost:8080"
+  "proxy": "http://localhost:8080"
 }

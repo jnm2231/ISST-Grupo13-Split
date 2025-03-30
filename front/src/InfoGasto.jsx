@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import { useLocation, useNavigate } from "react-router-dom"; // Importa useNavigate
+import {useLocation, useNavigate } from "react-router-dom"; // Importa useNavigate
 import spin from './assets/spinner.png'
 import CONFIG from './config/config';
 
@@ -15,6 +15,7 @@ function InfoGasto() {
     const location = useLocation();
     const navigate = useNavigate(); // Inicializa navigate
     const gasto = location.state?.valor;
+    
     const idGasto = gasto.id;
 
 

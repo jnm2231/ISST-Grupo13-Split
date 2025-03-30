@@ -53,7 +53,7 @@ function Gastos() {
   function _imprimegasto() {
     return (
       grupo.gastos.map((gasto, index) => (
-        <button className="tarjetagastos" onClick={() => _pasarPagina(grupo)} value={gasto} key={index}>
+        <button className="tarjetagastos" onClick={() => _pasarPagina(gasto)} value={gasto} key={index}>
           {gasto.concepto}
           <div className='filagastos'>
             <p className="pagado">Pagado por: {gasto.pagadopor}</p>

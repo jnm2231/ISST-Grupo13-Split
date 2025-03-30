@@ -74,10 +74,20 @@ function Gastos() {
   // Esto imprimiría y mostraría en balance el dinero debido a ti pero falta por hacer
   function _imprimebalance() {
     console.log(balance);
+    
     return (
-      Object.entries(balance).map(([moroso, deuda], index) => (
-        <div key={index}>Los morosos son: {moroso} con deuda:{deuda}</div>
-      ))
+      <>
+        {Object.entries(balance).map(([usuario, deuda], index) => 
+          deuda === 0 ? null : (
+            <button className="tarjetagastos" key={index}>
+              <div className='filagastos'>
+                <p className="importe">{usuario}</p>
+                <p className={deuda > 0 ? "verde" : "rojo"}>{deuda}</p>
+              </div>
+            </button>
+          )
+        )}
+      </>
     );
   }
 

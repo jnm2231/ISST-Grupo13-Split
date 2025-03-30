@@ -45,45 +45,18 @@ INSERT INTO gasto (id, concepto, importe, pagadopor, grupo_id) VALUES (15, 'Popc
 -- Inserción de participaciones en gastos (participacion_gasto)
 INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (1, 'usuario1', 22.75);
 INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (1, 'usuario2', 22.75);
-
 INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (2, 'usuario1', 15.38);
 INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (2, 'usuario2', 15.37);
-
 INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (3, 'usuario2', 15.99);
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (3, 'usuario3', 15.99);
-
 INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (4, 'usuario1', 50.00);
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (4, 'usuario4', 50.00);
-
 INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (5, 'usuario3', 12.60);
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (5, 'usuario1', 12.60);
-
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (6, 'usuario4', 60.00);
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (6, 'usuario3', 60.00);
-
+INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (6, 'usuario4', 120.00);
 INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (7, 'usuario5', 9.99);
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (7, 'usuario2', 9.99);
-
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (8, 'usuario1', 250.00);
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (8, 'usuario2', 250.00);
-
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (9, 'usuario2', 100.00);
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (9, 'usuario3', 100.00);
-
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (10, 'usuario3', 17.50);
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (10, 'usuario4', 17.50);
-
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (11, 'usuario1', 40.00);
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (11, 'usuario6', 40.00);
-
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (12, 'usuario1', 10.00);
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (12, 'usuario7', 10.00);
-
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (13, 'usuario6', 22.50);
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (13, 'usuario7', 22.50);
-
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (14, 'usuario8', 30.00);
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (14, 'usuario3', 30.00);
-
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (15, 'usuario2', 7.50);
-INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (15, 'usuario5', 7.50);
+INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (8, 'usuario1', 500.00);
+INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (9, 'usuario2', 200.00);
+INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (10, 'usuario3', 35.00);
+INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (11, 'usuario6', 80.00);
+INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (12, 'usuario1', 20.00);
+INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (13, 'usuario7', 45.00);
+INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (14, 'usuario8', 60.00);
+INSERT INTO participacion_gasto (gasto_id, usuario_nombre, importe) VALUES (15, 'usuario2', 15.00);

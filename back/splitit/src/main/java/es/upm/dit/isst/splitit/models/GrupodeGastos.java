@@ -26,7 +26,7 @@ import jakarta.validation.constraints.NotEmpty;
 public class GrupodeGastos implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotEmpty
@@ -36,6 +36,12 @@ public class GrupodeGastos implements Serializable {
     @OneToMany(mappedBy = "grupo", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference 
     private List<Gasto> gastos = new ArrayList<>();
+
+    /*
+     * TODO: comprobar si esta adicion es necesaria o no
+     */
+    @OneToMany(mappedBy = "grupo")
+    private List<UsuarioGrupo> usuarios; // usuarios en el grupo
 
     /**
      * Constructor vacío necesario para JPA.

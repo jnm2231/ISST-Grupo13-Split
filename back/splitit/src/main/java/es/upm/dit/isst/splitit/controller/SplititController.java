@@ -2,10 +2,12 @@ package es.upm.dit.isst.splitit.controller;
 
 import es.upm.dit.isst.splitit.models.Gasto;
 import es.upm.dit.isst.splitit.models.GrupodeGastos;
+import es.upm.dit.isst.splitit.models.ParticipacionGasto;
 import es.upm.dit.isst.splitit.service.BalanceService;
 import es.upm.dit.isst.splitit.models.Usuario;
 import es.upm.dit.isst.splitit.repository.GastoRepository;
 import es.upm.dit.isst.splitit.repository.GrupodeGastosRepository;
+import es.upm.dit.isst.splitit.repository.ParticipacionGastoRepository;
 import es.upm.dit.isst.splitit.repository.UsuarioRepository;
 
 import java.net.URI;
@@ -30,14 +32,16 @@ public class SplititController {
     private final GastoRepository gastoRepository;
     private final BalanceService balanceService;
     private final UsuarioRepository usuarioRepository;
+    private final ParticipacionGastoRepository participacionGastoRepository;
 
     public static final Logger log = LoggerFactory.getLogger(SplititController.class);
 
-    public SplititController(GrupodeGastosRepository grupodeGastosRepository, GastoRepository gastoRepository, UsuarioRepository usuarioRepository, BalanceService balanceService) {
+    public SplititController(GrupodeGastosRepository grupodeGastosRepository, GastoRepository gastoRepository, UsuarioRepository usuarioRepository, BalanceService balanceService, ParticipacionGastoRepository participacionGastoRepository) {
         this.grupodeGastosRepository = grupodeGastosRepository;
         this.gastoRepository = gastoRepository;
         this.usuarioRepository = usuarioRepository;
         this.balanceService = balanceService;
+        this.participacionGastoRepository = participacionGastoRepository;
     }
 
     /**
@@ -125,5 +129,14 @@ public class SplititController {
         Map<String, Float> balances = balanceService.calcularBalances(groupId);
         return ResponseEntity.ok(balances);
     }
+
+    @GetMapping("/gastos/{gastoId}")
+    public List<ParticipacionGasto> getParticipaciones(@PathVariable Integer gastoId) {
+        log.info("Calculando participantes en el gasto con ID: {}", gastoId);
+        return  participacionGastoRepository.findByGastoId(gastoId);
+
+
+    }
+    
 }
 

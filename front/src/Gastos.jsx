@@ -47,9 +47,6 @@ function Gastos() {
         console.log("ERROR",e)
       }
       console.log("salgo del try")
-
-
-    
   }
 
   // Imprime las tarjetas pasando por el array de gastos dentro de grupo (esto solo se ve en gasto)

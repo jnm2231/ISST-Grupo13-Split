@@ -74,6 +74,11 @@ function CrearGrupo() {
             return; // Detener la ejecución si el nombre está vacío
         }
 
+        if (participants.length === 0) {
+            alert('Debe haber al menos un participante en el grupo');
+            return; // Detener la ejecución si no hay participantes
+        }
+
         try{
             // Crear el cuerpo de la petición
             const requestBody = {

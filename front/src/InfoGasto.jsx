@@ -74,11 +74,11 @@ function InfoGasto() {
 
 
       return (
-        <div className="container">
+        <div>
             {loading ? (
                 <img className="spin" src={spin} alt="Cargando..." />
             ) : (
-                <>
+                <div className='container'>
                     <div className="content">
                         <button className="boton-volver" onClick={() => navigate(-1)}>
                             &lt; Volver
@@ -91,7 +91,7 @@ function InfoGasto() {
                     {sacaParticipacion()}
                     </div>
                     </div>
-                </>
+                </div>
             )}
         </div>
     );

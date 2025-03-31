@@ -67,6 +67,13 @@ function CrearGrupo() {
     const subirGrupo = async (e) => {
         e.preventDefault();
 
+        //Alerta que salta si el nombre del grupo es null
+        //trim() elimina los espacios en blanco al principio y al final de la cadena
+        if (!groupName.trim()) {
+            alert('El nombre del no puede contener solo espacios');
+            return; // Detener la ejecución si el nombre está vacío
+        }
+
         try{
             // Crear el cuerpo de la petición
             const requestBody = {

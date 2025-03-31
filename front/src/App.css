@@ -86,4 +86,37 @@
   color: red;
 }
 
+.boton-anadirgasto-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.boton-anadirgasto {
+  width: 3rem;
+  height: 3rem;
+  font-size: 2rem;
+  font-weight: bold;
+  color: white;
+  background-color: #15738E;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.boton-anadirgasto:hover {
+  background-color: #0e5a6b;
+}
+
+.boton-anadirgasto-container p {
+  font-size: 1rem;
+  color: #15738E;
+  margin: 0;
+}
+
 

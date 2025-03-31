@@ -124,7 +124,17 @@ function Gastos() {
       </div>
       <div className="fila">
         <div id="conjuntoTarjeta">
-          {esgasto ? _imprimegasto() : _imprimebalance()}
+          {esgasto ? (
+            <>
+              <button className=".boton-anadirgasto" onClick={() => console.log("Nuevo gasto añadido")}>
+                Añadir Gasto
+              </button>
+              {_imprimegasto()}
+
+            </>
+          ) : (
+            _imprimebalance()
+          )}
         </div>
       </div>
     </div>

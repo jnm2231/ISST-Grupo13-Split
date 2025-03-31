@@ -91,31 +91,6 @@ public class SplititController {
         
         return ResponseEntity.ok(group);
     }
-
-    /**
-     * Endpoint para agregar un gasto a un grupo específico.
-     * @param groupId ID del grupo al que se le añadirá el gasto.
-     * @param gasto Objeto con los detalles del gasto a agregar.
-     * @return ResponseEntity con el gasto agregado.
-     * @throws ResponseStatusException Si el grupo de gastos no existe.
-     */
-    @PostMapping("/grupos/{groupId}/gastos")
-    @Transactional
-    public ResponseEntity<String> addGastoToGroup(@PathVariable Integer groupId, @RequestBody Gasto gasto) {
-        log.info("Agregando un gasto al grupo con ID: {}", groupId);
-
-        // Buscar el grupo de gastos
-        GrupodeGastos group = grupodeGastosRepository.findById(groupId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Grupo de gastos no encontrado"));
-
-        // Asociar el gasto con el grupo
-        gasto.setGrupo(group);
-
-        // Guardar el gasto
-        gastoRepository.save(gasto);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body("Gasto agregado correctamente al grupo de gastos.");
-    }
     
     /**
      * Endpoint para agregar un gasto completo a un grupo específico.
@@ -124,20 +99,20 @@ public class SplititController {
      * @return ResponseEntity con el gasto y participaciones agregados.
      * @throws ResponseStatusException Si el grupo de gastos o algún usuario no existe.
      */
-    @PostMapping("/grupos/{groupId}/gastos/completo")
+    @PostMapping("/grupos/{groupId}/gastos")
     @Transactional
-    public ResponseEntity<String> addCompleteGastoToGroup(
+    public ResponseEntity<String> addGastoToGroup(
             @PathVariable Integer groupId,
             @RequestBody Map<String, Object> gastoData) {
         log.info("Agregando un gasto completo al grupo con ID: {}", groupId);
-
+        
         // Validar y extraer datos del gasto
         String concepto = (String) gastoData.get("concepto");
         Float importe = ((Number) gastoData.get("importe")).floatValue();
         String pagadopor = (String) gastoData.get("pagadopor");
-        List<Map<String, Object>> participaciones = (List<Map<String, Object>>) gastoData.get("participaciones");
+        List<Map<String, Object>> participantes = (List<Map<String, Object>>) gastoData.get("participaciones");
 
-        if (concepto == null || importe == null || pagadopor == null || participaciones == null) {
+        if (concepto == null || importe == null || pagadopor == null || participantes == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Datos incompletos para el gasto");
         }
 
@@ -149,10 +124,10 @@ public class SplititController {
         Gasto gasto = new Gasto(concepto, importe, pagadopor, group);
         gastoRepository.save(gasto);
 
-        // Crear y guardar las participaciones
-        for (Map<String, Object> participacionData : participaciones) {
-            String usuarioNombre = (String) participacionData.get("usuarioNombre");
-            Float importeParticipacion = ((Number) participacionData.get("importe")).floatValue();
+        // Crear y guardar los participantes
+        for (Map<String, Object> participanteData : participantes) {
+            String usuarioNombre = (String) participanteData.get("usuarioNombre");
+            Float importeParticipacion = ((Number) participanteData.get("importe")).floatValue();
 
             Usuario usuario = usuarioRepository.findById(usuarioNombre)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));

@@ -3,28 +3,28 @@ package es.upm.dit.isst.splitit.models;
 import java.io.Serializable;
 import java.util.Objects;
 
-/*
- * Esta clase representa la clave primaria compuesta de la tabla UsuarioGrupo.
- * La clave primaria está compuesta por el nombre del usuario y el id del grupo.
+/**
+ * Clase que representa la clave primaria compuesta de UsuarioGrupo.
  */
 public class UsuarioGrupoId implements Serializable {
-    public String usuarioNombre;
-    public Integer grupoId;
+    
+    private String usuario; // Debe coincidir con el nombre del campo en UsuarioGrupo
+    private Integer grupo;  // Debe coincidir con el nombre del campo en UsuarioGrupo
 
-    // Constructor vacío (obligatorio para JPA)
+    // Constructor vacío necesario para JPA
     public UsuarioGrupoId() {}
 
-    public UsuarioGrupoId(String usuarioNombre, Integer grupoId) {
-        this.usuarioNombre = usuarioNombre;
-        this.grupoId = grupoId;
+    public UsuarioGrupoId(String usuario, Integer grupo) {
+        this.usuario = usuario;
+        this.grupo = grupo;
     }
 
     // Getters y Setters
-    public String getUsuarioNombre() { return usuarioNombre; }
-    public void setUsuarioNombre(String usuarioNombre) { this.usuarioNombre = usuarioNombre; }
+    public String getUsuario() { return usuario; }
+    public void setUsuario(String usuario) { this.usuario = usuario; }
 
-    public Integer getGrupoId() { return grupoId; }
-    public void setGrupoId(Integer grupoId) { this.grupoId = grupoId; }
+    public Integer getGrupo() { return grupo; }
+    public void setGrupo(Integer grupo) { this.grupo = grupo; }
 
     // Implementamos equals() y hashCode()
     @Override
@@ -32,12 +32,12 @@ public class UsuarioGrupoId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UsuarioGrupoId that = (UsuarioGrupoId) o;
-        return Objects.equals(usuarioNombre, that.usuarioNombre) &&
-               Objects.equals(grupoId, that.grupoId);
+        return Objects.equals(usuario, that.usuario) &&
+               Objects.equals(grupo, that.grupo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(usuarioNombre, grupoId);
+        return Objects.hash(usuario, grupo);
     }
 }

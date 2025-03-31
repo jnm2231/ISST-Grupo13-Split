@@ -110,7 +110,14 @@ public class SplititController {
         String concepto = (String) gastoData.get("concepto");
         Float importe = ((Number) gastoData.get("importe")).floatValue();
         String pagadopor = (String) gastoData.get("pagadopor");
-        List<Map<String, Object>> participantes = (List<Map<String, Object>>) gastoData.get("participaciones");
+                
+        // Validar y convertir "participaciones" de forma segura
+        Object participantesObj = gastoData.get("participaciones");
+        if (!(participantesObj instanceof List<?>)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo 'participaciones' debe ser una lista");
+        }
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> participantes = (List<Map<String, Object>>) participantesObj;
 
         if (concepto == null || importe == null || pagadopor == null || participantes == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Datos incompletos para el gasto");

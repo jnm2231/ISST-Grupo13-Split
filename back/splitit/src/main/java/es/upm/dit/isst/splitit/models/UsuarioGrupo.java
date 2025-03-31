@@ -17,21 +17,15 @@ import jakarta.persistence.Table;
  */
 @Entity
 @Table(name = "usuario_grupo")
-@IdClass(UsuarioGrupoId.class) //clave primaria compuesta
+@IdClass(UsuarioGrupoId.class) // Define que la clave primaria es compuesta
 public class UsuarioGrupo implements Serializable {
 
     @Id
-    @Column(name = "usuario_nombre")
-    private String usuarioNombre;
-
-    @Id
-    @Column(name = "grupo_id")
-    private Integer grupoId;
-
     @ManyToOne
     @JoinColumn(name = "usuario_nombre", referencedColumnName = "nombre", nullable = false)
     private Usuario usuario;
 
+    @Id
     @ManyToOne
     @JoinColumn(name = "grupo_id", referencedColumnName = "id", nullable = false)
     private GrupodeGastos grupo;
@@ -39,20 +33,11 @@ public class UsuarioGrupo implements Serializable {
     @Column(name = "apodo")
     private String apodo; // Apodo del usuario en el grupo (si lo tiene)
 
-    /**
-     * Constructor vacío necesario para JPA.
-     */
+    // Constructor vacío necesario para JPA
     public UsuarioGrupo() {}
 
-    /**
-     * Constructor con parámetros.
-     * @param usuario Usuario que pertenece al grupo.
-     * @param grupo Grupo de gastos al que pertenece el usuario.
-     * @param apodo Apodo del usuario en el grupo (opcional).
-     */
+    // Constructor con parámetros
     public UsuarioGrupo(Usuario usuario, GrupodeGastos grupo, String apodo) {
-        this.usuarioNombre = usuario.getNombre();
-        this.grupoId = grupo.getId();
         this.usuario = usuario;
         this.grupo = grupo;
         this.apodo = apodo;
@@ -88,12 +73,11 @@ public class UsuarioGrupo implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UsuarioGrupo that = (UsuarioGrupo) o;
-        return Objects.equals(usuarioNombre, that.usuarioNombre) &&
-               Objects.equals(grupoId, that.grupoId);
+        return Objects.equals(usuario, that.usuario) && Objects.equals(grupo, that.grupo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(usuarioNombre, grupoId);
+        return Objects.hash(usuario, grupo);
     }
 }

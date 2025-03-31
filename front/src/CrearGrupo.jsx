@@ -66,8 +66,38 @@ function CrearGrupo() {
     // Manejar el envío del formulario
     const subirGrupo = async (e) => {
         e.preventDefault();
-        
-        
+
+        try{
+            // Crear el cuerpo de la petición
+            const requestBody = {
+                nombre: groupName, // Nombre del grupo
+                usuarios: participants.map((participant) => ({
+                    nombre: participant.nombre, // Nombre del usuario
+                    apodo: participant.apodo || participant.nombre, // Apodo (opcional)
+                })),
+            };
+
+            // Realizar la petición POST al backend
+            const response = await fetch('http://localhost:8080/myApi/grupos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody), // Convertir el objeto a JSON
+            });
+
+            // Verificar si la respuesta es exitosa
+            if (!response.ok) {
+                throw new Error('Error al crear el grupo');
+            }
+
+            // Mostrar un mensaje de éxito y redirigir al usuario
+            alert('Grupo creado correctamente');
+            navigate('/'); // Redirigir a la página principal
+            }catch(error){
+                console.error('Error de red:', error);
+                alert('Error de red al intentar crear el grupo');
+            }
     };
 
     return(

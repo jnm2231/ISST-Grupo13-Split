@@ -32,7 +32,7 @@ public class ParticipacionGasto implements Serializable {
     private Usuario usuario;
 
     @Column(name = "importe")
-    private Float importe;
+    private Float importe;  
 
     public ParticipacionGasto() {}
 

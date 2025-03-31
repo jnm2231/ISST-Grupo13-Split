@@ -47,16 +47,13 @@ function Gastos() {
         console.log("ERROR",e)
       }
       console.log("salgo del try")
-
-
-    
   }
 
   // Imprime las tarjetas pasando por el array de gastos dentro de grupo (esto solo se ve en gasto)
   function _imprimegasto() {
     return (
       grupo.gastos.map((gasto, index) => (
-        <button className="tarjetagastos" onClick={() => _pasarPagina(grupo)} value={gasto} key={index}>
+        <button className="tarjetagastos" onClick={() => _pasarPagina(gasto)} value={gasto} key={index}>
           {gasto.concepto}
           <div className='filagastos'>
             <p className="pagado">Pagado por: {gasto.pagadopor}</p>
@@ -127,7 +124,17 @@ function Gastos() {
       </div>
       <div className="fila">
         <div id="conjuntoTarjeta">
-          {esgasto ? _imprimegasto() : _imprimebalance()}
+          {esgasto ? (
+            <>
+              <button className=".boton-anadirgasto" onClick={() => console.log("Nuevo gasto añadido")}>
+                Añadir Gasto
+              </button>
+              {_imprimegasto()}
+
+            </>
+          ) : (
+            _imprimebalance()
+          )}
         </div>
       </div>
     </div>

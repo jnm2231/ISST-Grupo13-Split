@@ -16,6 +16,11 @@ function Gastos() {
   function volverAGrupoGastos() {
     navigate("/"); // Redirige a la ruta de GrupoGastos
   }
+
+  function _navegarAnadirGasto() {
+    navigate(`/anadirgasto`, { state: { grupoId: idGrupo } }); // Pass grupoId to the new view
+  }
+
   async function cargarBalance(){
     console.log("Ejecutando cargarBalance()");
     //Comprueba si coge mock o del servidor
@@ -126,7 +131,7 @@ function Gastos() {
         <div id="conjuntoTarjeta">
           {esgasto ? (
             <>
-              <button className=".boton-anadirgasto" onClick={() => console.log("Nuevo gasto añadido")}>
+              <button className="boton-anadirgasto" onClick={_navegarAnadirGasto}>
                 Añadir Gasto
               </button>
               {_imprimegasto()}

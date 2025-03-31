@@ -90,22 +90,21 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center; /* Center horizontally */
   margin-bottom: 1rem;
 }
 
 .boton-anadirgasto {
-  width: 3rem;
-  height: 3rem;
-  font-size: 2rem;
-  font-weight: bold;
+  width: auto; /* Adjust width automatically */
+  height: auto; /* Adjust height automatically */
+  font-size: 1rem;
+  font-weight: 500;
   color: white;
   background-color: #15738E;
   border: none;
-  border-radius: 50%;
+  border-radius: 8px; /* Slightly rounded corners */
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding: 0.6em 1.2em; /* Padding for a rectangular shape */
   margin-bottom: 0.5rem;
 }
 

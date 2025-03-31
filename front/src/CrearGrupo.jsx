@@ -49,27 +49,25 @@ function CrearGrupo() {
     };
 
     // Añadir un participante a la lista
-    const addParticipant = (name) => {
-        if (!participants.includes(name)) {
-            setParticipants([...participants, name]);
+    const addParticipant = (participante) => {
+        if (!participants.includes(participante)) {
+            setParticipants([...participants, participante]);
         }
         setSearchTerm('');
         setSuggestions([]);
+        console.log("Array participants: ", participants);
     };
 
     // Eliminar un participante de la lista
-    const removeParticipant = (name) => {
-        setParticipants(participants.filter((participant) => participant !== name));
+    const removeParticipant = (user) => {
+        setParticipants(participants.filter((participant) => participant.email !== user.email));
     };
 
     // Manejar el envío del formulario
-    const subirGrupo = (e) => {
+    const subirGrupo = async (e) => {
         e.preventDefault();
-        console.log('Creating group:', { groupName, participants });
-        // Codigo para enviar los datos al backend
         
-        // Despues de crear el grupo, navegar de vuelta a la lista de grupos o al dashboard
-        // navigate('/grupos');
+        
     };
 
     return(
@@ -107,7 +105,7 @@ function CrearGrupo() {
                     {suggestions.length > 0 && (
                         <ul className="suggestions">
                             {suggestions.map((user) => (
-                                <li key={user.nombre} onClick={() => addParticipant(user.nombre)}>
+                                <li key={user.nombre} onClick={() => addParticipant(user)}>
                                     {user.nombre}
                                 </li>
                             ))}
@@ -118,8 +116,8 @@ function CrearGrupo() {
                 {/* Lista de participantes añadidos */}
                 <div className="participants-list">
                     {participants.map((participant) => (
-                        <div key={participant} className="participant-item">
-                            {participant}
+                        <div key={participant.email} className="participant-item">
+                            {participant.nombre}
                             <button type="button" onClick={() => removeParticipant(participant)}>✖</button>
                         </div>
                     ))}

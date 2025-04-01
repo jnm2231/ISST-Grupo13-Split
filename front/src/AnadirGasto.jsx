@@ -72,7 +72,7 @@ function AnadirGasto() {
             });
             if (!response.ok) throw new Error('Error al crear el gasto');
             alert('Gasto creado correctamente');
-            window.location.href = `/${idGrupo}/gastos`; // Redirigir a la página de gastos del grupo
+            window.location.href = `/${idGrupo}/gastos`;
         } catch (error) {
             console.error('Error de red:', error);
             alert('Error de red al intentar crear el gasto');

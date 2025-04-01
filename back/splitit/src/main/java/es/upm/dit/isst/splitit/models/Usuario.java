@@ -1,5 +1,6 @@
 package es.upm.dit.isst.splitit.models;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -75,6 +76,20 @@ public class Usuario {
 
     public void setGrupos(List<UsuarioGrupo> grupos) {
         this.grupos = grupos;
+    }
+    public void addUsuarioGrupo(UsuarioGrupo usuarioGrupo) {
+        if (grupos == null) {
+            grupos = new ArrayList<>();
+        }
+        grupos.add(usuarioGrupo);
+        usuarioGrupo.setUsuario(this);
+    }
+
+    public void removeUsuarioGrupo(UsuarioGrupo usuarioGrupo) {
+        if (grupos != null) {
+            grupos.remove(usuarioGrupo);
+            usuarioGrupo.setUsuario(null);
+        }
     }
 
     @Override

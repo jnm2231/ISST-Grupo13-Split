@@ -21,10 +21,12 @@ import es.upm.dit.isst.splitit.models.Gasto;
 import es.upm.dit.isst.splitit.models.GrupodeGastos;
 import es.upm.dit.isst.splitit.models.ParticipacionGasto;
 import es.upm.dit.isst.splitit.models.Usuario;
+import es.upm.dit.isst.splitit.models.UsuarioGrupo;
 import es.upm.dit.isst.splitit.repository.GastoRepository;
 import es.upm.dit.isst.splitit.repository.GrupodeGastosRepository;
 import es.upm.dit.isst.splitit.repository.ParticipacionGastoRepository;
 import es.upm.dit.isst.splitit.repository.UsuarioRepository;
+import es.upm.dit.isst.splitit.repository.UsuarioGrupoRepository;
 import es.upm.dit.isst.splitit.service.BalanceService;
 import jakarta.transaction.Transactional;
 
@@ -35,17 +37,19 @@ public class SplititController {
     private final GrupodeGastosRepository grupodeGastosRepository;
     private final GastoRepository gastoRepository;
     private final BalanceService balanceService;
+    private final UsuarioGrupoRepository usuarioGrupoRepository;
     private final UsuarioRepository usuarioRepository;
     private final ParticipacionGastoRepository participacionGastoRepository;
 
     public static final Logger log = LoggerFactory.getLogger(SplititController.class);
 
-    public SplititController(GrupodeGastosRepository grupodeGastosRepository, GastoRepository gastoRepository, UsuarioRepository usuarioRepository, BalanceService balanceService, ParticipacionGastoRepository participacionGastoRepository) {
+    public SplititController(GrupodeGastosRepository grupodeGastosRepository, GastoRepository gastoRepository, UsuarioRepository usuarioRepository, BalanceService balanceService, ParticipacionGastoRepository participacionGastoRepository, UsuarioGrupoRepository usuarioGrupoRepository) {
         this.grupodeGastosRepository = grupodeGastosRepository;
         this.gastoRepository = gastoRepository;
         this.usuarioRepository = usuarioRepository;
         this.balanceService = balanceService;
         this.participacionGastoRepository = participacionGastoRepository;
+        this.usuarioGrupoRepository = usuarioGrupoRepository;
     }
 
     /**
@@ -65,17 +69,57 @@ public class SplititController {
      * @throws URISyntaxException Si la URI de la respuesta no puede ser creada.
      */
     @PostMapping("/grupos")
-    public ResponseEntity<String> createGroup(@RequestBody GrupodeGastos newGrupodeGastos) throws URISyntaxException {
-        log.info("Creando un nuevo grupo de gastos: {}", newGrupodeGastos);
+    public ResponseEntity<String> createGroup(@RequestBody Map<String, Object> groupData) throws URISyntaxException {
+        log.info("Creando un nuevo grupo de gastos: {}", groupData);
+
+        String groupName = (String) groupData.get("nombre");
+        Object usuariosObj = groupData.get("usuarios");
 
         // Verificar que el grupo tiene un nombre
-        if (newGrupodeGastos.getNombre() == null || newGrupodeGastos.getNombre().isEmpty()) {
+        if (groupName == null || groupName.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre del grupo de gastos no puede estar vacío");
         }
 
-        GrupodeGastos result = grupodeGastosRepository.save(newGrupodeGastos);
+        if (!(usuariosObj instanceof List<?>)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El formato de usuarios es incorrecto");
+        }
+        
+        @SuppressWarnings("unchecked")
+        List<Map<String, String>> usuarios = (List<Map<String, String>>) usuariosObj;
 
-        return ResponseEntity.created(new URI("/myApi/grupos/" + result.getId())).body("Grupo de gastos creado con éxito.");
+        if (groupName == null || groupName.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre del grupo de gastos no puede estar vacío");
+        }
+
+        // Crear el grupo de gastos
+        GrupodeGastos newGroup = new GrupodeGastos(groupName);
+        GrupodeGastos savedGroup = grupodeGastosRepository.save(newGroup);
+
+        // Asociar usuarios al grupo
+        if (usuarios != null && !usuarios.isEmpty()) {
+            for (Map<String, String> usuarioData : usuarios) {
+                String usuarioNombre = usuarioData.get("nombre");
+                String apodo = usuarioData.get("apodo");
+
+                // Buscar el usuario en la base de datos
+                Usuario usuario = usuarioRepository.findById(usuarioNombre)
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, 
+                                "Usuario no encontrado: " + usuarioNombre));
+
+                // Crear la relación UsuarioGrupo
+                UsuarioGrupo usuarioGrupo = new UsuarioGrupo(usuario, savedGroup, apodo);
+
+                // Agregar la relación al grupo y al usuario
+                savedGroup.addUsuarioGrupo(usuarioGrupo);
+                usuario.addUsuarioGrupo(usuarioGrupo);
+                usuarioGrupoRepository.save(usuarioGrupo); 
+            }
+
+            // Guardar el grupo actualizado con las relaciones
+            grupodeGastosRepository.save(savedGroup);
+        }
+        
+        return ResponseEntity.created(new URI("/myApi/grupos/" + savedGroup.getId())).body("Grupo de gastos creado con éxito.");
     }
 
     /**
@@ -110,7 +154,14 @@ public class SplititController {
         String concepto = (String) gastoData.get("concepto");
         Float importe = ((Number) gastoData.get("importe")).floatValue();
         String pagadopor = (String) gastoData.get("pagadopor");
-        List<Map<String, Object>> participantes = (List<Map<String, Object>>) gastoData.get("participaciones");
+
+        // Validar y convertir "participaciones" de forma segura
+        Object participantesObj = gastoData.get("participaciones");
+        if (!(participantesObj instanceof List<?>)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo 'participaciones' debe ser una lista");
+        }
+        @SuppressWarnings("unchecked")
+        List<Map<String, Object>> participantes = (List<Map<String, Object>>) participantesObj;
 
         if (concepto == null || importe == null || pagadopor == null || participantes == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Datos incompletos para el gasto");

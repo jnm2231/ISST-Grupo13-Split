@@ -62,32 +62,36 @@ function InfoGasto() {
           }
           catch(e){
             console.log("ERROR",e)
+          }finally{
+            setLoading(false)
           }
           console.log("salgo del try")
       }
 
       useEffect(() => {
         cargarParticipacion()
-        setTimeout(() => {
-          setLoading(false)
-        },3000)
       },[])
 
 
       return (
-        <div className="container">
+        <div>
             {loading ? (
                 <img className="spin" src={spin} alt="Cargando..." />
             ) : (
-                <>
+                <div className='container'>
                     <div className="content">
                         <button className="boton-volver" onClick={() => navigate(-1)}>
                             &lt; Volver
                         </button>
                         <h1>Info Gasto</h1>
+                        <p></p>
                     </div>
+                    <div className="fila">     
+                    <div id="conjuntoTarjeta">
                     {sacaParticipacion()}
-                </>
+                    </div>
+                    </div>
+                </div>
             )}
         </div>
     );

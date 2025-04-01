@@ -91,6 +91,22 @@ public class GrupodeGastos implements Serializable {
         gasto.setGrupo(null);
     }
 
+    //Para añadir y quitar usuarios de un grupo
+    public void addUsuarioGrupo(UsuarioGrupo usuarioGrupo) {
+        if (usuarios == null) {
+            usuarios = new ArrayList<>();
+        }
+        usuarios.add(usuarioGrupo);
+        usuarioGrupo.setGrupo(this);
+    }
+    
+    public void removeUsuarioGrupo(UsuarioGrupo usuarioGrupo) {
+        if (usuarios != null) {
+            usuarios.remove(usuarioGrupo);
+            usuarioGrupo.setGrupo(null);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

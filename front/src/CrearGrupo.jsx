@@ -66,8 +66,50 @@ function CrearGrupo() {
     // Manejar el envío del formulario
     const subirGrupo = async (e) => {
         e.preventDefault();
-        
-        
+
+        //Alerta que salta si el nombre del grupo es null
+        //trim() elimina los espacios en blanco al principio y al final de la cadena
+        if (!groupName.trim()) {
+            alert('El nombre del no puede contener solo espacios');
+            return; // Detener la ejecución si el nombre está vacío
+        }
+
+        if (participants.length === 0) {
+            alert('Debe haber al menos un participante en el grupo');
+            return; // Detener la ejecución si no hay participantes
+        }
+
+        try{
+            // Crear el cuerpo de la petición
+            const requestBody = {
+                nombre: groupName, // Nombre del grupo
+                usuarios: participants.map((participant) => ({
+                    nombre: participant.nombre, // Nombre del usuario
+                    apodo: participant.apodo || participant.nombre, // Apodo (opcional)
+                })),
+            };
+
+            // Realizar la petición POST al backend
+            const response = await fetch('http://localhost:8080/myApi/grupos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody), // Convertir el objeto a JSON
+            });
+
+            // Verificar si la respuesta es exitosa
+            if (!response.ok) {
+                throw new Error('Error al crear el grupo');
+            }
+
+            // Mostrar un mensaje de éxito y redirigir al usuario
+            alert('Grupo creado correctamente');
+            window.location.href = '/'; // Redirigir a la página principal y hace refresh para que salga el nuevo grupo
+            }catch(error){
+                console.error('Error de red:', error);
+                alert('Error de red al intentar crear el grupo');
+            }
     };
 
     return(

@@ -178,7 +178,7 @@ public class SplititController {
         // Crear y guardar los participantes
         for (Map<String, Object> participanteData : participantes) {
             String usuarioNombre = (String) participanteData.get("usuarioNombre");
-            Float importeUsuario = ((Number) participanteData.get("importe")).floatValue();
+            Float importeUsuario = ((Number) participanteData.get("importeUsuario")).floatValue();
 
             Usuario usuario = usuarioRepository.findById(usuarioNombre)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));

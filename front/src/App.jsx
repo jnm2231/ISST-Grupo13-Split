@@ -68,9 +68,7 @@ function App() {
   //Hace que nada mas empezar empieze a cargar, cuando pasa 3 segundos paro de esperar de cargar y saca la pagina inicial
   useEffect(() => {
     cargar()
-    setTimeout(() => {
       setLoading(false)
-    },3000)
   },[])
 
 

@@ -25,8 +25,8 @@ import es.upm.dit.isst.splitit.models.UsuarioGrupo;
 import es.upm.dit.isst.splitit.repository.GastoRepository;
 import es.upm.dit.isst.splitit.repository.GrupodeGastosRepository;
 import es.upm.dit.isst.splitit.repository.ParticipacionGastoRepository;
-import es.upm.dit.isst.splitit.repository.UsuarioRepository;
 import es.upm.dit.isst.splitit.repository.UsuarioGrupoRepository;
+import es.upm.dit.isst.splitit.repository.UsuarioRepository;
 import es.upm.dit.isst.splitit.service.BalanceService;
 import jakarta.transaction.Transactional;
 
@@ -156,9 +156,9 @@ public class SplititController {
         String pagadopor = (String) gastoData.get("pagadopor");
 
         // Validar y convertir "participaciones" de forma segura
-        Object participantesObj = gastoData.get("participaciones");
+        Object participantesObj = gastoData.get("participantes");
         if (!(participantesObj instanceof List<?>)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo 'participaciones' debe ser una lista");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo 'participantes' debe ser una lista");
         }
         @SuppressWarnings("unchecked")
         List<Map<String, Object>> participantes = (List<Map<String, Object>>) participantesObj;

@@ -23,7 +23,7 @@ function InfoGasto() {
         return(participantes.map((participante,index) => (
             <button className="tarjetagastos" key={index}>
             <div className='filagastos'>
-              <p className="importe">{participante.usuarioNombre}</p>
+              <p className="importe">{participante.usuario.nombre}</p>
               <p >{participante.importe}</p>
             </div>
           </button>

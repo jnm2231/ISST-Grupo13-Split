@@ -51,14 +51,18 @@ function AnadirGasto() {
             alert('Debe haber al menos un participante en el gasto');
             return;
         }
+        if (isNaN(ImporteGasto) || ImporteGasto <= 0) {
+            alert('Debe introducir un número válido en el campo de Importe');
+            return;
+        }
         try {
             const requestBody = {
                 concepto: gastoName,
                 pagadopor: PagadoPor,
-                importe: ImporteGasto,
+                importe: parseFloat(ImporteGasto),
                 participantes: participants.map((participant) => ({
                     usuarioNombre: participant,
-                    importeUsuario: ImporteGasto/participants.length, // Podemos ajustar esto según sea necesario
+                    importeUsuario: parseFloat(ImporteGasto) / participants.length,
                 })),
             };
             const response = await fetch(`${CONFIG.api_grupos}/${idGrupo}/gastos`, {
@@ -107,7 +111,7 @@ function AnadirGasto() {
                     <div className="form-group">
                         <label className="form-titles" htmlFor="Importe">Importe</label>
                         <input
-                            type="price"
+                            type="text"
                             id="Importe"
                             placeholder="Importe"
                             value={ImporteGasto}

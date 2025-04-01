@@ -31,6 +31,7 @@ body {
   min-height: 100vh;
 }
 
+
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
@@ -245,6 +246,7 @@ input:focus, textarea:focus {
 
 /* Lista de sugerencias */
 .suggestions {
+  color: #000000;
   list-style: none; /* Elimina los puntos de la lista */
   padding: 0;
   margin: 5px 0;
@@ -301,6 +303,7 @@ input:focus, textarea:focus {
   margin-bottom: 10px; /* Espaciado entre elementos */
   transition: transform 0.2s ease; /* Transición suave para efectos */
 }
+
 /* Modal overlay */
 .modal-overlay {
   position: fixed;
@@ -329,6 +332,7 @@ input:focus, textarea:focus {
 
 /* Participants list inside modal */
 .participants-list {
+  color: #000000;
   list-style: none;
   padding: 0;
   margin: 10px 0;

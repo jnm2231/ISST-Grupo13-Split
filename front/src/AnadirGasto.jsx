@@ -153,7 +153,7 @@ function AnadirGasto() {
                                                 checked={participants.includes(user)}
                                                 onChange={() => toggleParticipant(user)}
                                             />
-                                            {user.nombre}
+                                            {user}
                                         </label>
                                     </li>
                                 ))}
@@ -186,7 +186,7 @@ function AnadirGasto() {
                                             className="btn"
                                             onClick={() => selectPagadoPor(user)}
                                         >
-                                            {user.nombre}
+                                            {user}
                                         </button>
                                     </li>
                                 ))}

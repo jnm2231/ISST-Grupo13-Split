@@ -35,6 +35,7 @@ function CrearGrupo() {
     const handleSearchChange = (e) => {
         const value = e.target.value;
         setSearchTerm(value);
+        console.log('handleSearchChange-> allUsers:',allUsers);
 
         // Filtrar sugerencias basadas en el término de búsqueda
         if (value) {

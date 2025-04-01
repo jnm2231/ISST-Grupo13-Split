@@ -81,12 +81,13 @@ function App() {
     : 
   //la ruta donde comienza es la que pone / y si la ruta no existe se va a la de *
   <Routes>
-    <Route path="/" element={<GrupoGastos mockgrupos = {grupo} />}/>
-    <Route path="/gastos" element={<Gastos />} />
-    <Route path="*" element={<ErrorPagina/>}/>
-    <Route path="/infogasto" element={<InfoGasto />} />
+    <Route path="/" element={<GrupoGastos mockgrupos={grupo} />} />
+    <Route path="/:grupoId/gastos" element={<Gastos />} />
+    {/* <Route path="/:grupoId/balance" element={<Gastos />} />/* esto es para el balance */}
+    <Route path="/:grupoId/gastos/:gastoId" element={<InfoGasto />} />
     <Route path="/creargrupo" element={<CrearGrupo />} />
-    <Route path="/anadirgasto" element={<AnadirGasto />} />
+    <Route path="/:grupoId/gastos/anadirgasto" element={<AnadirGasto />} />
+    <Route path="*" element={<ErrorPagina />} />
    </Routes>}
   </div>
   )

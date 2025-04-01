@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import CONFIG from './config/config';
 import { useLocation, useNavigate } from "react-router-dom"; // Importa useNavigate
+import {useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
+import spin from './assets/spinner.png';
 
 function Gastos() {
   const [esgasto, setEsgasto] = useState(true);
@@ -10,15 +13,70 @@ function Gastos() {
   const [balance, setBalance] = useState();
   const location = useLocation();
   const navigate = useNavigate(); // Inicializa navigate
-  const grupo = location.state?.valor;
-  const idGrupo = grupo.id;
+  const [grupo, setGrupo] = useState({});
+  const [loading,setLoading] = useState(true) //pongo esto a true para que funcione como temporizador en el useEffect
+  let params = useParams();
+  let id = params.grupoId;
+  console.log("Grupo ID:", id);
+
+  useEffect(() => {
+
+    async function cargarDatos() {
+      console.log("Cargando datos...");
+      try {
+        await Promise.all([cargarBalance(), cargarGrupo()]);
+        console.log("Datos cargados correctamente");
+      } catch (error) {
+        console.log("Error al cargar los datos:", error);
+      }
+    }
+    cargarDatos();
+    setTimeout(() => {
+      setLoading(false)
+    },3000)
+
+  }, []);
+
+  async function cargarGrupo() {
+    console.log("Ejecutando cargarGrupo()");
+    try{
+      //hace llamada a la api de /grupos
+      const response = await fetch(`${CONFIG.api_grupos}`+`/${id}`)
+      console.log(CONFIG.api_grupos)
+      console.log(response)
+
+      //si responde ok (200) me lo guardo en grupo
+
+      if(response.status == 200){
+        console.log("responde ok")
+        console.log(response)
+        const data = await response.json();
+        setGrupo(data);
+        console.log("grupo:")
+        console.log(grupo)
+      }
+      //si falla hago un log y mando que error hubo de http
+      else{
+        console.log("respuesta de red ok pero respuesta de HTTP no ok")
+        console.log(response)
+        const dataError = await response.json();
+        console.log(`Error: ${response.status} - ${dataError.error.message}`);
+        
+      }
+
+    }
+    catch(e){
+      console.log("ERROR",e)
+    }
+    console.log("salgo del try")
+  }
 
   function volverAGrupoGastos() {
-    navigate("/"); // Redirige a la ruta de GrupoGastos
+    navigate("/"); // Redirect to the main page
   }
 
   function _navegarAnadirGasto() {
-    navigate(`/anadirgasto`, { state: { grupoId: idGrupo } }); // Pass grupoId to the new view
+    navigate(`/${id}/gastos/anadirgasto`,{ state: { grupoId: id } }); // Redirect to add gasto page
   }
 
   async function cargarBalance(){
@@ -26,7 +84,7 @@ function Gastos() {
     //Comprueba si coge mock o del servidor
       try{
         //hace llamada a la api de /grupos
-        const response = await fetch(`${CONFIG.api_grupos}`+`/${idGrupo}/balances`)
+        const response = await fetch(`${CONFIG.api_grupos}`+`/${id}/balances`)
         console.log(CONFIG.api_grupos)
         console.log(response)
 
@@ -69,8 +127,8 @@ function Gastos() {
     );
   }
   //navega y pasa a la pagina gastos los datos que se le meten
-  function _pasarPagina(valor){
-    navigate(`/infogasto`, { state: { valor } });
+  function _pasarPagina(valor) {
+    navigate(`/${id}/gastos/${valor.id}`); // Redirect to gasto details
   }
 
   // Esto imprimiría y mostraría en balance el dinero debido a ti pero falta por hacer
@@ -78,9 +136,8 @@ function Gastos() {
     console.log(balance);
     
     return (
-      <>
-        {Object.entries(balance).map(([usuario, deuda], index) => 
-          deuda === 0 ? null : (
+        Object.entries(balance).map(([usuario, deuda], index) => 
+         (
             <button className="tarjetagastos" key={index}>
               <div className='filagastos'>
                 <p className="importe">{usuario}</p>
@@ -88,8 +145,8 @@ function Gastos() {
               </div>
             </button>
           )
-        )}
-      </>
+        )
+      
     );
   }
 
@@ -103,7 +160,6 @@ function Gastos() {
     setBoton2(boton1e);
     // Esto es para cambiar de gasto a balance o viceversa
     setEsgasto(!esgasto);
-    console.log(esgasto);
   }
 
   // Esto es para que salte cada vez que pulso uno de los botones
@@ -111,37 +167,37 @@ function Gastos() {
     console.log("Cambio detectado: esgasto ahora es", esgasto);
   }, [esgasto]);
 
-  useEffect(() => {
-    cargarBalance();
-    console.log("Cargando balance");
-  }, []);
-
 
   return (
-    <div className="container">
-      <h1>{grupo.nombre}</h1>
-      <button className="boton-volver" onClick={volverAGrupoGastos}>&lt; Volver</button> {/* Botón Volver */}
-      <div className="navegar">
-        <ul>
-          <button className={boton1} onClick={() => cambio()}>Gastos</button>
-          <button className={boton2} onClick={() => cambio()}>Balance</button>
-        </ul>
-      </div>
-      <div className="fila">
-        <div id="conjuntoTarjeta">
-          {esgasto ? (
-            <>
-              <button className="boton-anadirgasto" onClick={_navegarAnadirGasto}>
-                Añadir Gasto
-              </button>
-              {_imprimegasto()}
-
-            </>
-          ) : (
-            _imprimebalance()
-          )}
+    <div>
+      {loading ? (
+        <img className="spin" src={spin} alt="Cargando..." />
+      ) : (
+        <div className="container">
+          <h1>{grupo.nombre}</h1>
+          <button className="boton-volver" onClick={volverAGrupoGastos}>&lt; Volver</button>
+          <div className="navegar">
+            <ul>
+              <button className={boton1} onClick={() => cambio()}>Gastos</button>
+              <button className={boton2} onClick={() => cambio()}>Balance</button>
+            </ul>
+          </div>
+          <div className="fila">
+            <div id="conjuntoTarjeta">
+              {esgasto ? (
+                <>
+                  <button className="boton-anadirgasto" onClick={_navegarAnadirGasto}>
+                    Añadir Gasto
+                  </button>
+                  {_imprimegasto()}
+                </>
+              ) : (
+                _imprimebalance()
+              )}
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

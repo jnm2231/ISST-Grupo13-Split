@@ -23,7 +23,7 @@ function GrupoGastos(props) {
 
   //navega y pasa a la pagina gastos los datos que se le meten
   function _pasarPagina(valor){
-    navigate(`/gastos`, { state: { valor } });
+    navigate(`/${valor.id}`+`/gastos`, { state: { valor } });
   }
 
 

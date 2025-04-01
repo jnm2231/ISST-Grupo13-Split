@@ -178,12 +178,12 @@ public class SplititController {
         // Crear y guardar los participantes
         for (Map<String, Object> participanteData : participantes) {
             String usuarioNombre = (String) participanteData.get("usuarioNombre");
-            Float importeParticipacion = ((Number) participanteData.get("importe")).floatValue();
+            Float importeUsuario = ((Number) participanteData.get("importe")).floatValue();
 
             Usuario usuario = usuarioRepository.findById(usuarioNombre)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
 
-            ParticipacionGasto participacion = new ParticipacionGasto(gasto, usuario, importeParticipacion);
+            ParticipacionGasto participacion = new ParticipacionGasto(gasto, usuario, importeUsuario);
             participacionGastoRepository.save(participacion);
         }
 
@@ -213,5 +213,20 @@ public class SplititController {
         return  participacionGastoRepository.findByGastoId(gastoId);
     }
     
+    @GetMapping("/grupos/{groupId}/usuarios")
+    public ResponseEntity<List<String>> getUsuariosGrupo(@PathVariable Integer groupId) {
+        log.info("Obteniendo usuarios del grupo con ID: {}", groupId);
+
+        // Obtener las relaciones UsuarioGrupo para el grupo
+        List<UsuarioGrupo> relaciones = usuarioGrupoRepository.findByGrupoId(groupId);
+
+        // Extraer solo los nombres de los usuarios de las relaciones
+        List<String> nombresUsuarios = relaciones.stream()
+                .map(relacion -> relacion.getUsuario().getNombre())
+                .toList();
+
+        return ResponseEntity.ok(nombresUsuarios);
+    }
+
 }
 

@@ -33,7 +33,7 @@ function Gastos() {
     cargarDatos();
     setTimeout(() => {
       setLoading(false)
-    },3000)
+    },1000)
 
   }, []);
 

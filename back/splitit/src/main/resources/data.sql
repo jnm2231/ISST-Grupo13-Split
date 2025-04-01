@@ -27,18 +27,21 @@ INSERT INTO usuario_grupo (usuario_nombre, grupo_id, apodo) VALUES ('Laura', 2, 
 INSERT INTO usuario_grupo (usuario_nombre, grupo_id, apodo) VALUES ('Maria', 3, '');
 
 -- Inserción de gastos
-INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Cena en restaurante', 45.50, 'Violeta', 1);
-INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Compra en supermercado', 30.75, 'Samuel', 1);
-INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Suscripción Netflix', 15.99, 'Maria', 3);
-INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Taxi compartido', 12.60, 'Juan', 1);
-INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Cena especial de Navidad', 120.00, 'Julio', 2);
-INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Entrada al cine', 9.99, 'Maria', 3);
-INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Bebidas para la cena de Navidad', 35.00, 'Violeta', 2);
-INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Visita a las pirámides', 80.00, 'Juan', 1);
-INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Transporte público en Egipto', 20.00, 'Samuel', 1);
-INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Souvenirs del viaje', 45.00, 'Violeta', 1);
-INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Decoraciones para Navidad', 60.00, 'Laura', 2);
-INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Popcorn y refrescos', 15.00, 'Jesus', 3);
+INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Cena en restaurante', 45.50, 'usuario1', 1);
+INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Compra en supermercado', 30.75, 'usuario2', 1);
+INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Suscripción Netflix', 15.99, 'usuario2', 3);
+INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Regalo de cumpleaños', 50.00, 'usuario1', 5);
+INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Taxi compartido', 12.60, 'usuario3', 1);
+INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Cena especial de Navidad', 120.00, 'usuario4', 2);
+INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Entrada al cine', 9.99, 'usuario5', 3);
+INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Compra de muebles', 500.00, 'usuario1', 4);
+INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Reparaciones de la casa', 200.00, 'usuario2', 4);
+INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Bebidas para la cena de Navidad', 35.00, 'usuario3', 2);
+INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Visita a las pirámides', 80.00, 'usuario6', 1);
+INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Transporte público en Egipto', 20.00, 'usuario1', 1);
+INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Souvenirs del viaje', 45.00, 'usuario7', 1);
+INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Decoraciones para Navidad', 60.00, 'usuario8', 2);
+INSERT INTO gasto (concepto, importe, pagadopor, grupo_id) VALUES ('Popcorn y refrescos', 15.00, 'usuario2', 3);
 
 -- Inserción de participaciones en gastos (participacion_gasto)
 -- Cena en restaurante (45.50) pagado por Violeta en el grupo 1

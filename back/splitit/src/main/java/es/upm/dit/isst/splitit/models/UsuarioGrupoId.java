@@ -20,11 +20,18 @@ public class UsuarioGrupoId implements Serializable {
     }
 
     // Getters y Setters
-    public String getUsuario() { return usuario; }
-    public void setUsuario(String usuario) { this.usuario = usuario; }
-
-    public Integer getGrupo() { return grupo; }
-    public void setGrupo(Integer grupo) { this.grupo = grupo; }
+    public String getUsuario() { 
+        return usuario;
+    }
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+    public Integer getGrupo() {
+        return grupo;
+    }
+    public void setGrupo(Integer grupo) {
+         this.grupo = grupo;
+}
 
     // Implementamos equals() y hashCode()
     @Override

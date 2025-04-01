@@ -7,39 +7,46 @@ import java.util.Objects;
  * La clave primaria está compuesta por el id del gasto y el nombre del usuario.
  */
 public class ParticipacionGastoId implements Serializable {
-    public Integer gastoId;
-    public String usuarioNombre;
+    public Integer gasto;
+    public String usuario;
 
     public ParticipacionGastoId() {}
 
     /**
      * Constructor con parámetros.
-     * @param gastoId
-     * @param usuarioNombre
+     * @param gasto
+     * @param usuario
      */
-    public ParticipacionGastoId(Integer gastoId, String usuarioNombre) {
-        this.gastoId = gastoId;
-        this.usuarioNombre = usuarioNombre;
+    public ParticipacionGastoId(Integer gasto, String usuario) {
+        this.gasto = gasto;
+        this.usuario = usuario;
     }
 
     // Getters, setters, equals, and hashCode
-    public Integer getGastoId() { return gastoId; }
-    public void setGastoId(Integer gastoId) { this.gastoId = gastoId; }
-
-    public String getUsuarioNombre() { return usuarioNombre; }
-    public void setUsuarioNombre(String usuarioNombre) { this.usuarioNombre = usuarioNombre; }
+    public Integer getGasto() { 
+        return gasto;
+    }
+    public void setGasto(Integer gasto) {
+        this.gasto = gasto;
+    }
+    public String getUsuario() {
+        return usuario;
+    }
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ParticipacionGastoId that = (ParticipacionGastoId) o;
-        return Objects.equals(gastoId, that.gastoId) &&
-               Objects.equals(usuarioNombre, that.usuarioNombre);
+        return Objects.equals(gasto, that.gasto) &&
+               Objects.equals(usuario, that.usuario);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(gastoId, usuarioNombre);
+        return Objects.hash(gasto, usuario);
     }
 }

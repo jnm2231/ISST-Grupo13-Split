@@ -1,6 +1,7 @@
 package es.upm.dit.isst.splitit.models;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,57 +17,27 @@ import jakarta.persistence.Table;
 public class ParticipacionGasto implements Serializable {
 
     @Id
-    @Column(name = "gasto_id")
-    private Integer gastoId;
-
-    @Id
-    @Column(name = "usuario_nombre")
-    private String usuarioNombre;
-
     @ManyToOne
-    @JoinColumn(name = "gasto_id", referencedColumnName = "id", insertable = false, updatable = false)
+    @JoinColumn(name = "gasto_id", referencedColumnName = "id", nullable = false)
     private Gasto gasto;
 
+    @Id
     @ManyToOne
-    @JoinColumn(name = "usuario_nombre", referencedColumnName = "nombre", insertable = false, updatable = false)
+    @JoinColumn(name = "usuario_nombre", referencedColumnName = "nombre", nullable = false)
     private Usuario usuario;
 
     @Column(name = "importe")
-    private Float importe;  
+    private Float importe;
 
     public ParticipacionGasto() {}
 
-    /**
-     * Constructor con parámetros.
-     * @param gasto
-     * @param usuario
-     * @param importe
-     */
     public ParticipacionGasto(Gasto gasto, Usuario usuario, Float importe) {
-        this.gastoId = gasto.getId();
-        this.usuarioNombre = usuario.getNombre();
         this.gasto = gasto;
         this.usuario = usuario;
         this.importe = importe;
     }
 
     // Getters and setters
-    public Integer getGastoId() {
-        return gastoId;
-    }
-
-    public void setGastoId(Integer gastoId) {
-        this.gastoId = gastoId;
-    }
-
-    public String getUsuarioNombre() {
-        return usuarioNombre;
-    }
-
-    public void setUsuarioNombre(String usuarioNombre) {
-        this.usuarioNombre = usuarioNombre;
-    }
-
     public Gasto getGasto() {
         return gasto;
     }
@@ -89,5 +60,19 @@ public class ParticipacionGasto implements Serializable {
 
     public void setImporte(Float importe) {
         this.importe = importe;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ParticipacionGasto that = (ParticipacionGasto) o;
+        return Objects.equals(gasto, that.gasto) &&
+               Objects.equals(usuario, that.usuario);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(gasto, usuario);
     }
 }

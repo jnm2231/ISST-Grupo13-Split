@@ -58,6 +58,12 @@
   margin: 1rem;
 }
 
+.tarjetaGrupo:hover {
+  background-color: #f0f8ff; /* Lighten the background */
+  transform: translateY(-5px); /* Slightly lift the card */
+  transition: all 0.3s ease; /* Smooth transition */
+}
+
 .fila{
   display:flex;
   flex-direction:row;
@@ -109,7 +115,9 @@
 }
 
 .boton-anadirgasto:hover {
-  background-color: #0e5a6b;
+  background-color: #0e5a6b; /* Darken the button */
+  transform: scale(1.05); /* Slightly enlarge */
+  transition: all 0.3s ease; /* Smooth transition */
 }
 
 .boton-anadirgasto-container p {

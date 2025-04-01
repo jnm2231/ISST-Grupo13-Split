@@ -8,8 +8,8 @@ import java.util.Objects;
  */
 public class UsuarioGrupoId implements Serializable {
     
-    private String usuario; // Debe coincidir con el nombre del campo en UsuarioGrupo
-    private Integer grupo;  // Debe coincidir con el nombre del campo en UsuarioGrupo
+    public String usuario; // Debe coincidir con el nombre del campo en UsuarioGrupo
+    public Integer grupo;  // Debe coincidir con el nombre del campo en UsuarioGrupo
 
     // Constructor vacío necesario para JPA
     public UsuarioGrupoId() {}
@@ -20,11 +20,18 @@ public class UsuarioGrupoId implements Serializable {
     }
 
     // Getters y Setters
-    public String getUsuario() { return usuario; }
-    public void setUsuario(String usuario) { this.usuario = usuario; }
-
-    public Integer getGrupo() { return grupo; }
-    public void setGrupo(Integer grupo) { this.grupo = grupo; }
+    public String getUsuario() { 
+        return usuario;
+    }
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+    public Integer getGrupo() {
+        return grupo;
+    }
+    public void setGrupo(Integer grupo) {
+         this.grupo = grupo;
+}
 
     // Implementamos equals() y hashCode()
     @Override

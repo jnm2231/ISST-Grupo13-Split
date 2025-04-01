@@ -7,8 +7,8 @@ import java.util.Objects;
  * La clave primaria está compuesta por el id del gasto y el nombre del usuario.
  */
 public class ParticipacionGastoId implements Serializable {
-    public Integer gasto;
-    public String usuario;
+    private Integer gasto;
+    private String usuario;
 
     public ParticipacionGastoId() {}
 

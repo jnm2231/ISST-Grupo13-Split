@@ -51,7 +51,7 @@ function AnadirGasto() {
             alert('Debe haber al menos un participante en el gasto');
             return;
         }
-        if (isNaN(ImporteGasto) || ImporteGasto <= 0) {
+        if (parseFloat(ImporteGasto) <= 0 || parseFloat(ImporteGasto) === 0) {
             alert('Debe introducir un número válido en el campo de Importe');
             return;
         }

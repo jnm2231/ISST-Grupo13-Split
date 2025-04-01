@@ -187,7 +187,7 @@ function AnadirGasto() {
                                     <li key={user.email} className="participant-item">
                                         <button
                                             type="button"
-                                            className="btn"
+                                            className="btnotrocolor"
                                             onClick={() => selectPagadoPor(user)}
                                         >
                                             {user}

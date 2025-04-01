@@ -220,7 +220,17 @@ input:focus, textarea:focus {
   justify-content: center;
 }
 
+.btnotrocolor {
+  justify-content: center; 
+  color: #000000;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 .btn {
+  justify-content: center; 
   background-color: #15738E;
   color: white;
   padding: 10px 15px;
@@ -282,9 +292,9 @@ input:focus, textarea:focus {
 }
 
 .participants-list {
+  justify-content: center; 
   margin-top: 20px; /* Espaciado superior */
   width: 100%; /* Asegura que ocupe todo el ancho disponible */
-  max-width: 400px; /* Limita el ancho máximo */
   padding: 0;
   list-style: none; /* Elimina los puntos de la lista */
 }
@@ -292,7 +302,7 @@ input:focus, textarea:focus {
 .participant-item {
   color: #000000;
   display: flex;
-  justify-content: space-between; /* Espacio entre el nombre y el botón */
+  justify-content: center; /* Espacio entre el nombre y el botón */
   align-items: center; /* Centra verticalmente */
   padding: 10px; /* Espaciado interno */
   border-bottom: 1px solid #ccc; /* Línea divisoria entre participantes */

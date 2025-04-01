@@ -141,7 +141,7 @@ function Gastos() {
             <button className="tarjetagastos" key={index}>
               <div className='filagastos'>
                 <p className="importe">{usuario}</p>
-                <p className={deuda > 0 ? "verde" : "rojo"}>{deuda}</p>
+                <p className={deuda > 0 ? "verde" : deuda === 0 ? "" : "rojo"}>{deuda}</p>
               </div>
             </button>
           )

@@ -6,7 +6,7 @@ import CONFIG from './config/config';
 
 /**
  * 
- * TODO: Arreglar un poco la estetica y añadir los checks de que ha pagado y qeu se elimine cuando lo haga
+ * Arreglar un poco la estetica y añadir los checks de que ha pagado y qeu se elimine cuando lo haga
  */
 
 function InfoGasto() {
@@ -20,7 +20,7 @@ function InfoGasto() {
             <button className="tarjetagastos" key={index}>
                 <div className='filagastos'>
                     <p className="importe">{participante.usuario.nombre}</p>
-                    <p>{participante.importe}</p>
+                    <p>{participante.importe.toFixed(2)}</p>
                 </div>
             </button>
         )));

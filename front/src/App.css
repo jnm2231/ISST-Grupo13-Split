@@ -126,4 +126,8 @@
   margin: 0;
 }
 
-
+.Bienvenido {
+  align-self: center;
+  color: #15738E;
+  padding-left: 130px;
+}

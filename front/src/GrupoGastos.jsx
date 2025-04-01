@@ -33,9 +33,9 @@ function GrupoGastos(props) {
     
       <div className="container">
       <div className="content">
-        <button className="boton">Unirse a un Grupo</button>
-        <h1>Bienvenido</h1>
-
+        {/*<button className="boton">Unirse a un Grupo</button>*/}
+        <div></div>
+        <h1 className="Bienvenido">Bienvenido</h1>
         <button className="boton" onClick={() => navigate('/creargrupo')}>Crear Grupo</button>
       </div>
       <div className="fila">     

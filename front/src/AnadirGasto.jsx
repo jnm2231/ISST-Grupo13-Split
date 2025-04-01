@@ -184,7 +184,7 @@ function AnadirGasto() {
                         {groupUsers.length > 0 ? (
                             <ul className="participants-list">
                                 {groupUsers.map((user) => (
-                                    <li key={user.email} className="participant-item">
+                                    <li key={user.email}>
                                         <button
                                             type="button"
                                             className="btnotrocolor"

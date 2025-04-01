@@ -353,3 +353,8 @@ input:focus, textarea:focus {
   margin: 5px 0;
   text-align: left;
 }
+
+.listaParticipantesGasto {
+  color: black;
+  list-style: none;
+}

@@ -20,7 +20,7 @@ function InfoGasto() {
             <button className="tarjetagastos" key={index}>
                 <div className='filagastos'>
                     <p className="importe">{participante.usuario.nombre}</p>
-                    <p>{participante.importe}</p>
+                    <p>{participante.importe.toFixed(2)}</p>
                 </div>
             </button>
         )));

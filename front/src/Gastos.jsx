@@ -120,7 +120,7 @@ function Gastos() {
           {gasto.concepto}
           <div className='filagastos'>
             <p className="pagado">Pagado por: {gasto.pagadopor}</p>
-            <p className="importe">{gasto.importe}</p>
+            <p className="importe">{gasto.importe.toFixed(2)}</p>
           </div>
         </button>
       ))
@@ -141,7 +141,9 @@ function Gastos() {
             <button className="tarjetagastos" key={index}>
               <div className='filagastos'>
                 <p className="importe">{usuario}</p>
-                <p className={deuda > 0 ? "verde" : deuda === 0 ? "" : "rojo"}>{deuda}</p>
+                <p className={deuda > 0 ? "verde" : deuda === 0 ? "" : "rojo"}>
+                  {deuda.toFixed(2)}
+                </p>
               </div>
             </button>
           )

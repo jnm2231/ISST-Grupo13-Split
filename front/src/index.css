@@ -192,7 +192,7 @@ button:focus-visible {
 }
 
 label {
-  display: block;
+  display: flex;
   font-weight: bold;
   margin-bottom: 5px;
 }
@@ -358,3 +358,4 @@ input:focus, textarea:focus {
   color: black;
   list-style: none;
 }
+

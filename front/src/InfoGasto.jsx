@@ -6,7 +6,7 @@ import CONFIG from './config/config';
 
 /**
  * 
- * TODO: Arreglar un poco la estetica y añadir los checks de que ha pagado y qeu se elimine cuando lo haga
+ * Arreglar un poco la estetica y añadir los checks de que ha pagado y qeu se elimine cuando lo haga
  */
 
 function InfoGasto() {

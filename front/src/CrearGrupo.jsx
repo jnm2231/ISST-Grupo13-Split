@@ -16,7 +16,7 @@ function CrearGrupo() {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const response = await fetch(`${CONFIG.api_grupos}/usuarios`); // Cambia la URL si es necesario
+                const response = await fetch('http://localhost:8080/myApi/usuarios'); // Cambia la URL si es necesario
                 if (!response.ok) {
                     throw new Error('Error al obtener los usuarios');
                 }
@@ -91,7 +91,7 @@ function CrearGrupo() {
             };
 
             // Realizar la petición POST al backend
-            const response = await fetch(`${CONFIG.api_grupos}/grupos`, {
+            const response = await fetch('http://localhost:8080/myApi/grupos', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

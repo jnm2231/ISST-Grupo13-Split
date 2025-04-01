@@ -131,7 +131,7 @@ function AnadirGasto() {
                         {participants.length > 0 && (
                             <ul className="selected-participants">
                                 {participants.map((participant) => (
-                                    <li key={participant}>{participant}</li>
+                                    <li key={participant} className='listaParticipantesGasto'>{participant}</li>
                                 ))}
                             </ul>
                         )}

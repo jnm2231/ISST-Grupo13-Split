@@ -248,5 +248,30 @@ public class SplititController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Usuario creado con éxito.");
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<Usuario> login(@RequestBody Map<String, String> userData) {
+        log.info("Iniciando sesión para el usuario: {}", userData);
+
+        String acceso = userData.get("acceso");
+        String password = userData.get("password");
+
+        // Verificar que el usuario tiene un nombre y contraseña
+        if (acceso == null || acceso.isEmpty() || password == null || password.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Alguno de los valores estan vacíos");
+        }
+
+        // Buscar el usuario en la base de datos
+        Usuario usuario = usuarioRepository.findByNombre(acceso)
+        .or(() -> usuarioRepository.findByEmail(acceso))
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+        
+        // Verificar la contraseña
+        if (!usuario.getPassword().equals(password)) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Contraseña incorrecta");
+        }
+
+        return ResponseEntity.ok(usuario);
+    }
+
 }
 

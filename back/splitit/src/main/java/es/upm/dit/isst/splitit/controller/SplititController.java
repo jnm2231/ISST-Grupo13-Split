@@ -228,7 +228,7 @@ public class SplititController {
         return ResponseEntity.ok(nombresUsuarios);
     }
 
-    @GetMapping("/singup")
+    @PostMapping("/singup")
     public ResponseEntity<String> addUsuario(@RequestBody Map<String, String> userData) {
         log.info("Creando un nuevo usuario: {}", userData);
 

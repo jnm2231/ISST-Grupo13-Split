@@ -228,5 +228,25 @@ public class SplititController {
         return ResponseEntity.ok(nombresUsuarios);
     }
 
+    @GetMapping("/singup")
+    public ResponseEntity<String> addUsuario(@RequestBody Map<String, String> userData) {
+        log.info("Creando un nuevo usuario: {}", userData);
+
+        String nombre = userData.get("nombre");
+        String email = userData.get("email");
+        String password = userData.get("password");
+
+        // Verificar que el usuario tiene un nombre
+        if (nombre == null || nombre.isEmpty() || email == null || email.isEmpty() || password == null || password.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Alguno de los valores estan vacíos");
+        }
+
+        // Crear el nuevo usuario
+        Usuario newUser = new Usuario(nombre,email,password);
+        usuarioRepository.save(newUser);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Usuario creado con éxito.");
+    }
+
 }
 

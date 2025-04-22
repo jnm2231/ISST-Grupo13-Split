@@ -12,9 +12,9 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         // Permitir solicitudes desde cualquier origen (modifica según sea necesario)
         registry.addMapping("/**")
-                .allowedOriginPatterns("*") // Aquí pones el puerto donde corre tu frontend
+                .allowedOrigins("http://localhost:5173") // Aquí pones el puerto donde corre tu frontend
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
-                .allowedHeaders("*")
+                .allowedHeaders("Authorization", "Content-Type")
                 .allowCredentials(true);
     }
 }

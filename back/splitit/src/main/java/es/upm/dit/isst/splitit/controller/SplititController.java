@@ -13,9 +13,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import java.security.Key;
 
 import es.upm.dit.isst.splitit.models.Gasto;
 import es.upm.dit.isst.splitit.models.GrupodeGastos;
@@ -57,9 +63,40 @@ public class SplititController {
      * @return Lista de todos los grupos de gastos.
      */
     @GetMapping("/grupos")
-    public List<GrupodeGastos> readAll() {
-        log.info("Obteniendo todos los grupos de gastos");
-        return (List<GrupodeGastos>) grupodeGastosRepository.findAll();
+    public List<GrupodeGastos> readAll(@RequestHeader("Authorization") String authHeader) {
+        // Extraer el token del encabezado Authorization
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token no proporcionado o inválido");
+        }
+        String token = authHeader.substring(7); // Eliminar "Bearer " del encabezado
+
+        // Validar y decodificar el token
+        Key key = Keys.hmacShaKeyFor("mySuperSecretKey1234567890123456".getBytes());
+        String usuarioId;
+        try {
+            usuarioId = Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject(); // Obtener el usuarioId del token
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token inválido o expirado");
+        }
+
+        log.info("Obteniendo todos los grupos de gastos para el usuario con ID: {}", usuarioId);
+
+        // Buscar el usuario en la base de datos
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+
+        // Obtener los grupos asociados al usuario
+        List<UsuarioGrupo> relaciones = usuarioGrupoRepository.findByUsuario(usuario);
+        List<GrupodeGastos> grupos = relaciones.stream()
+                .map(UsuarioGrupo::getGrupo)
+                .toList();
+
+        return grupos;
     }
 
     /**
@@ -228,7 +265,7 @@ public class SplititController {
         return ResponseEntity.ok(nombresUsuarios);
     }
 
-    @PostMapping("/singup")
+    @PostMapping("/signup")
     public ResponseEntity<String> addUsuario(@RequestBody Map<String, String> userData) {
         log.info("Creando un nuevo usuario: {}", userData);
 
@@ -249,7 +286,7 @@ public class SplititController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody Map<String, String> userData) {
+    public ResponseEntity<String> login(@RequestBody Map<String, String> userData) {
         log.info("Iniciando sesión para el usuario: {}", userData);
 
         String acceso = userData.get("acceso");
@@ -269,8 +306,28 @@ public class SplititController {
         if (!usuario.getPassword().equals(password)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Contraseña incorrecta");
         }
+        Key key = Keys.hmacShaKeyFor("mySuperSecretKey1234567890123456".getBytes());
+        
+            String token = Jwts.builder()
+        .setSubject(usuario.getNombre()) // Incluye el usuarioId en el token
+        .signWith(key, SignatureAlgorithm.HS256) // Usa una clave secreta
+        .compact();
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(token);
+    }
+
+    @GetMapping("/generateToken/{nombre}")
+    public ResponseEntity<String> generateTestToken(@PathVariable String nombre) {
+        // Clave secreta para firmar el token
+        Key key = Keys.hmacShaKeyFor("mySuperSecretKey1234567890123456".getBytes());
+
+        // Crear el token con el nombre proporcionado
+        String token = Jwts.builder()
+                .setSubject(nombre) // Usar el nombre proporcionado en la URL
+                .signWith(key, SignatureAlgorithm.HS256) // Firma el token con la clave secreta
+                .compact();
+
+        return ResponseEntity.ok(token);
     }
 
 }

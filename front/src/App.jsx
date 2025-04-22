@@ -3,6 +3,7 @@ import './App.css'
 import GrupoGastos from './GrupoGastos'
 import { Routes, Route } from 'react-router-dom';
 import Header from './Header'
+import InicioSesion from './InicioSesion';
 import { mockgrupos } from './constants/mockgrupos';
 import CONFIG from './config/config';
 import ErrorPagina from './ErrorPagina';
@@ -86,22 +87,23 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <Header />
-      {loading ? (
-        <img className="spin" src={spin} alt="spinner"></img>
-      ) : (
-        <Routes>
-          <Route path="/" element={<GrupoGastos mockgrupos={grupo} />} />
-          <Route path="/:grupoId/gastos" element={<Gastos />} />
-          <Route path="/:grupoId/gastos/:gastoId" element={<InfoGasto />} />
-          <Route path="/creargrupo" element={<CrearGrupo />} />
-          <Route path="/:grupoId/gastos/anadirgasto" element={<AnadirGasto />} />
-          <Route path="*" element={<ErrorPagina />} />
-        </Routes>
-      )}
-    </div>
-  );
+  <div>
+    <Header/>
+    {loading ? <img className='spin' src={spin} alt="spinner"></img>
+    : 
+  //la ruta donde comienza es la que pone / y si la ruta no existe se va a la de *
+  <Routes>
+    <Route path="/" element={<InicioSesion/>} />{/*Comentar esta linea y descomentar linea de abajo para voler a ver la vista de todos los grupos creados como antes*/}
+    <Route path="/grupoGastos" element={<GrupoGastos mockgrupos={grupo} />} />
+    <Route path="/:grupoId/gastos" element={<Gastos />} />
+    {/* <Route path="/:grupoId/balance" element={<Gastos />} />/* esto es para el balance */}
+    <Route path="/:grupoId/gastos/:gastoId" element={<InfoGasto />} />
+    <Route path="/creargrupo" element={<CrearGrupo />} />
+    <Route path="/:grupoId/gastos/anadirgasto" element={<AnadirGasto />} />
+    <Route path="*" element={<ErrorPagina />} />
+   </Routes>}
+  </div>
+  )
 }
 
 export default App;

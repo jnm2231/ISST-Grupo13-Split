@@ -359,3 +359,84 @@ input:focus, textarea:focus {
   list-style: none;
 }
 
+/* Este css controla la barra superior de la sesion */
+#sesion{
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 45px;
+}
+
+#PaginaInicio{
+  display: flex;
+  width:100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+#bloqueIzquierda{
+  width: 60%;
+  height: 100%;
+  background-color: #ffffff;
+  padding: 20px;
+}
+
+#bloqueDerecha{
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, #9ae1ff 0%, #d7ecf2 50%, #ffffff 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 150px;
+}
+
+.texto-bienvenida {
+  padding: 20px 40px;
+  margin-top: 30px;
+  color: #2A7F8E;
+  text-align: left;
+}
+
+.texto-bienvenida h2 {
+  font-size: 40px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: #2A7F8E;
+}
+
+.texto-bienvenida p {
+  font-size: 35px;
+  line-height: 1.4;
+  margin-top: 10px;
+  color: #2A7F8E;
+}
+
+.texto-bienvenida span {
+  font-size: 60px;
+  line-height: 1.4;
+  margin-top: 10px;
+  padding: 0 10px;
+  color: #cacaca;
+}
+
+.btn-login, .btn-register {
+  background-color: #15738E;
+  color: white;
+  font-size: 44px;
+  font-weight: 600;
+  padding: 12px 0;
+  border-radius: 8px;
+  border: none;
+  margin: 10px 0;
+  width: 500px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-login:hover, .btn-register:hover {
+  background-color: #ffffff;
+  transform: scale(1.02);
+}

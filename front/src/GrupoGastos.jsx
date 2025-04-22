@@ -30,20 +30,25 @@ function GrupoGastos(props) {
 
 
   return (
-    
-      <div className="container">
-      <div className="content">
-        {/*<button className="boton">Unirse a un Grupo</button>*/}
-        <div></div>
-        <h1 className="Bienvenido">Bienvenido</h1>
-        <button className="boton" onClick={() => navigate('/creargrupo')}>Crear Grupo</button>
-      </div>
-      <div className="fila">     
+  
+  
+  <div className="container">
+    <div id='sesion'>
+    <button className="boton" onClick={() => navigate('/')}>Cerrar sesión</button>
+      <button className="boton">Perfil</button>
+    </div>
+    <div className="content">
+      {/*<button className="boton">Unirse a un Grupo</button>*/}
+      <div></div>
+      <h1 className="Bienvenido">Bienvenido</h1>
+      <button className="boton" onClick={() => navigate('/creargrupo')}>Crear Grupo</button>
+    </div>
+    <div className="fila">     
       <div id="conjuntoTarjeta">
         {_imprimeGrupos()}
       </div>
-      </div>
     </div>
+  </div>
     
   )
 }

@@ -43,7 +43,7 @@ function App() {
     const token = localStorage.getItem("token");
     if (!token) {
       console.log("No se encontró un token en localStorage");
-      return;
+      //return; Este return estaba cerrando la función cargar antes de tiempo y no se llegaba a cargar el mockgrupos
     }
 
     if (CONFIG.use_server === true) {

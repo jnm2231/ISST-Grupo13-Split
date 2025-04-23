@@ -22,6 +22,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import java.security.Key;
+import javax.crypto.SecretKey;
 
 import es.upm.dit.isst.splitit.models.Gasto;
 import es.upm.dit.isst.splitit.models.GrupodeGastos;
@@ -74,12 +75,12 @@ public class SplititController {
         Key key = Keys.hmacShaKeyFor("mySuperSecretKey1234567890123456".getBytes());
         String usuarioId;
         try {
-            usuarioId = Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody()
-                    .getSubject(); // Obtener el usuarioId del token
+            usuarioId = Jwts.parser()
+            .verifyWith((SecretKey) key) // Método recomendado en lugar de setSigningKey()
+            .build()
+            .parseSignedClaims(token) // Método actualizado para analizar el token
+            .getPayload()
+            .getSubject(); // Obtener el usuarioId del token
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token inválido o expirado");
         }
@@ -309,8 +310,8 @@ public class SplititController {
         Key key = Keys.hmacShaKeyFor("mySuperSecretKey1234567890123456".getBytes());
         
             String token = Jwts.builder()
-        .setSubject(usuario.getNombre()) // Incluye el usuarioId en el token
-        .signWith(key, SignatureAlgorithm.HS256) // Usa una clave secreta
+        .subject(usuario.getNombre()) // Incluye el usuarioId en el token
+        .signWith(key) // Usa una clave secreta
         .compact();
 
         return ResponseEntity.ok(token);
@@ -323,8 +324,8 @@ public class SplititController {
 
         // Crear el token con el nombre proporcionado
         String token = Jwts.builder()
-                .setSubject(nombre) // Usar el nombre proporcionado en la URL
-                .signWith(key, SignatureAlgorithm.HS256) // Firma el token con la clave secreta
+                .subject(nombre) // Usar el nombre proporcionado en la URL
+                .signWith(key) // Firma el token con la clave secreta
                 .compact();
 
         return ResponseEntity.ok(token);

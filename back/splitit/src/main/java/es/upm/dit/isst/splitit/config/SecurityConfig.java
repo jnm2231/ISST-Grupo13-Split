@@ -19,13 +19,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.ignoringRequestMatchers("/myApi/login", "/myApi/signup")) // Deshabilitar CSRF
-        .authorizeHttpRequests((authz) -> authz
+        .authorizeHttpRequests(authz -> authz
                 .requestMatchers("/myApi/login", "/myApi/signup").permitAll()
                 .requestMatchers("/h2-console/**").permitAll() // Permitir acceso público a H2
                 .requestMatchers("/user/**").hasRole("USER")
                 .anyRequest().permitAll()
             )
-            .headers(headers -> headers.frameOptions().disable()) // Permitir iframes para H2
+            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable())) // Permitir iframes para H2
             .formLogin(Customizer.withDefaults()) // Default login form
             .logout(Customizer.withDefaults()); // Default logout
 

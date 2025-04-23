@@ -9,9 +9,15 @@ function InicioSesion() {
     const [showLogin, setShowLogin] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
 
-    // Estados para los campos del formulario
+    // Estados para los campos del formulario de login
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+
+    // Estados para los campos del formulario de registro
+    const [registerName, setRegisterName] = useState('');
+    const [registerEmail, setRegisterEmail] = useState('');
+    const [registerPassword, setRegisterPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
     const navigate = useNavigate();
 
@@ -20,6 +26,18 @@ function InicioSesion() {
         console.log('Login con:', username, password);
         // Aquí iría la lógica de autenticación
         setShowLogin(false);
+        navigate('/grupoGastos');
+    };
+
+    const handleRegister = (e) => {
+        e.preventDefault();
+        console.log('Registro con:', registerName, registerEmail, registerPassword);
+        // Aquí iría la lógica de registro
+        if(registerPassword !== confirmPassword) {
+            alert('Las contraseñas no coinciden');
+            return;
+        }
+        setShowRegister(false);
         navigate('/grupoGastos');
     };
 
@@ -48,7 +66,8 @@ function InicioSesion() {
                 <button className="boton" onClick={() => navigate('/grupoGastos')}>Continuar</button>
             </div>
             
-            
+            {/* ----------------------------Modales--------------------------------- */}
+
             {/* Modal de login */}
             {showLogin && (
                 <div className="modal-overlay">
@@ -59,7 +78,7 @@ function InicioSesion() {
                                 <label htmlFor="username">Usuario</label>
                                 <input 
                                     type="text" 
-                                    id="usernameLogin" 
+                                    className="modalInput" 
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
                                     required
@@ -69,7 +88,7 @@ function InicioSesion() {
                                 <label htmlFor="password">Contraseña</label>
                                 <input 
                                     type="password" 
-                                    id="passwordLogin" 
+                                    className="modalInput" 
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     required
@@ -83,6 +102,69 @@ function InicioSesion() {
                                     type="button" 
                                     className="btn-secondary"
                                     onClick={() => setShowLogin(false)}
+                                >
+                                    Cancelar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal de registro */}
+            {showRegister && (
+                <div className="modal-overlay">
+                    <div className="modal">
+                        <h2>Registro</h2>
+                        <form onSubmit={handleRegister} className="register-form">
+                            <div className="form-group">
+                                <label htmlFor="registerName">Nombre</label>
+                                <input 
+                                    type="text" 
+                                    className="modalInput" 
+                                    value={registerName}
+                                    onChange={(e) => setRegisterName(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="registerEmail">Email</label>
+                                <input 
+                                    type="email" 
+                                    className="modalInput" 
+                                    value={registerEmail}
+                                    onChange={(e) => setRegisterEmail(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="registerPassword">Contraseña</label>
+                                <input 
+                                    type="password" 
+                                    className="modalInput" 
+                                    value={registerPassword}
+                                    onChange={(e) => setRegisterPassword(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="confirmPassword">Confirmar Contraseña</label>
+                                <input 
+                                    type="password" 
+                                    className="modalInput" 
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="form-buttons">
+                                <button type="submit" className="btn">
+                                    Registrarse
+                                </button>
+                                <button 
+                                    type="button" 
+                                    className="btn-secondary"
+                                    onClick={() => setShowRegister(false)}
                                 >
                                     Cancelar
                                 </button>

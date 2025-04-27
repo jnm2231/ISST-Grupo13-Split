@@ -81,16 +81,82 @@ function InicioSesion() {
         }
     };
 
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
         e.preventDefault();
         console.log('Registro con:', registerName, registerEmail, registerPassword);
-        // Aquí iría la lógica de registro
+        
+        // Verificar que las contraseñas coinciden
         if (registerPassword !== confirmPassword) {
             alert('Las contraseñas no coinciden');
             return;
         }
-        setShowRegister(false);
-        navigate('/grupoGastos');
+    
+        try {
+            // Paso 1: Registrar al usuario
+            const registerResponse = await fetch('http://localhost:8080/myApi/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    nombre: registerName,
+                    email: registerEmail,
+                    password: registerPassword
+                })
+            });
+    
+            if (!registerResponse.ok) {
+                if (registerResponse.status === 400) {
+                    const errorText = await registerResponse.text();
+                    throw new Error(`Error en el registro: ${errorText}`);
+                } else {
+                    throw new Error(`Error ${registerResponse.status}: ${registerResponse.statusText}`);
+                }
+            }
+    
+            console.log('Registro exitoso');
+            
+            // Paso 2: Iniciar sesión automáticamente con las credenciales recién registradas
+            const loginResponse = await fetch('http://localhost:8080/myApi/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    acceso: registerEmail,  // Usar email como acceso
+                    password: registerPassword
+                })
+            });
+    
+            if (!loginResponse.ok) {
+                throw new Error('Error al iniciar sesión automáticamente');
+            }
+    
+            // Obtener token de la respuesta
+            const token = await loginResponse.text();
+            console.log('Login automático exitoso, token recibido:', token);
+    
+            // Guardar el token y datos del usuario en localStorage
+            localStorage.setItem('token', token);
+            const userData = {
+                nombre: registerName,
+                email: registerEmail
+            };
+            localStorage.setItem('usuario', JSON.stringify(userData));
+    
+            // Mostrar mensaje de éxito
+            alert('Usuario registrado correctamente. Iniciando sesión...');
+            
+            // Cerrar modal de registro
+            setShowRegister(false);
+            
+            // Navegar a la página de grupos
+            navigate('/grupoGastos');
+            
+        } catch (error) {
+            console.error('Error durante el registro:', error);
+            alert(error.message);
+        }
     };
 
     return (

@@ -20,20 +20,72 @@ function InicioSesion() {
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const navigate = useNavigate();
+    /*
+        const handleLogin = (e) => {
+            e.preventDefault();
+            console.log('Login con:', username, password);
+            
+            setShowLogin(false);
+            navigate('/grupoGastos');
+        };
+    */
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
         console.log('Login con:', username, password);
-        // Aquí iría la lógica de autenticación
-        setShowLogin(false);
-        navigate('/grupoGastos');
+
+        try {
+            // Llamada al endpoint de login del backend usando fetch
+            const response = await fetch('http://localhost:8080/myApi/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    acceso: username,  // El backend espera "acceso"
+                    password: password
+                })
+            });
+
+            if (!response.ok) {
+                // Manejar respuestas de error HTTP específicas
+                if (response.status === 404) {
+                    throw new Error('Usuario no encontrado');
+                } else if (response.status === 401) {
+                    throw new Error('Contraseña incorrecta');
+                } else {
+                    const errorText = await response.text();
+                    throw new Error(`Error en la autenticación: ${errorText}`);
+                }
+            }
+
+            // Si llegamos aquí, la autenticación fue exitosa
+            const token = await response.text(); // El token viene como texto
+            console.log('Login exitoso, token recibido:', token);
+
+            // Guardar el token en localStorage
+            localStorage.setItem('token', token);
+
+            // Crear y guardar datos de usuario
+            const userData = {
+                nombre: username,
+                // No tenemos acceso al ID real o email desde el token
+            };
+            localStorage.setItem('usuario', JSON.stringify(userData));
+
+            setShowLogin(false);
+            navigate('/grupoGastos');
+        } catch (error) {
+            console.error('Error durante el login:', error);
+            alert(error.message);
+        }
     };
 
     const handleRegister = (e) => {
         e.preventDefault();
         console.log('Registro con:', registerName, registerEmail, registerPassword);
         // Aquí iría la lógica de registro
-        if(registerPassword !== confirmPassword) {
+        if (registerPassword !== confirmPassword) {
             alert('Las contraseñas no coinciden');
             return;
         }
@@ -63,7 +115,7 @@ function InicioSesion() {
                 <button className="btn-login" onClick={() => setShowLogin(true)}>Login</button>
                 <button className="btn-register" onClick={() => setShowRegister(true)}>Register</button>
                 {/*Botón provisional para avanzar de pantalla hasta que esté la logica*/}
-                <button className="boton" onClick={() => navigate('/grupoGastos')}>Continuar</button>
+                {/*<button className="boton" onClick={() => navigate('/grupoGastos')}>Continuar</button>*/}
             </div>
             
             {/* ----------------------------Modales--------------------------------- */}

@@ -4,7 +4,6 @@ import GrupoGastos from './GrupoGastos'
 import { Routes, Route } from 'react-router-dom';
 import Header from './Header'
 import InicioSesion from './InicioSesion';
-import { mockgrupos } from './constants/mockgrupos';
 import CONFIG from './config/config';
 import ErrorPagina from './ErrorPagina';
 import spin from './assets/spinner.png'
@@ -21,7 +20,9 @@ import AnadirGasto from './AnadirGasto'
 function App() {
   const [grupo, setGrupo] = useState(); // Aquí guardo lo que saque del servidor o del mock según lo configure
   const [loading, setLoading] = useState(true); // Pongo esto a true para que funcione como temporizador en el useEffect
-
+  
+  /*-----------------Todo esto ya no va aquí, debe ir en el componente GrupoGastos.jsx-------------------*/
+  /*
   // Obtener el usuario del localStorage y parsearlo
   let usuario = localStorage.getItem('usuario');
   if (usuario == null) {
@@ -36,13 +37,14 @@ function App() {
   console.log(usuario.id); // Ahora debería mostrar correctamente el ID del usuario
 
   // Función para cargar los datos
+  //Los logs con App.cargar() vienen de esta funcion
   async function cargar() {
-    console.log("Ejecutando cargar()");
+    console.log("App.cargar(): Ejecutando cargar()");
 
     // Obtener el token del localStorage
     const token = localStorage.getItem("token");
     if (!token) {
-      console.log("No se encontró un token en localStorage");
+      console.log("App.cargar(): No se encontró un token en localStorage");
       //return; Este return estaba cerrando la función cargar antes de tiempo y no se llegaba a cargar el mockgrupos
     }
 
@@ -58,29 +60,35 @@ function App() {
           credentials: "include", // Incluir credenciales (opcional)
         });
 
-        console.log(CONFIG.api_grupos);
-        console.log(response);
+        console.log("App.cargar():" + CONFIG.api_grupos);
+        console.log("App.cargar():" + response);
 
         if (response.status === 200) {
-          console.log("Respuesta OK");
+          console.log("App.cargar(): Respuesta OK");
           const data = await response.json();
           setGrupo(data);
         } else {
-          console.log("Respuesta de red OK pero respuesta de HTTP no OK");
+          console.log("App.cargar(): espuesta de red OK pero respuesta de HTTP no OK");
           const dataError = await response.json();
-          console.log(`Error: ${response.status} - ${dataError.error.message}`);
+          console.log(`App.cargar(): Error: ${response.status} - ${dataError.error.message}`);
         }
       } catch (e) {
-        console.log("ERROR", e);
+        console.log("App.cargar(): ERROR", e);
       }
     } else {
       setGrupo(mockgrupos.Grupos);
-      console.log("Modo mock activado");
+      console.log("App.cargar(): Modo mock activado");
     }
   }
 
   useEffect(() => {
     cargar();
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
+*/
+  useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 1000);
@@ -94,7 +102,7 @@ function App() {
   //la ruta donde comienza es la que pone / y si la ruta no existe se va a la de *
   <Routes>
     <Route path="/" element={<InicioSesion/>} />{/*Comentar esta linea y descomentar linea de abajo para voler a ver la vista de todos los grupos creados como antes*/}
-    <Route path="/grupoGastos" element={<GrupoGastos mockgrupos={grupo} />} />
+    <Route path="/grupoGastos" element={<GrupoGastos />}/>
     <Route path="/:grupoId/gastos" element={<Gastos />} />
     {/* <Route path="/:grupoId/balance" element={<Gastos />} />/* esto es para el balance */}
     <Route path="/:grupoId/gastos/:gastoId" element={<InfoGasto />} />

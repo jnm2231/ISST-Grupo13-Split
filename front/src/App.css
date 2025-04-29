@@ -83,16 +83,27 @@
   margin-bottom: 1rem;
 }
 
-boton-rojo {
+.boton-roja {
+  background: none;
+  color: rgb(255, 141, 141); /* Red text */
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center; /* Center content vertically */
+  justify-content: center; /* Center content horizontally */
+  gap: 0.5rem; /* Space between icon and text */
+  transition: color 0.3s ease, transform 0.3s ease;
+}
 
-  color: rgb(255, 0, 0); /* White text */
-  border: none; /* No border */
-  border-radius: 5px; /* Rounded corners */
-  padding: 0.5em 1em; /* Padding for a rectangular shape */
-  font-size: 1rem; /* Font size */
-  font-weight: bold; /* Bold text */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+.boton-roja:hover {
+  color: darkred; /* Darker red on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.logout-icon {
+  color: rgb(255, 141, 141); /* Red icon */
 }
 
 .boton-anadirgasto {
@@ -169,6 +180,14 @@ boton-rojo {
   font-size: 2rem; /* Larger text */
   color: white; /* White text */
   text-align: center; /* Center the text */
+  margin-bottom: 0.2rem; /* Reduce spacing below */
+}
+
+.emailuser {
+  font-size: 1rem; /* Smaller text for email */
+  color: rgb(220, 220, 220); /* Gray text */
+  text-align: center; /* Center the text */
+  margin-top: 0; /* Remove spacing above */
 }
 
 .welcome-title {
@@ -288,8 +307,8 @@ boton-rojo {
 }
 
 .boton-unirse:hover {
-  background-color: #e0f7fa; /* Light blue background on hover */
-  color: #005662; /* Darker blue text on hover */
+  background-color: #15738E; /* Blue background on hover */
+  color: white; /* White text on hover */
   transform: scale(1.05); /* Slightly enlarge on hover */
 }
 

@@ -4,6 +4,7 @@ import CONFIG from './config/config'
 import Gastos from './Gastos'
 import { mockgrupos } from './constants/mockgrupos';
 import { useNavigate} from 'react-router-dom';
+import { LogOut } from 'lucide-react'; // Import the logout icon
 //Pagina principal donde se mostraran todos los grupos a los que el usuario pertenece
 
 function GrupoGastos() {
@@ -104,10 +105,14 @@ function GrupoGastos() {
         <div className="user-icon">
           {user && user.nombre ? user.nombre.charAt(0).toUpperCase() : "U"}
         </div>
+        <div>
         <p className="nombreuser">Welcome {user ? user.nombre : "Usuario"}!</p>
+        <p className="emailuser">{user ? user.email : "email"}</p>
+        </div>
         <button className="boton">Perfil</button>
-        <button className="boton-rojo" onClick={() => navigate('/')}>Cerrar sesión</button>
-
+        <button className="boton-roja" onClick={() => navigate('/')}>
+          <LogOut size={20} className="logout-icon" />   Cerrar sesión
+        </button>
       </aside>
       <main className="main-content">
         <div className="top-bar">

@@ -10,11 +10,9 @@ function GrupoGastos() {
 
   const navigate = useNavigate();
 
-  //const [grupo, setGrupo] = useState() //no hace nada
-  //const [grupoSelect, setGrupoSelect] = useState() //no hace nada
-
   const [grupos, setGrupos] = useState([]) //aqui guardo los grupos que me devuelve el servidor o el mock
   const [user, setUser] = useState() //aqui guardo el usuario que me devuelve el servidor o el mock
+  const [searchTerm, setSearchTerm] = useState('');
 
   //Lo que antes estaba en App.jsx
   useEffect(() => {
@@ -85,11 +83,14 @@ function GrupoGastos() {
   }
 
   //Imprime las tarjetas
-  function _imprimeGrupos(){
-    return grupos.map((grupo,index) =>(
-      
-      <button className="tarjetaGrupo" onClick={() => _pasarPagina(grupo)} value={grupo}>{grupo.nombre}</button>
-    ));
+  function _imprimeGrupos() {
+    return grupos
+      .filter((grupo) => grupo.nombre.toLowerCase().includes(searchTerm.toLowerCase()))
+      .map((grupo, index) => (
+        <button className="tarjetaGrupo" onClick={() => _pasarPagina(grupo)} value={grupo} key={index}>
+          {grupo.nombre}
+        </button>
+      ));
   }
 
   //navega y pasa a la pagina gastos los datos que se le meten
@@ -98,27 +99,36 @@ function GrupoGastos() {
   }
 
   return (
-  
-  
-  <div className="container">
-    <div id='sesion'>
-    <button className="boton" onClick={() => navigate('/')}>Cerrar sesión</button>
-      <button className="boton">{user ? user.nombre : "Usuario"}</button>
+    <div className="grupo-gastos-container">
+      <aside className="sidebar">
+        <div className="user-icon">
+          {user && user.nombre ? user.nombre.charAt(0).toUpperCase() : "U"}
+        </div>
+        <p className="nombreuser">Welcome {user ? user.nombre : "Usuario"}!</p>
+        <button className="boton">Perfil</button>
+        <button className="boton-rojo" onClick={() => navigate('/')}>Cerrar sesión</button>
+
+      </aside>
+      <main className="main-content">
+        <div className="top-bar">
+          <input
+            type="text"
+            className="search-bar"
+            placeholder="Buscar grupos..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <div className="action-buttons">
+            <button className="boton" onClick={() => navigate('/creargrupo')}>Crear Grupo</button>
+            <button className="boton-unirse">Unirse a un Grupo</button>
+          </div>
+        </div>
+        <div className="grupo-tarjetas">
+          {_imprimeGrupos()}
+        </div>
+      </main>
     </div>
-    <div className="content">
-      {/*<button className="boton">Unirse a un Grupo</button>*/}
-      <div></div>
-      <h1 className="Bienvenido">Bienvenido</h1>
-      <button className="boton" onClick={() => navigate('/creargrupo')}>Crear Grupo</button>
-    </div>
-    <div className="fila">     
-      <div id="conjuntoTarjeta">
-        {_imprimeGrupos()}
-      </div>
-    </div>
-  </div>
-    
-  )
+  );
 }
 
-export default GrupoGastos
+export default GrupoGastos;

@@ -1,4 +1,11 @@
+body {
+  background-color: #ffffff; /* Change this to your desired background color */
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
 #root {
+  background-color: inherit; /* Inherit the background color from the body */
   margin: 0 auto;
   text-align: center;
 }

@@ -200,6 +200,7 @@ function InicioSesion() {
                         >
                             Registrarse
                         </motion.button>
+                        <button className="btn-demo" onClick={() => navigate('/grupoGastos')}>Continuar</button>
                     </div>
                 </div>
             </motion.section>

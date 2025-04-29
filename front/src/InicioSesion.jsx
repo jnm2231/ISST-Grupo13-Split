@@ -36,7 +36,7 @@ function InicioSesion() {
 
         try {
             // Llamada al endpoint de login del backend usando fetch
-            const response = await fetch('http://localhost:8080/myApi/login', {
+            const response = await fetch('https://localhost:8080/myApi/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ function InicioSesion() {
     
         try {
             // Paso 1: Registrar al usuario
-            const registerResponse = await fetch('http://localhost:8080/myApi/signup', {
+            const registerResponse = await fetch('https://localhost:8080/myApi/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ function InicioSesion() {
             console.log('Registro exitoso');
             
             // Paso 2: Iniciar sesión automáticamente con las credenciales recién registradas
-            const loginResponse = await fetch('http://localhost:8080/myApi/login', {
+            const loginResponse = await fetch('https://localhost:8080/myApi/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

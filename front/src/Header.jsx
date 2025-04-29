@@ -1,17 +1,13 @@
+import './App.css';
+import logo from './assets/logo.png';
 
-import './App.css'
-import logo from './assets/logo.png'
-
-//Header de la pagina
+// Header de la pagina
 function Header() {
-
   return (
-    
-      <div className="blue-background">
-        <img src={logo} alt="logo" width="300px"></img>
-      </div>
-    
-  )
+    <div className="blue-background">
+      <img src={logo} alt="logo" width="300px"></img>
+    </div>
+  );
 }
 
-export default Header
+export default Header;

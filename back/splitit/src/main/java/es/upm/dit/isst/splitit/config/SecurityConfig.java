@@ -19,11 +19,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf
-            .ignoringRequestMatchers("/myApi/login", "/myApi/signup") // Deshabilitar CSRF
+            .ignoringRequestMatchers("/myApi/login", "/myApi/**") // Deshabilitar CSRF
             .ignoringRequestMatchers("/h2-console/**")
         )
         .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/myApi/login", "/myApi/signup").permitAll()
+                .requestMatchers("/myApi/login", "/myApi/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll() // Permitir acceso público a H2
                 .requestMatchers("/user/**").hasRole("USER")
                 .anyRequest().permitAll()

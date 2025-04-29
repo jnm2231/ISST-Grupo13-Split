@@ -19,7 +19,8 @@ function InicioSesion() {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:8080/myApi/login', {
+            // Llamada al endpoint de login del backend usando fetch
+            const response = await fetch('https://localhost:8080/myApi/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -64,7 +65,8 @@ function InicioSesion() {
         }
     
         try {
-            const registerResponse = await fetch('http://localhost:8080/myApi/signup', {
+            // Paso 1: Registrar al usuario
+            const registerResponse = await fetch('https://localhost:8080/myApi/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -85,7 +87,10 @@ function InicioSesion() {
                 }
             }
     
-            const loginResponse = await fetch('http://localhost:8080/myApi/login', {
+            console.log('Registro exitoso');
+            
+            // Paso 2: Iniciar sesión automáticamente con las credenciales recién registradas
+            const loginResponse = await fetch('https://localhost:8080/myApi/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

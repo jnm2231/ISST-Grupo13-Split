@@ -352,7 +352,7 @@ public class SplititController {
         .httpOnly(true)
         .secure(true) // Solo en HTTPS
         .path("/")
-        .sameSite("Strict")
+        .sameSite("Lax")
         .maxAge(60 * 60 * 24) // 1 día
         .build();
 

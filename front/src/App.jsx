@@ -11,12 +11,9 @@ import Gastos from './Gastos'
 import InfoGasto from './InfoGasto'
 import CrearGrupo from './CrearGrupo'
 import AnadirGasto from './AnadirGasto'
+import InfoPerfil from './InfoPefil'; // Import the InfoPerfil component
 
 
-//Holahola
-/*
-* Decidme si el spinner puesto esta bien o queda demasiado raro
-*/ 
 function App() {
   const [grupo, setGrupo] = useState(); // Aquí guardo lo que saque del servidor o del mock según lo configure
   const [loading, setLoading] = useState(true); // Pongo esto a true para que funcione como temporizador en el useEffect
@@ -101,14 +98,14 @@ function App() {
     : 
   //la ruta donde comienza es la que pone / y si la ruta no existe se va a la de *
   <Routes>
-    <Route path="/" element={<InicioSesion/>} />{/*Comentar esta linea y descomentar linea de abajo para voler a ver la vista de todos los grupos creados como antes*/}
-    <Route path="/grupoGastos" element={<GrupoGastos />}/>
-    <Route path="/:grupoId/gastos" element={<Gastos />} />
-    {/* <Route path="/:grupoId/balance" element={<Gastos />} />/* esto es para el balance */}
-    <Route path="/:grupoId/gastos/:gastoId" element={<InfoGasto />} />
-    <Route path="/creargrupo" element={<CrearGrupo />} />
-    <Route path="/:grupoId/gastos/anadirgasto" element={<AnadirGasto />} />
-    <Route path="*" element={<ErrorPagina />} />
+  <Route path="/" element={<InicioSesion />} />
+  <Route path="/grupoGastos" element={<GrupoGastos />} />
+  <Route path="/:grupoId/gastos" element={<Gastos />} />
+  <Route path="/:grupoId/gastos/:gastoId" element={<InfoGasto />} />
+  <Route path="/creargrupo" element={<CrearGrupo />} />
+  <Route path="/:grupoId/gastos/anadirgasto" element={<AnadirGasto />} />
+  <Route path="/infoPerfil" element={<InfoPerfil />} /> {/* Add this route */}
+  <Route path="*" element={<ErrorPagina />} />
    </Routes>}
   </div>
   )

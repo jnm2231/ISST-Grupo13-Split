@@ -1,4 +1,11 @@
+body {
+  background-color: #ffffff; /* Change this to your desired background color */
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
 #root {
+  background-color: inherit; /* Inherit the background color from the body */
   margin: 0 auto;
   text-align: center;
 }
@@ -310,5 +317,22 @@
   background-color: #15738E; /* Blue background on hover */
   color: white; /* White text on hover */
   transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.perfil-container {
+  display: flex;
+  flex-direction: column; /* Stack items vertically */
+  align-items: flex-start; /* Align items to the left */
+  margin-top: 2rem; /* Add spacing below the heading */
+  padding-left: 2rem; /* Add padding to the left for alignment */
+}
+
+.perfil-info {
+  margin-bottom: 1rem; /* Add spacing below the email */
+  text-align: left; /* Align text to the left */
+}
+
+.perfil-info p {
+  margin: 0.5rem 0; /* Add spacing between name and email */
 }
 

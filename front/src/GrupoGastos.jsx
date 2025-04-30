@@ -90,7 +90,8 @@ function GrupoGastos() {
         <p className="nombreuser">Welcome {user ? user.nombre : "Usuario"}!</p>
         <p className="emailuser">{user ? user.email : "email"}</p>
         </div>
-        <button className="boton">Perfil</button>
+        <button className="boton" onClick={() => navigate('/infoPerfil')}>Perfil</button>
+        <button className="boton" onClick={() => navigate('/grupoGastos')}>Mis grupos</button>
         <button className="boton-roja" onClick={() => navigate('/')}>
           <LogOut size={20} className="logout-icon" />   Cerrar sesión
         </button>

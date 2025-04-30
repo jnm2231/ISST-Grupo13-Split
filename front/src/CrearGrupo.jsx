@@ -107,7 +107,7 @@ function CrearGrupo() {
 
             // Mostrar un mensaje de éxito y redirigir al usuario
             alert('Grupo creado correctamente');
-            window.location.href = '/'; // Redirigir a la página principal y hace refresh para que salga el nuevo grupo
+            window.location.href = '/grupoGastos'; // Redirigir a la página principal y hace refresh para que salga el nuevo grupo
             }catch(error){
                 console.error('Error de red:', error);
                 alert('Error de red al intentar crear el grupo');

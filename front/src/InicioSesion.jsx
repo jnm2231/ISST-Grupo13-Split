@@ -25,6 +25,7 @@ function InicioSesion() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify({
                     acceso: username,
                     password: password
@@ -42,8 +43,7 @@ function InicioSesion() {
                 }
             }
 
-            const token = await response.text();
-            localStorage.setItem('token', token);
+
             const userData = {
                 nombre: username,
             };
@@ -95,6 +95,7 @@ function InicioSesion() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify({
                     acceso: registerEmail,
                     password: registerPassword
@@ -105,8 +106,6 @@ function InicioSesion() {
                 throw new Error('Error al iniciar sesión automáticamente');
             }
     
-            const token = await loginResponse.text();
-            localStorage.setItem('token', token);
             const userData = {
                 nombre: registerName,
                 email: registerEmail

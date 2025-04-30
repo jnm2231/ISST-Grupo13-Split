@@ -1,6 +1,7 @@
 package es.upm.dit.isst.splitit.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
@@ -12,4 +13,5 @@ public interface UsuarioGrupoRepository extends CrudRepository<UsuarioGrupo, Usu
     // Obtener todos los miembros de un grupo por su ID
     List<UsuarioGrupo> findByGrupoId(Integer grupoId);
     List<UsuarioGrupo> findByUsuario(Usuario usuario);
+    Optional<UsuarioGrupo> findByUsuarioAndGrupo(Usuario usuario, es.upm.dit.isst.splitit.models.GrupodeGastos grupo);
 }

@@ -15,6 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("https://localhost:5173") // Aquí pones el puerto donde corre tu frontend
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
                 .allowedHeaders("Authorization", "Content-Type")
+                .exposedHeaders("Set-Cookie")
                 .allowCredentials(true);
     }
 }

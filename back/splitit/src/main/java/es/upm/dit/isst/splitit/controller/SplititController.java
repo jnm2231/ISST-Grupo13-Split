@@ -8,7 +8,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,6 +52,8 @@ public class SplititController {
 
     public static final Logger log = LoggerFactory.getLogger(SplititController.class);
 
+    private static final String SECRET_KEY = "mySuperSecretKey1234567890123456";
+
     public SplititController(GrupodeGastosRepository grupodeGastosRepository, GastoRepository gastoRepository, UsuarioRepository usuarioRepository, BalanceService balanceService, ParticipacionGastoRepository participacionGastoRepository, UsuarioGrupoRepository usuarioGrupoRepository) {
         this.grupodeGastosRepository = grupodeGastosRepository;
         this.gastoRepository = gastoRepository;
@@ -64,23 +68,22 @@ public class SplititController {
      * @return Lista de todos los grupos de gastos.
      */
     @GetMapping("/grupos")
-    public List<GrupodeGastos> readAll(@RequestHeader("Authorization") String authHeader) {
-        // Extraer el token del encabezado Authorization
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+    public List<GrupodeGastos> readAll(@CookieValue(name = "token", required = false) String token) {
+        // Extraer el token de la cookie
+        if (token == null || token.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token no proporcionado o inválido");
         }
-        String token = authHeader.substring(7); // Eliminar "Bearer " del encabezado
 
         // Validar y decodificar el token
-        Key key = Keys.hmacShaKeyFor("mySuperSecretKey1234567890123456".getBytes());
+        Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
         String usuarioId;
         try {
             usuarioId = Jwts.parser()
-            .verifyWith((SecretKey) key) // Método recomendado en lugar de setSigningKey()
+                .verifyWith((SecretKey) key)
             .build()
-            .parseSignedClaims(token) // Método actualizado para analizar el token
+                .parseSignedClaims(token)
             .getPayload()
-            .getSubject(); // Obtener el usuarioId del token
+                .getSubject();
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token inválido o expirado");
         }
@@ -307,20 +310,31 @@ public class SplititController {
         if (!usuario.getPassword().equals(password)) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Contraseña incorrecta");
         }
-        Key key = Keys.hmacShaKeyFor("mySuperSecretKey1234567890123456".getBytes());
+        Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
         
             String token = Jwts.builder()
         .subject(usuario.getNombre()) // Incluye el usuarioId en el token
         .signWith(key) // Usa una clave secreta
         .compact();
 
-        return ResponseEntity.ok(token);
+        ResponseCookie cookie = ResponseCookie.from("token", token)
+        .httpOnly(true)
+        .secure(true) // Solo en HTTPS
+        .path("/")
+        .sameSite("Strict")
+        .maxAge(60 * 60 * 24) // 1 día
+        .build();
+
+
+        return ResponseEntity.ok()
+        .header("Set-Cookie", cookie.toString())
+        .body("Login correcto");
     }
 
     @GetMapping("/generateToken/{nombre}")
     public ResponseEntity<String> generateTestToken(@PathVariable String nombre) {
         // Clave secreta para firmar el token
-        Key key = Keys.hmacShaKeyFor("mySuperSecretKey1234567890123456".getBytes());
+        Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
 
         // Crear el token con el nombre proporcionado
         String token = Jwts.builder()

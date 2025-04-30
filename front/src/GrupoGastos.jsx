@@ -18,21 +18,10 @@ function GrupoGastos() {
   //Lo que antes estaba en App.jsx
   useEffect(() => {
     // Obtener el usuario del localStorage
-    let usuario = localStorage.getItem('usuario');
-    if (usuario == null) {
-      // Si no hay usuario, crear uno de prueba o redirigir al login
-      localStorage.setItem('usuario', JSON.stringify({ id: 4, nombre: "Julio", email: "usuario4@example.com" }));
-      usuario = JSON.parse(localStorage.getItem('usuario'));
-    } else {
-      usuario = JSON.parse(usuario);
-      console.log("GrupoGastos.jsx: Usuario existente:", usuario);
+    const userData = localStorage.getItem('usuario');
+    if (userData) {
+      setUser(JSON.parse(userData));
     }
-    
-    // Actualizar el estado del usuario
-    setUser(usuario);
-    console.log("Usuario:", usuario);
-    console.log(usuario.id);
-    
     // Cargar los grupos
     cargar();
   }, []); // Array vacío para que solo se ejecute una vez al montar el componente
@@ -44,21 +33,13 @@ function GrupoGastos() {
     console.log("GrupoGastos.cargar(): Ejecutando cargar()");
 
     // Obtener el token del localStorage
-    const token = localStorage.getItem("token");
-    if (!token) {
-      console.log("GrupoGastos.cargar(): No se encontró un token en localStorage");
-      //return; Este return estaba cerrando la función cargar antes de tiempo y no se llegaba a cargar el mockgrupos
-    }
+
 
     if (CONFIG.use_server === true) {
       try {
         // Hacer llamada a la API de /grupos con el token en el encabezado Authorization
         const response = await fetch(`${CONFIG.api_grupos}`, {
           method: "GET",
-          headers: {
-            "Authorization": `Bearer ${token}`, // Incluir el token en el encabezado
-            "Content-Type": "application/json",
-          },
           credentials: "include", // Incluir credenciales (opcional)
         });
 

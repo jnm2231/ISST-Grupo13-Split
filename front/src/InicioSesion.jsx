@@ -157,7 +157,7 @@ function InicioSesion() {
             >
                 <div className="welcome-text">
                     <h1>Gestiona gastos en grupo de forma sencilla</h1>
-                    <p>La manera más fácil de compartir gastos con amigos, familia o compañeros</p>
+                    <p>La manera más fácil de compartir gastos con amigos, familia, compañeros de piso...</p>
                 </div>
                 <div className="features-grid">
                     {features.map((feature, index) => (

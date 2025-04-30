@@ -203,6 +203,14 @@ body {
   color: inherit; /* Use default color */
 }
 
+.peque {
+  font-size: 2.5rem; /* Make the text larger */
+  color: #15738E; /* Set the text color to red */
+  font-weight: bold; /* Make the text bold */
+  text-align: left; /* Align the text to the left */
+  margin-bottom: 1rem; /* Add spacing below */
+}
+
 .left-section {
   display: flex;
   flex-direction: column;
@@ -334,5 +342,23 @@ body {
 
 .perfil-info p {
   margin: 0.5rem 0; /* Add spacing between name and email */
+}
+
+.boton-cambiar {
+  background: none;
+  color: rgb(250, 104, 104); /* Light red text */
+  border: 2px solid rgb(253, 122, 122); /* Light red border */
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.6em 1.2em;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.boton-cambiar:hover {
+  background: rgb(255, 141, 141); /* Light red background on hover */
+  color: white; /* White text on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
 }
 

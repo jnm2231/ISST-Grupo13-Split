@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import './App.css';
+import './index.css';
 import { useNavigate } from 'react-router-dom';
 import { LogOut } from 'lucide-react';
 
@@ -38,14 +39,14 @@ function InfoPerfil() {
       </aside>
       <main className="main-content">
         <div className="content">
-          <h1>Perfil</h1>
+          <p className="peque">Perfil del usuario</p>
         </div>
           <div className="perfil-container">
             <div className="perfil-info">
               <p><strong>Nombre:</strong> {user ? user.nombre : "Usuario"}</p>
               <p><strong>Email:</strong> {user ? user.email : "email"}</p>
             </div>
-            <button className="boton">Cambiar Contraseña</button>
+            <button className="boton-cambiar">Cambiar Contraseña</button>
           </div>
         
       </main>

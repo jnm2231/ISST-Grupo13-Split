@@ -169,41 +169,12 @@ public class SplititController {
      * @return ResponseEntity con el grupo de gastos solicitado.
      */
     @GetMapping("/grupos/{id}")
-    public ResponseEntity<GrupodeGastos> getGroupById(
-            @PathVariable Integer id,
-            @CookieValue(name = "token", required = false) String token) {
+    public ResponseEntity<GrupodeGastos> getGroupById(@PathVariable Integer id) {
         log.info("Obteniendo el grupo de gastos con ID: {}", id);
-
-        // Validar token
-        if (token == null || token.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token no proporcionado o inválido");
-        }
-        Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
-        String usuarioId;
-        try {
-            usuarioId = Jwts.parser()
-                .verifyWith((SecretKey) key)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getSubject();
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token inválido o expirado");
-        }
 
         // Buscar el grupo
         GrupodeGastos group = grupodeGastosRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Grupo de gastos no encontrado"));
-
-        // Buscar el usuario
-        Usuario usuario = usuarioRepository.findById(usuarioId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
-
-        // Comprobar si el usuario pertenece al grupo
-        boolean pertenece = usuarioGrupoRepository.findByUsuarioAndGrupo(usuario, group).isPresent();
-        if (!pertenece) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "No tienes acceso a este grupo");
-        }
 
         return ResponseEntity.ok(group);
     }

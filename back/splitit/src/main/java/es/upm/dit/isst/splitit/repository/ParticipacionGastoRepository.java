@@ -10,4 +10,5 @@ import es.upm.dit.isst.splitit.models.ParticipacionGastoId;
 public interface ParticipacionGastoRepository extends CrudRepository<ParticipacionGasto, ParticipacionGastoId> {
     // Obtener todas las participaciones de un gasto por su ID
     List<ParticipacionGasto> findByGastoId(Integer gastoId);
+
 }

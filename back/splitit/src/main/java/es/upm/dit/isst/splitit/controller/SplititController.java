@@ -333,6 +333,8 @@ public class SplititController {
         .body("Login correcto");
     }
 
+
+
     @GetMapping("/generateToken/{nombre}")
     public ResponseEntity<String> generateTestToken(@PathVariable String nombre) {
         // Clave secreta para firmar el token
@@ -345,6 +347,99 @@ public class SplititController {
                 .compact();
 
         return ResponseEntity.ok(token);
+    }
+    @PostMapping("/gastos/{gastoId}/actualizar")
+    @Transactional
+    public ResponseEntity<String> actualizarGasto(
+            @PathVariable Integer gastoId,
+            @RequestBody Map<String, Object> gastoData) {
+        log.info("Actualizando gasto con ID: {}", gastoId);
+        log.info("Datos recibidos: {}", gastoData);
+    
+        // Buscar el gasto existente
+        Gasto gasto = gastoRepository.findById(gastoId)
+                .orElseThrow(() -> {
+                    log.error("Gasto no encontrado con ID: {}", gastoId);
+                    return new ResponseStatusException(HttpStatus.NOT_FOUND, "Gasto no encontrado");
+                });
+        log.info("Gasto antes de actualizar: {}", gasto);
+    
+        // Actualizar campos del gasto si están presentes en el map
+        if (gastoData.containsKey("concepto")) {
+            log.info("Actualizando concepto a: {}", gastoData.get("concepto"));
+            gasto.setConcepto((String) gastoData.get("concepto"));
+        }
+        if (gastoData.containsKey("pagadopor")) {
+            log.info("Actualizando pagadopor a: {}", gastoData.get("pagadopor"));
+            gasto.setPagadopor((String) gastoData.get("pagadopor"));
+        }
+    
+        // Actualizar las participaciones si se proporciona la lista de participantes
+        if (gastoData.containsKey("participantes")) {
+            Object participantesObj = gastoData.get("participantes");
+            if (!(participantesObj instanceof List<?>)) {
+                log.error("El campo 'participantes' no es una lista");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El campo 'participantes' debe ser una lista");
+            }
+            @SuppressWarnings("unchecked")
+            List<Map<String, Object>> participantes = (List<Map<String, Object>>) participantesObj;
+            log.info("Participantes recibidos: {}", participantes);
+    
+            // Eliminar participaciones anteriores
+            List<ParticipacionGasto> participacionesAntiguas = participacionGastoRepository.findByGastoId(gastoId);
+            log.info("Participaciones antiguas a eliminar: {}", participacionesAntiguas.size());
+            for (ParticipacionGasto p : participacionesAntiguas) {
+                log.info("Eliminando participacion: gasto={}, usuario={}", p.getGasto().getId(), p.getUsuario().getNombre());
+                participacionGastoRepository.delete(p);
+            }
+    
+            // Crear nuevas participaciones y calcular la suma total
+            float sumaImportes = 0f;
+            for (Map<String, Object> participanteData : participantes) {
+                Map<String, Object> usuarioMap = (Map<String, Object>) participanteData.get("usuario");
+                String usuarioNombre;
+                if (usuarioMap != null && usuarioMap.containsKey("nombre")) {
+                    usuarioNombre = (String) usuarioMap.get("nombre");
+                } else if (participanteData.containsKey("usuarioNombre")) {
+                    usuarioNombre = (String) participanteData.get("usuarioNombre");
+                } else {
+                    log.error("Falta el nombre del usuario en la participación: {}", participanteData);
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Falta el nombre del usuario en la participación");
+                }
+    
+                Float importeUsuario = participanteData.containsKey("importe")
+                        ? ((Number) participanteData.get("importe")).floatValue()
+                        : (participanteData.containsKey("importeUsuario")
+                            ? ((Number) participanteData.get("importeUsuario")).floatValue()
+                            : 0f);
+    
+                sumaImportes += importeUsuario;
+                log.info("Nueva participacion: usuario={}, importe={}", usuarioNombre, importeUsuario);
+    
+                Usuario usuario = usuarioRepository.findById(usuarioNombre)
+                        .orElseThrow(() -> {
+                            log.error("Usuario no encontrado: {}", usuarioNombre);
+                            return new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado: " + usuarioNombre);
+                        });
+    
+                ParticipacionGasto nuevaParticipacion = new ParticipacionGasto(gasto, usuario, importeUsuario);
+                participacionGastoRepository.save(nuevaParticipacion);
+            }
+            // Actualiza el importe total del gasto con la suma de los importes de las participaciones
+            log.info("Suma de importes de participaciones: {}", sumaImportes);
+            gasto.setImporte(sumaImportes);
+        } else if (gastoData.containsKey("importe")) {
+            // Si no se actualizan las participaciones pero sí el importe, actualiza el importe
+            log.info("Actualizando importe del gasto a: {}", gastoData.get("importe"));
+            gasto.setImporte(((Number) gastoData.get("importe")).floatValue());
+        }
+    
+        // Guardar el gasto actualizado
+        log.info("Gasto antes de guardar: {}", gasto);
+        gastoRepository.save(gasto);
+    
+        log.info("Actualización completada para gasto con ID: {}", gastoId);
+        return ResponseEntity.ok("Gasto y participaciones actualizados correctamente");
     }
 
 }

@@ -218,7 +218,7 @@ function InicioSesion() {
                                 <label htmlFor="username">Usuario</label>
                                 <input 
                                     type="text" 
-                                    className="input" 
+                                    className="inputInicio" 
                                     value={username}
                                     onChange={(e) => setUsername(e.target.value)}
                                     required
@@ -228,7 +228,7 @@ function InicioSesion() {
                                 <label htmlFor="password">Contraseña</label>
                                 <input 
                                     type="password" 
-                                    className="input" 
+                                    className="inputInicio" 
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     required
@@ -261,7 +261,7 @@ function InicioSesion() {
                                 <label htmlFor="registerName">Nombre</label>
                                 <input 
                                     type="text" 
-                                    className="input" 
+                                    className="inputInicio" 
                                     value={registerName}
                                     onChange={(e) => setRegisterName(e.target.value)}
                                     required
@@ -271,7 +271,7 @@ function InicioSesion() {
                                 <label htmlFor="registerEmail">Email</label>
                                 <input 
                                     type="email" 
-                                    className="input" 
+                                    className="inputInicio" 
                                     value={registerEmail}
                                     onChange={(e) => setRegisterEmail(e.target.value)}
                                     required
@@ -281,7 +281,7 @@ function InicioSesion() {
                                 <label htmlFor="registerPassword">Contraseña</label>
                                 <input 
                                     type="password" 
-                                    className="input" 
+                                    className="inputInicio" 
                                     value={registerPassword}
                                     onChange={(e) => setRegisterPassword(e.target.value)}
                                     required
@@ -291,7 +291,7 @@ function InicioSesion() {
                                 <label htmlFor="confirmPassword">Confirmar Contraseña</label>
                                 <input 
                                     type="password" 
-                                    className="input" 
+                                    className="inputInicio" 
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
                                     required

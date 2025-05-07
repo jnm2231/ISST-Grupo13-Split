@@ -72,7 +72,7 @@ function Gastos() {
   }
 
   function volverAGrupoGastos() {
-    navigate("/"); // Redirect to the main page
+    navigate("/GrupoGastos"); // Redirect to the main page
   }
 
   function _navegarAnadirGasto() {

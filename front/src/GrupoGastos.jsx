@@ -51,7 +51,7 @@ function GrupoGastos() {
           const data = await response.json();
           setGrupos(data);
         } else {
-          console.log("GrupoGastos.cargar(): espuesta de red OK pero respuesta de HTTP no OK");
+          console.log("GrupoGastos.cargar(): Respuesta de red OK pero respuesta de HTTP no OK");
           const dataError = await response.json();
           console.log(`GrupoGastos.cargar(): Error: ${response.status} - ${dataError.error.message}`);
         }
@@ -92,8 +92,15 @@ function GrupoGastos() {
         </div>
         <button className="boton" onClick={() => navigate('/infoPerfil')}>Perfil</button>
         <button className="boton" onClick={() => navigate('/grupoGastos')}>Mis grupos</button>
-        <button className="boton-roja" onClick={() => navigate('/')}>
-          <LogOut size={20} className="logout-icon" />   Cerrar sesión
+        <button
+          className="boton-roja"
+          onClick={() => {
+            localStorage.removeItem('usuario'); // Eliminar el usuario del localStorage
+            setUser(null); // Limpiar el estado del usuario
+            navigate('/'); // Redirigir al inicio
+          }}
+        >
+          <LogOut size={20} className="logout-icon" /> Cerrar sesión
         </button>
       </aside>
       <main className="main-content">

@@ -17,6 +17,7 @@ function Gastos() {
   const [loading,setLoading] = useState(true) //pongo esto a true para que funcione como temporizador en el useEffect
   const [showModal, setShowModal] = useState(false);
   const [selectedDebt, setSelectedDebt] = useState(null);
+  const [pagadas, setPagadas] = useState({}); // Estado para las deudas pagadas
   let params = useParams();
   let id = params.grupoId;
   console.log("Grupo ID:", id);
@@ -212,6 +213,51 @@ function Gastos() {
     setShowModal(false);
     setSelectedDebt(null);
   }
+// esto es para que se cree un gasto ficticio para saldar la deuda
+  function handleCheckboxChange(acreedor) {
+    const cantidad = selectedDebt.deudas[acreedor]; // Get the amount owed to the creditor
+  
+    
+    const nuevoGasto = {
+      concepto: `Deuda pagada por ${selectedDebt.usuario} a ${acreedor}`,
+      pagadopor: selectedDebt.usuario,
+      importe: cantidad,
+      participantes: [{ usuarioNombre: acreedor, importeUsuario: cantidad }],
+    };
+  
+    // Send the new expense to the API
+    fetch(`${CONFIG.api_grupos}/${id}/gastos`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(nuevoGasto),
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error('Error al crear el gasto');
+        console.log(`Gasto creado: ${JSON.stringify(nuevoGasto)}`);
+  
+        // Update the balance and debts locally
+        setBalance((prevBalance) => ({
+          ...prevBalance,
+          [selectedDebt.usuario]: prevBalance[selectedDebt.usuario] + cantidad,
+          [acreedor]: prevBalance[acreedor] - cantidad,
+        }));
+  
+        setSelectedDebt((prevSelectedDebt) => {
+          const updatedDeudas = { ...prevSelectedDebt.deudas };
+          delete updatedDeudas[acreedor]; // Remove the debt from the modal
+          return { ...prevSelectedDebt, deudas: updatedDeudas };
+        });
+      })
+      .catch((error) => {
+        console.error('Error al crear el gasto:', error);
+      });
+  
+    // Update the state for the checkbox
+    setPagadas((prev) => ({
+      ...prev,
+      [acreedor]: !prev[acreedor],
+    }));
+  }
 
   // Esto es lo que se ejecuta cuando aprietas el botón de balance y gasto y sirve para que cambie de página
   function cambio() {
@@ -269,7 +315,11 @@ function Gastos() {
             {Object.entries(selectedDebt.deudas).map(([acreedor, cantidad], index) => (
               <p key={index}>
                 Le debes {cantidad.toFixed(2)} a {acreedor}
-                <input type="checkbox" />
+                <input
+                  type="checkbox"
+                  checked={!!pagadas[acreedor]}
+                  onChange={() => handleCheckboxChange(acreedor)}
+                />
               </p>
             ))}
             <button className="btn btn-secondary" onClick={closeModal}>Cerrar</button>

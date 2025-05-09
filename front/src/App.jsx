@@ -11,7 +11,7 @@ import Gastos from './Gastos'
 import InfoGasto from './InfoGasto'
 import CrearGrupo from './CrearGrupo'
 import AnadirGasto from './AnadirGasto'
-import InfoPerfil from './InfoPefil'; // Import the InfoPerfil component
+import InfoPerfil from './InfoPerfil'; // Import the InfoPerfil component
 
 
 function App() {

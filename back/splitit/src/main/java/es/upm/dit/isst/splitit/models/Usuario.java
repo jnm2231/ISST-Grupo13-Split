@@ -25,9 +25,12 @@ public class Usuario {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     @JsonIgnore
-    private String password; // Contraseña del usuario
+    private String password; // Contraseña del usuario, permitimos que sea nula para usuarios de Google
+
+    @Column(name= "authprovider", nullable = false)
+    private String authProvider; // local o google
 
     @OneToMany(mappedBy = "usuario")
     private List<UsuarioGrupo> grupos; // Grupos en los que está
@@ -40,11 +43,13 @@ public class Usuario {
      * @param nombre
      * @param email
      * @param password
+     * @param authProvider
      */
-    public Usuario(String nombre, String email, String password) {
+    public Usuario(String nombre, String email, String password, String authProvider) {
         this.nombre = nombre;
         this.email = email;
         this.password = password;
+        this.authProvider = authProvider;
     }
 
     // Getters y Setters
@@ -70,6 +75,14 @@ public class Usuario {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAuthProvider() {
+        return authProvider;
+    }
+    
+    public void setAuthProvider(String authProvider) {
+        this.authProvider = authProvider;
     }
 
     public List<UsuarioGrupo> getGrupos() {
@@ -99,7 +112,7 @@ public class Usuario {
         if (this == o) return true;
         if (!(o instanceof Usuario)) return false;
         Usuario usuario = (Usuario) o;
-        return nombre.equals(usuario.nombre) && email.equals(usuario.email) && password.equals(usuario.password);
+        return nombre.equals(usuario.nombre) && email.equals(usuario.email) && password.equals(usuario.password) && authProvider.equals(usuario.authProvider);
     }
 
     @Override

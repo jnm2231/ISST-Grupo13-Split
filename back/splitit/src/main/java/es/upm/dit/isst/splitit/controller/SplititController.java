@@ -2,29 +2,27 @@ package es.upm.dit.isst.splitit.controller;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.Key;
 import java.util.List;
 import java.util.Map;
+
+import javax.crypto.SecretKey;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
-import java.security.Key;
-import javax.crypto.SecretKey;
 
 import es.upm.dit.isst.splitit.models.Gasto;
 import es.upm.dit.isst.splitit.models.GrupodeGastos;
@@ -37,6 +35,8 @@ import es.upm.dit.isst.splitit.repository.ParticipacionGastoRepository;
 import es.upm.dit.isst.splitit.repository.UsuarioGrupoRepository;
 import es.upm.dit.isst.splitit.repository.UsuarioRepository;
 import es.upm.dit.isst.splitit.service.BalanceService;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import jakarta.transaction.Transactional;
 
 @RestController
@@ -278,14 +278,20 @@ public class SplititController {
         String nombre = userData.get("nombre");
         String email = userData.get("email");
         String password = userData.get("password");
+        String authProvider = userData.getOrDefault("authProvider", "local"); // por defecto "local"
 
         // Verificar que el usuario tiene un nombre
-        if (nombre == null || nombre.isEmpty() || email == null || email.isEmpty() || password == null || password.isEmpty()) {
+        if (nombre == null || nombre.isEmpty() || email == null || email.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Alguno de los valores estan vacíos");
         }
 
+        // Si es usuario local, la contraseña es obligatoria, si es con Google no
+        if ("local".equals(authProvider) && (password == null || password.isEmpty())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La contraseña es obligatoria para usuarios locales");
+        }
+
         // Crear el nuevo usuario
-        Usuario newUser = new Usuario(nombre,email,password);
+        Usuario newUser = new Usuario(nombre,email,password,authProvider);
         usuarioRepository.save(newUser);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Usuario creado con éxito.");
@@ -442,5 +448,11 @@ public class SplititController {
         return ResponseEntity.ok("Gasto y participaciones actualizados correctamente");
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<Usuario> getCurrentUser(Authentication authentication) {
+        String email = authentication.getName(); // el email del usuario autenticado
+        Usuario usuario = usuarioRepository.findByEmail(email)  
+            .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
+        return ResponseEntity.ok(usuario);
+    }
 }
-

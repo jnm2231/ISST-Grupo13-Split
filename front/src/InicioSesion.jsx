@@ -199,6 +199,13 @@ function InicioSesion() {
                         >
                             Registrarse
                         </motion.button>
+                        <a 
+                            href="http://localhost:8080/oauth2/authorization/google" 
+                            className="login-link-google"
+                            style={{ display: 'block', marginTop: '1rem', textAlign: 'center', color: '#4285F4', textDecoration: 'none' }}
+                        >
+                            Iniciar sesión con Google
+                        </a>
                         <button className="btn-demo" onClick={() => navigate('/grupoGastos')}>Continuar</button>
                     </div>
                 </div>

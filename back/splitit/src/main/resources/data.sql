@@ -1,12 +1,12 @@
 -- Inserción de usuarios
-INSERT INTO usuarios (nombre, email, password) VALUES ('Samuel', 'email@example.com', 'password1');
-INSERT INTO usuarios (nombre, email, password) VALUES ('Violeta', 'usuario2@example.com', 'password2');
-INSERT INTO usuarios (nombre, email, password) VALUES ('Juan', 'usuario3@example.com', 'password3');
-INSERT INTO usuarios (nombre, email, password) VALUES ('Julio', 'usuario4@example.com', 'password4');
-INSERT INTO usuarios (nombre, email, password) VALUES ('Jesus', 'jesus@example.com', 'password5');
-INSERT INTO usuarios (nombre, email, password) VALUES ('Alberto', 'alberto@example.com', 'password5');
-INSERT INTO usuarios (nombre, email, password) VALUES ('Maria', 'maria@example.com', 'password5');
-INSERT INTO usuarios (nombre, email, password) VALUES ('Laura', 'laura@example.com', 'password5');
+INSERT INTO usuarios (nombre, email, password, authprovider) VALUES ('Samuel', 'email@example.com', 'password1', 'local');
+INSERT INTO usuarios (nombre, email, password, authprovider) VALUES ('Violeta', 'usuario2@example.com', 'password2', 'local');
+INSERT INTO usuarios (nombre, email, password, authprovider) VALUES ('Juan', 'usuario3@example.com', 'password3', 'local');
+INSERT INTO usuarios (nombre, email, password, authprovider) VALUES ('Julio', 'usuario4@example.com', 'password4', 'local');
+INSERT INTO usuarios (nombre, email, password, authprovider) VALUES ('Jesus', 'jesus@example.com', 'password5', 'local');
+INSERT INTO usuarios (nombre, email, password, authprovider) VALUES ('Alberto', 'alberto@example.com', 'password5', 'local');
+INSERT INTO usuarios (nombre, email, password, authprovider) VALUES ('Maria', 'maria@example.com', 'password5', 'local');
+INSERT INTO usuarios (nombre, email, password, authprovider) VALUES ('Laura', 'laura@example.com', 'password5', 'local');
 
 -- Inserción de grupos de gastos
 INSERT INTO grupo_de_gastos (nombre) VALUES ('Viaje a Egipto');

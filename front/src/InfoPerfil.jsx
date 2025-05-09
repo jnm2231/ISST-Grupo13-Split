@@ -34,7 +34,7 @@ function InfoPerfil() {
           {user && user.nombre ? user.nombre.charAt(0).toUpperCase() : "U"}
         </div>
         <div>
-          <p className="nombreuser">Welcome {user ? user.nombre : "Usuario"}!</p>
+          <p className="nombreuser">¡Bienvenido,  {user ? user.nombre : "Usuario"}!</p>
           <p className="emailuser">{user ? user.email : "email"}</p>
         </div>
         <button className="boton" onClick={() => navigate('/infoPerfil')}>Perfil</button>

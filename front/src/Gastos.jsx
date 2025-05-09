@@ -15,6 +15,8 @@ function Gastos() {
   const navigate = useNavigate(); // Inicializa navigate
   const [grupo, setGrupo] = useState({});
   const [loading,setLoading] = useState(true) //pongo esto a true para que funcione como temporizador en el useEffect
+  const [showModal, setShowModal] = useState(false);
+  const [selectedDebt, setSelectedDebt] = useState(null);
   let params = useParams();
   let id = params.grupoId;
   console.log("Grupo ID:", id);
@@ -36,6 +38,44 @@ function Gastos() {
     },1000)
 
   }, []);
+
+  const subirGasto = async (e) => {
+    e.preventDefault();
+    if (!gastoName.trim()) {
+        alert('El nombre del gasto no puede contener solo espacios');
+        return;
+    }
+    if (participants.length === 0) {
+        alert('Debe haber al menos un participante en el gasto');
+        return;
+    }
+    if (parseFloat(ImporteGasto) <= 0 || parseFloat(ImporteGasto) === 0) {
+        alert('Debe introducir un número válido en el campo de Importe');
+        return;
+    }
+    try {
+        const requestBody = {
+            concepto: gastoName,
+            pagadopor: PagadoPor,
+            importe: parseFloat(ImporteGasto),
+            participantes: participants.map((participant) => ({
+                usuarioNombre: participant,
+                importeUsuario: parseFloat(ImporteGasto) / participants.length,
+            })),
+        };
+        const response = await fetch(`${CONFIG.api_grupos}/${idGrupo}/gastos`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(requestBody),
+        });
+        if (!response.ok) throw new Error('Error al crear el gasto');
+        alert('Gasto creado correctamente');
+        window.location.href = `/${idGrupo}/gastos`;
+    } catch (error) {
+        console.error('Error de red:', error);
+        alert('Error de red al intentar crear el gasto');
+    }
+};
 
   async function cargarGrupo() {
     console.log("Ejecutando cargarGrupo()");
@@ -138,7 +178,7 @@ function Gastos() {
     return (
         Object.entries(balance).map(([usuario, deuda], index) => 
          (
-            <button className="tarjetagastos" key={index}>
+            <button className="tarjetagastos" key={index} onClick={() => deuda < 0 && handleDebtClick(usuario, deuda)}>
               <div className='filagastos'>
                 <p className="importe">{usuario}</p>
                 <p className={deuda > 0 ? "verde" : deuda === 0 ? "" : "rojo"}>
@@ -152,13 +192,28 @@ function Gastos() {
     );
   }
 
+  function handleDebtClick(usuario, deuda) {
+    // Find all users with a positive balance (green)
+    const creditors = Object.entries(balance)
+      .filter(([_, balance]) => balance > 0)
+      .map(([creditor, amount]) => ({ creditor, amount }));
+
+    setSelectedDebt({ usuario, deuda, creditors });
+    setShowModal(true);
+  }
+
+  function closeModal() {
+    setShowModal(false);
+    setSelectedDebt(null);
+  }
+
   // Esto es lo que se ejecuta cuando aprietas el botón de balance y gasto y sirve para que cambie de página
   function cambio() {
     console.log(esgasto);
     // Esta parte es para cambiar el css de los botones
     let boton1e = boton1;
     let boton2e = boton2;
-    setBoton1(boton2e);
+    setBoton1(boton2e);//prueba hola
     setBoton2(boton1e);
     // Esto es para cambiar de gasto a balance o viceversa
     setEsgasto(!esgasto);
@@ -197,6 +252,23 @@ function Gastos() {
                 _imprimebalance()
               )}
             </div>
+          </div>
+        </div>
+      )}
+
+      {showModal && selectedDebt && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h2>Deudas</h2>
+            {selectedDebt.creditors.map(({ creditor, amount }, index) => (
+              <p key={index}>
+                Le debes {amount.toFixed(2)} a {creditor}
+              </p>
+            ))}
+            <div>
+              <input type="checkbox" />
+            </div>
+            <button className="btn btn-secondary" onClick={closeModal}>Cerrar</button>
           </div>
         </div>
       )}

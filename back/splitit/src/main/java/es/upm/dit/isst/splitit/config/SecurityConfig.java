@@ -1,5 +1,6 @@
 package es.upm.dit.isst.splitit.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -16,6 +17,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Autowired
+    private CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
+
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf
@@ -29,6 +35,9 @@ public class SecurityConfig {
                 .anyRequest().permitAll()
             )
             .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable())) // Permitir iframes para H2
+            .oauth2Login(oauth2 -> oauth2
+                .successHandler(customOAuth2SuccessHandler)
+            )
             .formLogin(Customizer.withDefaults()) // Default login form
             .logout(Customizer.withDefaults()); // Default logout
 

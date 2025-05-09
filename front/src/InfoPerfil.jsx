@@ -49,8 +49,8 @@ function InfoPerfil() {
         </div>
           <div className="perfil-container">
             <div className="perfil-info">
-              <p><strong>Nombre:</strong> {user ? user.nombre : "Usuario"}</p>
-              <p><strong>Email:</strong> {user ? user.email : "email"}</p>
+              <p className="root"><strong>Nombre:</strong> {user ? user.nombre : "Usuario"}</p>
+              <p className="root"><strong>Email:</strong> {user ? user.email : "email"}</p>
             </div>
             <button className="boton-cambiar">Cambiar Contraseña</button>
           </div>

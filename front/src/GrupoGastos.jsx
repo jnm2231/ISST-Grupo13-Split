@@ -51,7 +51,7 @@ function GrupoGastos() {
           const data = await response.json();
           setGrupos(data);
         } else {
-          console.log("GrupoGastos.cargar(): espuesta de red OK pero respuesta de HTTP no OK");
+          console.log("GrupoGastos.cargar(): Respuesta de red OK pero respuesta de HTTP no OK");
           const dataError = await response.json();
           console.log(`GrupoGastos.cargar(): Error: ${response.status} - ${dataError.error.message}`);
         }

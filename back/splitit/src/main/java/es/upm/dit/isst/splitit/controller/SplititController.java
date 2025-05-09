@@ -473,5 +473,12 @@ public class SplititController {
         // Devolver el email del usuario
         return ResponseEntity.ok(usuario.getEmail());
     }
+
     
+    @GetMapping("/grupos/{groupId}/deudas")
+    public ResponseEntity<Map<String, Map<String, Float>>> getDetailedDebts(@PathVariable Integer groupId) {
+        log.info("Calculando deudas detalladas para el grupo con ID: {}", groupId);
+        Map<String, Map<String, Float>> detailedDebts = balanceService.calcularDeudasDetalladas(groupId);
+        return ResponseEntity.ok(detailedDebts);
+    }
 }

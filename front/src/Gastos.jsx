@@ -17,6 +17,7 @@ function Gastos() {
   const [loading,setLoading] = useState(true) //pongo esto a true para que funcione como temporizador en el useEffect
   const [showModal, setShowModal] = useState(false);
   const [selectedDebt, setSelectedDebt] = useState(null);
+  const [pagadas, setPagadas] = useState({}); // Estado para las deudas pagadas
   let params = useParams();
   let id = params.grupoId;
   console.log("Grupo ID:", id);
@@ -178,7 +179,7 @@ function Gastos() {
     return (
         Object.entries(balance).map(([usuario, deuda], index) => 
          (
-            <button className="tarjetagastos" key={index} onClick={() => deuda < 0 && handleDebtClick(usuario, deuda)}>
+            <button className="tarjetagastos" key={index} onClick={() => deuda < 0 && handleDebtClick(usuario)}>
               <div className='filagastos'>
                 <p className="importe">{usuario}</p>
                 <p className={deuda > 0 ? "verde" : deuda === 0 ? "" : "rojo"}>
@@ -192,19 +193,70 @@ function Gastos() {
     );
   }
 
-  function handleDebtClick(usuario, deuda) {
-    // Find all users with a positive balance (green)
-    const creditors = Object.entries(balance)
-      .filter(([_, balance]) => balance > 0)
-      .map(([creditor, amount]) => ({ creditor, amount }));
-
-    setSelectedDebt({ usuario, deuda, creditors });
-    setShowModal(true);
+  function handleDebtClick(usuario) {
+    fetch(`${CONFIG.api_grupos}/${id}/deudas`)
+      .then((response) => {
+        if (!response.ok) throw new Error("Error al obtener las deudas");
+        return response.json();
+      })
+      .then((deudas) => {
+        const deudasUsuario = deudas[usuario] || {};
+        setSelectedDebt({ usuario, deudas: deudasUsuario });
+        setShowModal(true);
+      })
+      .catch((error) => {
+        console.error("Error al obtener las deudas detalladas:", error);
+      });
   }
 
   function closeModal() {
     setShowModal(false);
     setSelectedDebt(null);
+  }
+// esto es para que se cree un gasto ficticio para saldar la deuda
+  function handleCheckboxChange(acreedor) {
+    const cantidad = selectedDebt.deudas[acreedor]; // Get the amount owed to the creditor
+  
+    
+    const nuevoGasto = {
+      concepto: `Deuda pagada por ${selectedDebt.usuario} a ${acreedor}`,
+      pagadopor: selectedDebt.usuario,
+      importe: cantidad,
+      participantes: [{ usuarioNombre: acreedor, importeUsuario: cantidad }],
+    };
+  
+    // Send the new expense to the API
+    fetch(`${CONFIG.api_grupos}/${id}/gastos`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(nuevoGasto),
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error('Error al crear el gasto');
+        console.log(`Gasto creado: ${JSON.stringify(nuevoGasto)}`);
+  
+        // Update the balance and debts locally
+        setBalance((prevBalance) => ({
+          ...prevBalance,
+          [selectedDebt.usuario]: prevBalance[selectedDebt.usuario] + cantidad,
+          [acreedor]: prevBalance[acreedor] - cantidad,
+        }));
+  
+        setSelectedDebt((prevSelectedDebt) => {
+          const updatedDeudas = { ...prevSelectedDebt.deudas };
+          delete updatedDeudas[acreedor]; // Remove the debt from the modal
+          return { ...prevSelectedDebt, deudas: updatedDeudas };
+        });
+      })
+      .catch((error) => {
+        console.error('Error al crear el gasto:', error);
+      });
+  
+    // Update the state for the checkbox
+    setPagadas((prev) => ({
+      ...prev,
+      [acreedor]: !prev[acreedor],
+    }));
   }
 
   // Esto es lo que se ejecuta cuando aprietas el botón de balance y gasto y sirve para que cambie de página
@@ -259,15 +311,17 @@ function Gastos() {
       {showModal && selectedDebt && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <h2>Deudas</h2>
-            {selectedDebt.creditors.map(({ creditor, amount }, index) => (
+            <h2>Deudas de {selectedDebt.usuario}</h2>
+            {Object.entries(selectedDebt.deudas).map(([acreedor, cantidad], index) => (
               <p key={index}>
-                Le debes {amount.toFixed(2)} a {creditor}
+                Le debes {cantidad.toFixed(2)} a {acreedor}
+                <input
+                  type="checkbox"
+                  checked={!!pagadas[acreedor]}
+                  onChange={() => handleCheckboxChange(acreedor)}
+                />
               </p>
             ))}
-            <div>
-              <input type="checkbox" />
-            </div>
             <button className="btn btn-secondary" onClick={closeModal}>Cerrar</button>
           </div>
         </div>

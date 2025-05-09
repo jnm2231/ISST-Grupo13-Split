@@ -92,7 +92,7 @@ function GrupoGastos() {
           const data = await response.json();
           setGrupos(data);
         } else {
-          console.log("GrupoGastos.cargar(): espuesta de red OK pero respuesta de HTTP no OK");
+          console.log("GrupoGastos.cargar(): Respuesta de red OK pero respuesta de HTTP no OK");
           const dataError = await response.json();
           console.log(`GrupoGastos.cargar(): Error: ${response.status} - ${dataError.error.message}`);
         }
@@ -128,7 +128,7 @@ function GrupoGastos() {
           {user && user.nombre ? user.nombre.charAt(0).toUpperCase() : "U"}
         </div>
         <div>
-        <p className="nombreuser">Welcome {user ? user.nombre : "Usuario"}!</p>
+        <p className="nombreuser">¡Bienvenido,  {user ? user.nombre : "Usuario"}!</p>
         <p className="emailuser">{user ? user.email : "email"}</p>
         </div>
         <button className="boton" onClick={() => navigate('/infoPerfil')}>Perfil</button>

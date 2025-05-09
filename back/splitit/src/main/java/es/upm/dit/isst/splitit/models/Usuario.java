@@ -32,6 +32,9 @@ public class Usuario {
     @Column(name= "authprovider", nullable = false)
     private String authProvider; // local o google
 
+    // @Column(name= "GoogleToken", nullable = true)
+    // private String googleToken; // Token de Google, se puede usar para verificar la autenticidad del usuario
+
     @OneToMany(mappedBy = "usuario")
     private List<UsuarioGrupo> grupos; // Grupos en los que está
 
@@ -49,6 +52,19 @@ public class Usuario {
         this.nombre = nombre;
         this.email = email;
         this.password = password;
+        this.authProvider = authProvider;
+    }
+
+    /**
+     * Constructor con parámetros.
+     * @param nombre
+     * @param email
+     * @param password
+     * @param authProvider
+     */
+    public Usuario(String nombre, String email, String authProvider) {
+        this.nombre = nombre;
+        this.email = email;
         this.authProvider = authProvider;
     }
 
@@ -84,6 +100,14 @@ public class Usuario {
     public void setAuthProvider(String authProvider) {
         this.authProvider = authProvider;
     }
+    
+    // public String getGoogleToken() {
+    //     return googleToken;
+    // }
+
+    // public void setGoogleToken(String googleToken) {
+    //     this.googleToken = googleToken;
+    // }
 
     public List<UsuarioGrupo> getGrupos() {
         return grupos;

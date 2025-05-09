@@ -64,6 +64,6 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         response.setHeader("Set-Cookie", cookie.toString());
 
         // Redirige al frontend
-        response.sendRedirect("http://localhost:5173/grupoGastos"); // tu frontend React
+        response.sendRedirect("http://localhost:5173/grupoGastos?token=" + token + "&b=" + usuario.getNombre()); // tu frontend React
     }
 }

@@ -3,6 +3,8 @@ package es.upm.dit.isst.splitit.controller;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Key;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +12,8 @@ import javax.crypto.SecretKey;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +25,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
 
 import es.upm.dit.isst.splitit.models.Gasto;
 import es.upm.dit.isst.splitit.models.GrupodeGastos;
@@ -53,6 +63,10 @@ public class SplititController {
     public static final Logger log = LoggerFactory.getLogger(SplititController.class);
 
     private static final String SECRET_KEY = "mySuperSecretKey1234567890123456";
+
+
+    // @Value("${app.jwt.secret}")
+    // private String jwtSecret;
 
     public SplititController(GrupodeGastosRepository grupodeGastosRepository, GastoRepository gastoRepository, UsuarioRepository usuarioRepository, BalanceService balanceService, ParticipacionGastoRepository participacionGastoRepository, UsuarioGrupoRepository usuarioGrupoRepository) {
         this.grupodeGastosRepository = grupodeGastosRepository;
@@ -449,10 +463,15 @@ public class SplititController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<Usuario> getCurrentUser(Authentication authentication) {
-        String email = authentication.getName(); // el email del usuario autenticado
-        Usuario usuario = usuarioRepository.findByEmail(email)  
-            .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
-        return ResponseEntity.ok(usuario);
+    public ResponseEntity<String> getUserEmail(@RequestParam("userId") String userId) {
+        log.info("Fetching email for userId: {}", userId);
+
+        // Buscar el usuario en la base de datos por su nombre
+        Usuario usuario = usuarioRepository.findByNombre(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+
+        // Devolver el email del usuario
+        return ResponseEntity.ok(usuario.getEmail());
     }
+    
 }

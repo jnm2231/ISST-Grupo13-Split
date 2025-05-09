@@ -1,9 +1,10 @@
 import './App.css'
 import './styles/login.css'
 import { useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import { motion } from 'framer-motion';
 import { CircleDollarSign, Users, Clock, BarChart } from 'lucide-react';
+import { GoogleLogin } from '@react-oauth/google'; // Import the Google login icon
 
 function InicioSesion() {
     const [showLogin, setShowLogin] = useState(false);
@@ -15,6 +16,17 @@ function InicioSesion() {
     const [registerPassword, setRegisterPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const navigate = useNavigate();
+
+    useEffect(() => {
+        // Obtener el usuario del localStorage
+        let usuario = localStorage.getItem('usuario');
+        if (usuario) {
+            usuario = JSON.parse(usuario);
+            if (usuario.nombre) {
+                navigate('/grupoGastos'); // Redirigir si ya hay un usuario
+            }
+        }
+    }, []);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -55,6 +67,25 @@ function InicioSesion() {
             alert(error.message);
         }
     };
+
+
+    const handleSuccess = async (res) => {
+        const idToken = res.credential;
+        console.log('ID Token:', idToken);
+        window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+        // const response = await fetch('http://localhost:8080/myApi/google', {
+        // method: 'GET',
+        // headers: { 'Content-Type': 'application/json' },
+        // credentials: 'include',
+        // body: JSON.stringify({ idToken })
+        // });
+        // const data = await response.json();
+        // localStorage.setItem('token', data.token)
+        // console.log('Token:', data.token);
+        // console.log('Usuario:', data.user);
+    };
+      
+    const handleError = () => console.error('Error Google Login');
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -199,13 +230,7 @@ function InicioSesion() {
                         >
                             Registrarse
                         </motion.button>
-                        <a 
-                            href="http://localhost:8080/oauth2/authorization/google" 
-                            className="login-link-google"
-                            style={{ display: 'block', marginTop: '1rem', textAlign: 'center', color: '#4285F4', textDecoration: 'none' }}
-                        >
-                            Iniciar sesión con Google
-                        </a>
+                        <GoogleLogin onSuccess={handleSuccess} onError={handleError}/>
                         <button className="btn-demo" onClick={() => navigate('/grupoGastos')}>Continuar</button>
                     </div>
                 </div>

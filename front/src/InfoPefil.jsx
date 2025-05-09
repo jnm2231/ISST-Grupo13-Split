@@ -7,19 +7,26 @@ import { LogOut } from 'lucide-react';
 function InfoPerfil() {
   const navigate = useNavigate();
   const [user, setUser] = useState();
+  const [logeado, setLogeado] = useState(true);
 
   useEffect(() => {
+    if(!logeado){
+      localStorage.removeItem('usuario');
+      navigate('/');
+      return;
+    }
     // Obtener el usuario del localStorage
     let usuario = localStorage.getItem('usuario');
+    console.log(usuario);
     if (usuario == null) {
       // Si no hay usuario, crear uno de prueba o redirigir al login
-      localStorage.setItem('usuario', JSON.stringify({ id: 4, nombre: "Julio", email: "usuario4@example.com" }));
+      localStorage.setItem('usuario', JSON.stringify({ nombre: "Julio", email: "usuario4@example.com" }));
       usuario = JSON.parse(localStorage.getItem('usuario'));
     } else {
       usuario = JSON.parse(usuario);
     }
     setUser(usuario);
-  }, []);
+  }, [logeado]);
 
   return (
     <div className="grupo-gastos-container">
@@ -33,7 +40,7 @@ function InfoPerfil() {
         </div>
         <button className="boton" onClick={() => navigate('/infoPerfil')}>Perfil</button>
         <button className="boton" onClick={() => navigate('/grupoGastos')}>Mis grupos</button>
-        <button className="boton-roja" onClick={() => navigate('/')}>
+        <button className="boton-roja" onClick={() => setLogeado(false)}>
           <LogOut size={20} className="logout-icon" /> Cerrar sesión
         </button>
       </aside>

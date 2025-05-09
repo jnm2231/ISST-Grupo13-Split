@@ -10,24 +10,65 @@ import { LogOut } from 'lucide-react'; // Import the logout icon
 function GrupoGastos() {
 
   const navigate = useNavigate();
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get('token');
+  const userId = params.get('b');
 
   const [grupos, setGrupos] = useState([]) //aqui guardo los grupos que me devuelve el servidor o el mock
   const [user, setUser] = useState() //aqui guardo el usuario que me devuelve el servidor o el mock
   const [searchTerm, setSearchTerm] = useState('');
+  const [logeado, setLogeado] = useState(true);
 
   //Lo que antes estaba en App.jsx
   useEffect(() => {
-    // Obtener el usuario del localStorage
-    const userData = localStorage.getItem('usuario');
-    if (userData) {
-      setUser(JSON.parse(userData));
+    if(!logeado){
+      localStorage.removeItem('usuario');
+      navigate('/');
+      return;
     }
-    // Cargar los grupos
+    cargarUsuario(); // Cargar el usuario al montar el componente
     cargar();
-  }, []); // Array vacío para que solo se ejecute una vez al montar el componente
+  }, [logeado]); // Array vacío para que solo se ejecute una vez al montar el componente
 
 
   // Función para cargar los datos
+  async function cargarUsuario() {
+    // Obtener usuario del backend
+    console.log(localStorage.getItem('usuario'));
+    if(token){
+      if (CONFIG.use_server === true) {
+        try {
+          const response = await fetch(`${CONFIG.api_base_url}/me?userId=${userId}`, {
+            method: "GET",
+            headers: {
+              "Authorization": `Bearer ${token}`, // Incluir el token en el encabezado
+              "Content-Type": "application/json",
+            },
+            credentials: "include", // Incluir credenciales (opcional)
+          });
+          if (response.status === 200) {
+            const data = await response.text();
+            localStorage.setItem('usuario', JSON.stringify({ nombre: userId, email: data })); // Guardar el usuario en localStorage
+            setUser({ nombre: userId, email: data }); // Guardar el usuario en el estado
+            if (token) {
+              localStorage.setItem('token', token);
+              console.log(token);
+              // redirigir o hacer algo más
+            }
+          } else {
+            console.log("GrupoGastos.cargarUsuario(): espuesta de red OK pero respuesta de HTTP no OK");
+            const dataError = await response.json();
+            console.log(`GrupoGastos.cargarUsuario(): Error: ${response.status} - ${dataError.error.message}`);
+          }
+        } catch (e) {
+          console.log("GrupoGastos.cargarUsuario(): ERROR", e);
+        }
+      }
+    } else {
+      const usuario = JSON.parse(localStorage.getItem('usuario'));
+      setUser(usuario); // Guardar el usuario en el estado
+    }
+  }
   //Los logs con GrupoGastos.cargar() vienen de esta funcion
   async function cargar() {
     console.log("GrupoGastos.cargar(): Ejecutando cargar()");
@@ -92,7 +133,7 @@ function GrupoGastos() {
         </div>
         <button className="boton" onClick={() => navigate('/infoPerfil')}>Perfil</button>
         <button className="boton" onClick={() => navigate('/grupoGastos')}>Mis grupos</button>
-        <button className="boton-roja" onClick={() => navigate('/')}>
+        <button className="boton-roja" onClick={() => setLogeado(false)}>
           <LogOut size={20} className="logout-icon" />   Cerrar sesión
         </button>
       </aside>

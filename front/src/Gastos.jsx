@@ -178,7 +178,7 @@ function Gastos() {
     return (
         Object.entries(balance).map(([usuario, deuda], index) => 
          (
-            <button className="tarjetagastos" key={index} onClick={() => deuda < 0 && handleDebtClick(usuario, deuda)}>
+            <button className="tarjetagastos" key={index} onClick={() => deuda < 0 && handleDebtClick(usuario)}>
               <div className='filagastos'>
                 <p className="importe">{usuario}</p>
                 <p className={deuda > 0 ? "verde" : deuda === 0 ? "" : "rojo"}>
@@ -192,14 +192,20 @@ function Gastos() {
     );
   }
 
-  function handleDebtClick(usuario, deuda) {
-    // Find all users with a positive balance (green)
-    const creditors = Object.entries(balance)
-      .filter(([_, balance]) => balance > 0)
-      .map(([creditor, amount]) => ({ creditor, amount }));
-
-    setSelectedDebt({ usuario, deuda, creditors });
-    setShowModal(true);
+  function handleDebtClick(usuario) {
+    fetch(`${CONFIG.api_grupos}/${id}/deudas`)
+      .then((response) => {
+        if (!response.ok) throw new Error("Error al obtener las deudas");
+        return response.json();
+      })
+      .then((deudas) => {
+        const deudasUsuario = deudas[usuario] || {};
+        setSelectedDebt({ usuario, deudas: deudasUsuario });
+        setShowModal(true);
+      })
+      .catch((error) => {
+        console.error("Error al obtener las deudas detalladas:", error);
+      });
   }
 
   function closeModal() {
@@ -259,15 +265,13 @@ function Gastos() {
       {showModal && selectedDebt && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
-            <h2>Deudas</h2>
-            {selectedDebt.creditors.map(({ creditor, amount }, index) => (
+            <h2>Deudas de {selectedDebt.usuario}</h2>
+            {Object.entries(selectedDebt.deudas).map(([acreedor, cantidad], index) => (
               <p key={index}>
-                Le debes {amount.toFixed(2)} a {creditor}
+                Le debes {cantidad.toFixed(2)} a {acreedor}
+                <input type="checkbox" />
               </p>
             ))}
-            <div>
-              <input type="checkbox" />
-            </div>
             <button className="btn btn-secondary" onClick={closeModal}>Cerrar</button>
           </div>
         </div>

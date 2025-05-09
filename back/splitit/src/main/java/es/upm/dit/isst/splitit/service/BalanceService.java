@@ -3,6 +3,7 @@ package es.upm.dit.isst.splitit.service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 import org.springframework.stereotype.Service;
 
@@ -87,5 +88,36 @@ public class BalanceService {
 
         log.info("Balances finales calculados: {}", balances);
         return balances;
+    }
+
+    public Map<String, Map<String, Float>> calcularDeudasDetalladas(Integer groupId) {
+        log.info("Calculando deudas detalladas para el grupo con ID: {}", groupId);
+
+        Map<String, Float> balances = calcularBalances(groupId);
+        Map<String, Map<String, Float>> deudasDetalladas = new HashMap<>();
+
+        List<String> usuarios = new ArrayList<>(balances.keySet());
+
+        for (String deudor : usuarios) {
+            if (balances.get(deudor) < 0) {
+                Map<String, Float> deudas = new HashMap<>();
+                float deudaRestante = Math.abs(balances.get(deudor));
+
+                for (String acreedor : usuarios) {
+                    if (balances.get(acreedor) > 0 && deudaRestante > 0) {
+                        float cantidadAPagar = Math.min(deudaRestante, balances.get(acreedor));
+                        deudas.put(acreedor, cantidadAPagar);
+
+                        balances.put(acreedor, balances.get(acreedor) - cantidadAPagar);
+                        deudaRestante -= cantidadAPagar;
+                    }
+                }
+
+                deudasDetalladas.put(deudor, deudas);
+            }
+        }
+
+        log.info("Deudas detalladas calculadas: {}", deudasDetalladas);
+        return deudasDetalladas;
     }
 }

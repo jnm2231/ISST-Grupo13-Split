@@ -455,4 +455,12 @@ public class SplititController {
             .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado"));
         return ResponseEntity.ok(usuario);
     }
+
+    
+    @GetMapping("/grupos/{groupId}/deudas")
+    public ResponseEntity<Map<String, Map<String, Float>>> getDetailedDebts(@PathVariable Integer groupId) {
+        log.info("Calculando deudas detalladas para el grupo con ID: {}", groupId);
+        Map<String, Map<String, Float>> detailedDebts = balanceService.calcularDeudasDetalladas(groupId);
+        return ResponseEntity.ok(detailedDebts);
+    }
 }

@@ -119,16 +119,23 @@ public class SplititController {
         final String KEY_ID = "id";
         final String KEY_NOMBRE = "nombre";
         final String KEY_NUMERO_DE_PERSONAS = "numeroDePersonas";
+        final String KEY_BALANCE = "balance"; // Nueva clave para el balance
         final String KEY_OTROS_DATOS = "otrosDatos";
 
         // Construir y devolver la respuesta con el número de personas en cada grupo
         return grupos.stream()
                 .map(grupo -> {
                     int numeroDePersonas = usuarioGrupoRepository.findByGrupoId(grupo.getId()).size();
+                    
+                    // Obtener balances del grupo
+                    Map<String, Float> balances = balanceService.calcularBalances(grupo.getId());
+                    Float balanceUsuario = balances.getOrDefault(usuario.getNombre(), 0f); // Usuario actual
+
                     return Map.of(
                         KEY_ID, grupo.getId(),
                         KEY_NOMBRE, grupo.getNombre(),
                         KEY_NUMERO_DE_PERSONAS, numeroDePersonas,
+                        KEY_BALANCE, balanceUsuario, // Añadir balance del usuario
                         KEY_OTROS_DATOS, grupo // Puedes incluir otros datos del grupo aquí
                     );
                 })

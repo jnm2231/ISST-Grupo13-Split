@@ -114,11 +114,14 @@ function GrupoGastos() {
     return grupos
       .filter((grupo) => grupo.nombre.toLowerCase().includes(searchTerm.toLowerCase()))
       .map((grupo, index) => (
-        <button className="tarjetaGrupo" onClick={() => _pasarPagina(grupo)} value={grupo} key={index}>
+        <button className="tarjetaGrupo" onClick={() => _pasarPagina(grupo)} key={index}>
           {grupo.nombre}
-            <div>
-              <p className='miembros-grupo'>{grupo.numeroDePersonas} miembros</p>
-            </div>
+          <div>
+            <p className='miembros-grupo'>{grupo.numeroDePersonas} miembros</p>
+            <p className={grupo.balance > 0 ? "verde" : grupo.balance < 0 ? "rojo" : ""}>
+              {grupo.balance?.toFixed(2) ?? "0.00"} €
+            </p>
+          </div>
         </button>
       ));
   }

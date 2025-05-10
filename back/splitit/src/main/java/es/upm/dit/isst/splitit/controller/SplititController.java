@@ -1,5 +1,6 @@
 package es.upm.dit.isst.splitit.controller;
 
+import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Key;
@@ -82,7 +83,7 @@ public class SplititController {
      * @return Lista de todos los grupos de gastos.
      */
     @GetMapping("/grupos")
-    public List<GrupodeGastos> readAll(@CookieValue(name = "token", required = false) String token) {
+    public List<Map<String, Serializable>> readAll(@CookieValue(name = "token", required = false) String token) {
         // Extraer el token de la cookie
         if (token == null || token.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token no proporcionado o inválido");
@@ -94,9 +95,9 @@ public class SplititController {
         try {
             usuarioId = Jwts.parser()
                 .verifyWith((SecretKey) key)
-            .build()
+                .build()
                 .parseSignedClaims(token)
-            .getPayload()
+                .getPayload()
                 .getSubject();
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token inválido o expirado");
@@ -114,7 +115,24 @@ public class SplititController {
                 .map(UsuarioGrupo::getGrupo)
                 .toList();
 
-        return grupos;
+        // Definir constantes para claves
+        final String KEY_ID = "id";
+        final String KEY_NOMBRE = "nombre";
+        final String KEY_NUMERO_DE_PERSONAS = "numeroDePersonas";
+        final String KEY_OTROS_DATOS = "otrosDatos";
+
+        // Construir y devolver la respuesta con el número de personas en cada grupo
+        return grupos.stream()
+                .map(grupo -> {
+                    int numeroDePersonas = usuarioGrupoRepository.findByGrupoId(grupo.getId()).size();
+                    return Map.of(
+                        KEY_ID, grupo.getId(),
+                        KEY_NOMBRE, grupo.getNombre(),
+                        KEY_NUMERO_DE_PERSONAS, numeroDePersonas,
+                        KEY_OTROS_DATOS, grupo // Puedes incluir otros datos del grupo aquí
+                    );
+                })
+                .toList();
     }
 
     /**

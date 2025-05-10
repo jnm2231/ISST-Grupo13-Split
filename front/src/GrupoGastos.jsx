@@ -18,6 +18,9 @@ function GrupoGastos() {
   const [user, setUser] = useState() //aqui guardo el usuario que me devuelve el servidor o el mock
   const [searchTerm, setSearchTerm] = useState('');
   const [logeado, setLogeado] = useState(true);
+  //Variables para el modal de unirse a un grupo
+  const [showJoinModal, setShowJoinModal] = useState(false); // Estado para mostrar/ocultar el modal
+  const [groupId, setGroupId] = useState(''); // Estado para almacenar el ID del grupo
 
   //Lo que antes estaba en App.jsx
   useEffect(() => {
@@ -121,6 +124,17 @@ function GrupoGastos() {
     navigate(`/${valor.id}`+`/gastos`, { state: { valor } });
   }
 
+  // Limpiar el campo del ID del grupo cuando se abre el modal
+  const handleOpenJoinModal = () => {
+    setGroupId('');
+    setShowJoinModal(true);
+  };
+
+  // Cerrar el modal
+  const handleCloseJoinModal = () => {
+    setShowJoinModal(false);
+  };
+
   return (
     <div className="grupo-gastos-container">
       <aside className="sidebar">
@@ -148,13 +162,47 @@ function GrupoGastos() {
           />
           <div className="action-buttons">
             <button className="boton" onClick={() => navigate('/creargrupo')}>Crear Grupo</button>
-            <button className="boton-unirse">Unirse a un Grupo</button>
+            <button className="boton-unirse" onClick={handleOpenJoinModal}>Unirse a un Grupo</button>
           </div>
         </div>
         <div className="grupo-tarjetas">
           {_imprimeGrupos()}
         </div>
       </main>
+
+      {/* Modal para unirse a un grupo */}
+      {showJoinModal && (
+        <div className="modal-overlay" onClick={handleCloseJoinModal}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h2>Unirse a un Grupo</h2>
+            <div className="form-group">
+              <label htmlFor="groupId">ID del Grupo:</label>
+              <input
+                type="text"
+                id="groupId"
+                value={groupId}
+                onChange={(e) => setGroupId(e.target.value)}
+                placeholder="Introduce el ID del grupo"
+              />
+            </div>
+            <div className="modal-buttons">
+              <button 
+                className="boton"
+                onClick={() => {
+                  // Aquí iría la lógica para unirse al grupo
+                  console.log("Intentando unirse al grupo:", groupId);
+                  handleCloseJoinModal();
+                }}
+              >
+                Unirse
+              </button>
+              <button className="boton-secundario" onClick={handleCloseJoinModal}>
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

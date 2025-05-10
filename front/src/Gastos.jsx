@@ -288,12 +288,13 @@ function Gastos() {
       ) : (
         <div className="container">
           <h1>{grupo.nombre}</h1>
-          <button className="boton-volver" onClick={volverAGrupoGastos}>&lt; Volver</button>
-          <div className="navegar">
-            <ul>
-              <button className={boton1} onClick={() => cambio()}>Gastos</button>
-              <button className={boton2} onClick={() => cambio()}>Balance</button>
-            </ul>
+          <div className="headerGrupoGastos">
+            <button className="boton-volver" onClick={volverAGrupoGastos}>&lt; Volver</button>
+              <ul className="navegar">
+                <button className={boton1} onClick={() => cambio()}>Gastos</button>
+                <button className={boton2} onClick={() => cambio()}>Balance</button>
+              </ul>
+              <div></div>
           </div>
           <div className="fila">
             <div id="conjuntoTarjeta">

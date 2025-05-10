@@ -22,13 +22,17 @@ function InfoPerfil() {
     }
     // Obtener el usuario del localStorage
     let usuario = localStorage.getItem('usuario');
+    let token = localStorage.getItem('token');
     console.log(usuario);
     if (usuario == null) {
       // Si no hay usuario, crear uno de prueba o redirigir al login
       localStorage.setItem('usuario', JSON.stringify({ nombre: "Julio", email: "usuario4@example.com" }));
       usuario = JSON.parse(localStorage.getItem('usuario'));
     } else {
-      usuario = JSON.parse(usuario);
+      usuario = JSON.parse(usuario, token);
+      if(usuario.email == null){
+        handleEmail(usuario);
+      }
     }
     setUser(usuario);
   }, [logeado]);
@@ -43,6 +47,32 @@ function InfoPerfil() {
     setShowPasswordModal(false);
     setPassword('');
     setRepeatPassword('');
+  };
+
+  const handleEmail = async (usuario, token) => {
+    try {
+      console.log(usuario.nombre);
+      const userId = usuario.nombre;
+      const response = await fetch(`${CONFIG.api_base_url}/me?userId=${userId}`, {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`, // Incluir el token en el encabezado
+          "Content-Type": "application/json",
+        },
+        credentials: "include", // Incluir credenciales (opcional)
+      });
+      if (response.status === 200) {
+        const data = await response.text();
+        localStorage.setItem('usuario', JSON.stringify({ nombre: userId, email: data })); // Guardar el usuario en localStorage
+        setUser({ nombre: userId, email: data }); // Guardar el usuario en el estado
+      } else {
+        console.log("GrupoGastos.cargarUsuario(): espuesta de red OK pero respuesta de HTTP no OK");
+        const dataError = await response.json();
+        console.log(`GrupoGastos.cargarUsuario(): Error: ${response.status} - ${dataError.error.message}`);
+      }
+    } catch (e) {
+      console.log("Error al cargar el email", e);
+    }
   };
 
   // Función para manejar el cambio de contraseña (sin lógica de backend por ahora)

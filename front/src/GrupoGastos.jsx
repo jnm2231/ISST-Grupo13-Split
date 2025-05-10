@@ -21,6 +21,7 @@ function GrupoGastos() {
   //Variables para el modal de unirse a un grupo
   const [showJoinModal, setShowJoinModal] = useState(false); // Estado para mostrar/ocultar el modal
   const [groupId, setGroupId] = useState(''); // Estado para almacenar el ID del grupo
+  const [nickname, setNickname] = useState(''); // Estado para almacenar el apodo del usuario
 
   //Lo que antes estaba en App.jsx
   useEffect(() => {
@@ -138,6 +139,57 @@ function GrupoGastos() {
     setShowJoinModal(false);
   };
 
+  // Esta función gestiona que un usuario se una a un grupo
+  const handleJoinGroup = async () => {
+    try {
+      // Validación básica del ID
+      if (!groupId || groupId.trim() === '') {
+        alert("Por favor, introduce el ID del grupo");
+        return;
+      }
+  
+      // Obtener información del usuario del localStorage
+      const usuario = JSON.parse(localStorage.getItem('usuario'));
+      if (!usuario || !usuario.nombre) {
+        alert("Error: No se ha encontrado información de usuario");
+        return;
+      }
+  
+      // Obtener el token de autenticación
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert("Error: No se ha encontrado el token de autenticación");
+        return;
+      }
+  
+      const response = await fetch(`${CONFIG.api_grupos}/join`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // No necesitas enviar el token en los headers si usas cookies
+        },
+        credentials: 'include', // Importante para incluir las cookies
+        body: JSON.stringify({
+          grupoId: groupId,
+          usuarioNombre: usuario.nombre,
+          apodo: nickname
+        })
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Error al unirse al grupo");
+      }
+  
+      alert("Te has unido al grupo correctamente");
+      await cargar(); // Actualizar la lista de grupos
+      handleCloseJoinModal();
+    } catch (error) {
+      console.error("Error al intentar unirse al grupo:", error);
+      alert(`Error: ${error.message || "No se pudo completar la solicitud"}`);
+    }
+  };
+
   return (
     <div className="grupo-gastos-container">
       <aside className="sidebar">
@@ -187,15 +239,19 @@ function GrupoGastos() {
                 onChange={(e) => setGroupId(e.target.value)}
                 placeholder="Introduce el ID del grupo"
               />
+              <label htmlFor="nickname">Apodo:</label>
+              <input
+                type="text"
+                id="nickname"
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+                placeholder="Puedes no usar apodo"
+              />
             </div>
             <div className="modal-buttons">
               <button 
                 className="boton"
-                onClick={() => {
-                  // Aquí iría la lógica para unirse al grupo
-                  console.log("Intentando unirse al grupo:", groupId);
-                  handleCloseJoinModal();
-                }}
+                onClick={handleJoinGroup}
               >
                 Unirse
               </button>

@@ -472,3 +472,8 @@ body {
 .texto-rojo {
   color: rgb(190, 6, 6);
 }
+
+.miembros-grupo {
+  font-size: 0.9em;
+  margin: 5px 0;
+}

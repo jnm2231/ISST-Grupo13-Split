@@ -32,7 +32,7 @@ function InfoPerfil() {
     <div className="grupo-gastos-container">
       <aside className="sidebar">
         <div className="user-icon">
-          {user && user.nombre ? user.nombre.charAt(0).toUpperCase() : "U"}
+          {user?.nombre?.charAt(0).toUpperCase() || "U"}
         </div>
         <div>
           <p className="nombreuser">¡Bienvenido, {user ? user.nombre : "Usuario"}!</p>

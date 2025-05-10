@@ -18,6 +18,10 @@ function Gastos() {
   const [showModal, setShowModal] = useState(false);
   const [selectedDebt, setSelectedDebt] = useState(null);
   const [pagadas, setPagadas] = useState({}); // Estado para las deudas pagadas
+  // Estado para controlar el modal y el gasto seleccionado
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedGasto, setSelectedGasto] = useState(null);
+  const [participantes, setParticipantes] = useState([]);
   let params = useParams();
   let id = params.grupoId;
   console.log("Grupo ID:", id);
@@ -76,7 +80,7 @@ function Gastos() {
         console.error('Error de red:', error);
         alert('Error de red al intentar crear el gasto');
     }
-};
+  };
 
   async function cargarGrupo() {
     console.log("Ejecutando cargarGrupo()");
@@ -158,7 +162,7 @@ function Gastos() {
     return (
       <div className="gasto-tarjetas">
         {grupo.gastos.map((gasto, index) => (
-          <button className="tarjetagastos" onClick={() => _pasarPagina(gasto)} value={gasto} key={index}>
+          <button className="tarjetagastos" onClick={() => abrirModalGasto(gasto)}>
             <p className={gasto.concepto.includes("Deuda") ? "texto-rojo" : ""}>
               {gasto.concepto}
             </p>
@@ -166,11 +170,57 @@ function Gastos() {
               <p className="pagado">Pagado por: {gasto.pagadopor}</p>
               <p className="importe">{gasto.importe.toFixed(2)}</p>
             </div>
+            <p className="texto-informacion">
+              Pincha aquí para más información del gasto
+            </p>
           </button>
         ))}
       </div>
     );
   }
+
+  // Función para cargar los participantes de un gasto
+  async function cargarParticipacion(gastoId) {
+    try {
+      const response = await fetch(`${CONFIG.api_gastos}/${gastoId}`);
+      if (response.ok) {
+        const data = await response.json();
+        setParticipantes(data);
+      } else {
+        console.error("Error al cargar la participación:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error al cargar la participación:", error);
+    }
+  }
+
+  // Función para renderizar los participantes de un gasto
+  function renderParticipantes() {
+    if (!participantes.length) {
+      return <p>Cargando participantes...</p>;
+    }
+    return participantes.map((participante, index) => (
+      <div key={index} className="filagastos">
+        <p className="importe">{participante.usuario.nombre}</p>
+        <p>{participante.importe.toFixed(2)} €</p>
+      </div>
+    ));
+  }
+
+  // Función para abrir el modal
+  function abrirModalGasto(gasto) {
+    setSelectedGasto(gasto);
+    cargarParticipacion(gasto.id); // Cargar los participantes del gasto
+    setModalVisible(true);
+  }
+
+  // Función para cerrar el modal
+  function cerrarModalGasto() {
+    setModalVisible(false);
+    setSelectedGasto(null);
+    setParticipantes([]);
+  }
+
   //navega y pasa a la pagina gastos los datos que se le meten
   function _pasarPagina(valor) {
     navigate(`/${id}/gastos/${valor.id}`); // Redirect to gasto details
@@ -328,6 +378,20 @@ function Gastos() {
               </p>
             ))}
             <button className="btn btn-secondary" onClick={closeModal}>Cerrar</button>
+          </div>
+        </div>
+      )}
+
+      {modalVisible && selectedGasto && (
+        <div className="modal-overlay" onClick={cerrarModalGasto}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h2>Detalles del gasto</h2>
+            <p><strong>Concepto:</strong> {selectedGasto.concepto}</p>
+            <p><strong>Pagado por:</strong> {selectedGasto.pagadopor}</p>
+            <p><strong>Importe:</strong> {selectedGasto.importe.toFixed(2)} €</p>
+            <h4>Participantes:</h4>
+            {renderParticipantes()}
+            <button className="btn btn-secondary" onClick={cerrarModalGasto}>Cerrar</button>
           </div>
         </div>
       )}

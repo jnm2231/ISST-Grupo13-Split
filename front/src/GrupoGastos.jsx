@@ -115,14 +115,9 @@ function GrupoGastos() {
       .map((grupo, index) => (
         <button className="tarjetaGrupo" onClick={() => _pasarPagina(grupo)} value={grupo} key={index}>
           {grupo.nombre}
-          <div className="gastos">
-            {grupo.gastos && grupo.gastos.length > 0 ? (
-              <p className="miembros-grupo">Gastos: {grupo.gastos.length}</p>
-            ) : (
-              <p className="miembros-grupo">Sin gastos</p>
-            )}
+            <div>
+              <p className='miembros-grupo'>{grupo.numeroDePersonas} miembros</p>
             </div>
-            {/* <div>{grupo.numeroDePersonas}</div> */}
         </button>
       ));
   }

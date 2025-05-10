@@ -365,7 +365,11 @@ function Gastos() {
                 <button className={boton1} onClick={() => cambio()}>Gastos</button>
                 <button className={boton2} onClick={() => cambio()}>Balance</button>
               </ul>
-            <div></div>
+            <div>
+                <button className="boton-compartir" onClick={abrirModalCompartir}>
+                    Compartir Grupo
+                  </button>
+            </div>
           </div>
           <div className="fila">
             <div id="conjuntoTarjeta">
@@ -373,9 +377,6 @@ function Gastos() {
                 <>
                   <button className="boton-anadirgasto" onClick={_navegarAnadirGasto}>
                     Añadir Gasto
-                  </button>
-                  <button className="boton-anadirgasto" onClick={abrirModalCompartir}>
-                    Compartir Grupo
                   </button>
                   {_imprimegasto()}
                 </>

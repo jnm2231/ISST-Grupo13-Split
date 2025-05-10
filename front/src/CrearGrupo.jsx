@@ -71,10 +71,9 @@ function CrearGrupo() {
     const subirGrupo = async (e) => {
         e.preventDefault();
 
-        //Alerta que salta si el nombre del grupo es null
-        //trim() elimina los espacios en blanco al principio y al final de la cadena
+        // Alerta que salta si el nombre del grupo es null
         if (!groupName.trim()) {
-            alert('El nombre del no puede contener solo espacios');
+            alert('El nombre del grupo no puede contener solo espacios');
             return; // Detener la ejecución si el nombre está vacío
         }
 
@@ -83,14 +82,20 @@ function CrearGrupo() {
             return; // Detener la ejecución si no hay participantes
         }
 
-        try{
+        try {
             // Crear el cuerpo de la petición
             const requestBody = {
                 nombre: groupName, // Nombre del grupo
-                usuarios: participants.map((participant) => ({
-                    nombre: participant.nombre, // Nombre del usuario
-                    apodo: participant.apodo || participant.nombre, // Apodo (opcional)
-                })),
+                usuarios: [
+                    ...participants.map((participant) => ({
+                        nombre: participant.nombre, // Nombre del usuario
+                        apodo: participant.apodo || participant.nombre, // Apodo (opcional)
+                    })),
+                    {
+                        nombre: user.nombre, // Añadir al creador del grupo
+                        apodo: user.nombre, // Apodo del creador
+                    },
+                ],
             };
 
             // Realizar la petición POST al backend
@@ -110,11 +115,11 @@ function CrearGrupo() {
 
             // Mostrar un mensaje de éxito y redirigir al usuario
             alert('Grupo creado correctamente');
-            window.location.href = '/grupoGastos'; // Redirigir a la página principal y hace refresh para que salga el nuevo grupo
-            }catch(error){
-                console.error('Error de red:', error);
-                alert('Error de red al intentar crear el grupo');
-            }
+            window.location.href = '/grupoGastos'; // Redirigir a la página principal
+        } catch (error) {
+            console.error('Error de red:', error);
+            alert('Error de red al intentar crear el grupo');
+        }
     };
 
     return(

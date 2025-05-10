@@ -93,9 +93,10 @@ button:focus-visible {
 
 .navegar{
   display: flex;
-  justify-content:flex-start;
+  justify-content:space-between;
   padding-right: 180px;
 }
+
 
 .blue-background {
   width: 100%;

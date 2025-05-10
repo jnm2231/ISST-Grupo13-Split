@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -14,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -26,7 +28,7 @@ import jakarta.validation.constraints.NotEmpty;
 public class GrupodeGastos implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(length = 8, unique = true, nullable = false)
     private Integer id;
 
     @NotEmpty
@@ -57,6 +59,18 @@ public class GrupodeGastos implements Serializable {
         this.nombre = nombre;
     }
 
+    @PrePersist
+    private void generateId() {
+        if (this.id == null) {
+            this.id = generateRandomId();
+        }
+    }
+
+    private Integer generateRandomId() {
+        Random random = new Random();
+        return 10000000 + random.nextInt(90000000); // Genera un número entre 10000000 y 99999999
+    }
+    
     public Integer getId() {
         return id;
     }

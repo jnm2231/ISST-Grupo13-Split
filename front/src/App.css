@@ -468,3 +468,7 @@ body {
   background-color: #f0f8ff;
   transform: translateY(-5px);
 }
+
+.texto-rojo {
+  color: rgb(190, 6, 6);
+}

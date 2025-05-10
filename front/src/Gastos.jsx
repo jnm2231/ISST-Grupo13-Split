@@ -159,7 +159,9 @@ function Gastos() {
       <div className="gasto-tarjetas">
         {grupo.gastos.map((gasto, index) => (
           <button className="tarjetagastos" onClick={() => _pasarPagina(gasto)} value={gasto} key={index}>
-            {gasto.concepto}
+            <p className={gasto.concepto.includes("Deuda") ? "texto-rojo" : ""}>
+              {gasto.concepto}
+            </p>
             <div className='filagastos'>
               <p className="pagado">Pagado por: {gasto.pagadopor}</p>
               <p className="importe">{gasto.importe.toFixed(2)}</p>

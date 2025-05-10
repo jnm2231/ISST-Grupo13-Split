@@ -23,6 +23,9 @@ function Gastos() {
   const [selectedGasto, setSelectedGasto] = useState(null);
   const [participantes, setParticipantes] = useState([]);
   const [showShareModal, setShowShareModal] = useState(false); // Estado para controlar el modal de compartir grupo
+  const [editModalVisible, setEditModalVisible] = useState(false); // Estado para el modal de edición
+  const [editGastoData, setEditGastoData] = useState({}); // Estado para los datos del gasto a editar
+  const [actualizar, setActualizar] = useState(false); // Estado para forzar la actualización
 
   let params = useParams();
   let id = params.grupoId;
@@ -44,7 +47,7 @@ function Gastos() {
       setLoading(false)
     },1000)
 
-  }, []);
+  }, [actualizar]);
 
   const subirGasto = async (e) => {
     e.preventDefault();
@@ -180,6 +183,9 @@ function Gastos() {
 
   // Imprime las tarjetas pasando por el array de gastos dentro de grupo (esto solo se ve en gasto)
   function _imprimegasto() {
+    if (!grupo.gastos || grupo.gastos.length === 0) {
+      return <p>No hay gastos disponibles.</p>;
+    }
     return (
       <div className="gasto-tarjetas">
         {grupo.gastos.map((gasto, index) => (
@@ -249,7 +255,6 @@ function Gastos() {
 
   // Esto imprimiría y mostraría en balance el dinero debido a ti pero falta por hacer
   function _imprimebalance() {
-    console.log(balance);
     
     return (
         Object.entries(balance).map(([usuario, deuda], index) => 
@@ -261,6 +266,9 @@ function Gastos() {
                   {deuda.toFixed(2)}
                 </p>
               </div>
+              {deuda <0 && (<p className="texto-informacion">
+                  Pincha para saldar tus deudas
+              </p>)}
             </button>
           )
         )
@@ -309,7 +317,8 @@ function Gastos() {
       .then((response) => {
         if (!response.ok) throw new Error('Error al crear el gasto');
         console.log(`Gasto creado: ${JSON.stringify(nuevoGasto)}`);
-  
+      })
+      .then((gastoCreado) => {
         // Update the balance and debts locally
         setBalance((prevBalance) => ({
           ...prevBalance,
@@ -322,6 +331,14 @@ function Gastos() {
           delete updatedDeudas[acreedor]; // Remove the debt from the modal
           return { ...prevSelectedDebt, deudas: updatedDeudas };
         });
+
+        // Añade el nuevo gasto al estado del grupo
+        setGrupo((prevGrupo) => ({
+          ...prevGrupo,
+          gastos: [...prevGrupo.gastos, gastoCreado], // Añade el nuevo gasto a la lista de gastos
+        }));
+
+        cargarGrupo();
       })
       .catch((error) => {
         console.error('Error al crear el gasto:', error);
@@ -351,7 +368,68 @@ function Gastos() {
     console.log("Cambio detectado: esgasto ahora es", esgasto);
   }, [esgasto]);
 
+  function abrirModalEditarGasto(gasto) {
+    setEditGastoData({
+      concepto: gasto.concepto,
+      pagadopor: gasto.pagadopor,
+      importe: gasto.importe,
+      participantes: participantes.map((p) => ({
+        usuarioNombre: p.usuario.nombre,
+        importeUsuario: p.importe,
+      })),
+    });
+    setEditModalVisible(true);
+  }
+  
+  function cerrarModalEditarGasto() {
+    setEditModalVisible(false);
+    setEditGastoData({});
+  }
 
+  async function actualizarGasto() {
+    try {
+      const response = await fetch(`${CONFIG.api_gastos}/${selectedGasto.id}/actualizar`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editGastoData),
+      });
+      if (!response.ok) {
+        throw new Error('Error al actualizar el gasto');
+      }
+      alert('Gasto actualizado correctamente');
+      cerrarModalEditarGasto();
+      setActualizar((prev) => !prev);
+      cargarParticipacion(selectedGasto.id); // Recargar los datos del gasto actualizado
+    } catch (error) {
+      console.error('Error al actualizar el gasto:', error);
+      alert('Error al intentar actualizar el gasto');
+    }
+  }
+
+  async function eliminarGasto() {
+    if (!selectedGasto) return;
+  
+    const confirmacion = window.confirm(`¿Estás seguro de que deseas eliminar el gasto "${selectedGasto.concepto}"?`);
+    if (!confirmacion) return;
+  
+    try {
+      const response = await fetch(`${CONFIG.api_gastos}/${selectedGasto.id}`, {
+        method: 'DELETE',
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error al eliminar el gasto');
+      }
+  
+      alert('Gasto eliminado correctamente');
+      cerrarModalGasto(); // Cierra el modal después de eliminar el gasto
+      cargarGrupo(); // Recarga los datos del grupo para reflejar los cambios
+      cargarBalance(); // Recarga el balance
+    } catch (error) {
+      console.error('Error al eliminar el gasto:', error);
+      alert('Error al intentar eliminar el gasto');
+    }
+  }
   return (
     <div>
       {loading ? (
@@ -416,7 +494,98 @@ function Gastos() {
             <p><strong>Importe:</strong> {selectedGasto.importe.toFixed(2)} €</p>
             <h4>Participantes:</h4>
             {renderParticipantes()}
+            <div>
+              <button className="btn btn-primary" onClick={() => abrirModalEditarGasto(selectedGasto)}>
+                Editar Gasto
+              </button>
+              <button className="btn btn-danger" onClick={eliminarGasto}>Eliminar Gasto</button>
+            </div>
             <button className="btn btn-secondary" onClick={cerrarModalGasto}>Cerrar</button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal para editar gasto */}
+      {editModalVisible && (
+        <div className="modal-overlay" onClick={cerrarModalEditarGasto}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h2>Editar Gasto</h2>
+            <form onSubmit={(e) => { e.preventDefault(); actualizarGasto(); }}>
+              <label>
+                Concepto:
+                <input
+                  type="text"
+                  value={editGastoData.concepto}
+                  onChange={(e) => setEditGastoData({ ...editGastoData, concepto: e.target.value })}
+                />
+              </label>
+              <label>
+                Pagado por:
+                <input
+                  type="text"
+                  value={editGastoData.pagadopor}
+                  onChange={(e) => setEditGastoData({ ...editGastoData, pagadopor: e.target.value })}
+                />
+              </label>
+              <label>
+                Importe:
+                <input
+                  type="number"
+                  value={editGastoData.importe}
+                  onChange={(e) => {
+                    const nuevoImporte = parseFloat(e.target.value);
+                    const numeroParticipantes = editGastoData.participantes.length;
+
+                    // Recalcular el importe de cada participante
+                    const importePorParticipante = numeroParticipantes > 0 ? nuevoImporte / numeroParticipantes : 0;
+
+                    const participantesActualizados = editGastoData.participantes.map((participante) => ({
+                      ...participante,
+                      importeUsuario: importePorParticipante,
+                    }));
+
+                    setEditGastoData({
+                      ...editGastoData,
+                      importe: nuevoImporte,
+                      participantes: participantesActualizados,
+                    });
+                  }}
+                />
+              </label>
+              <h4>Participantes:</h4>
+              {editGastoData.participantes?.map((participante, index) => (
+                <div key={index}>
+                  <label>
+                    Nombre:
+                    <input
+                      type="text"
+                      value={participante.usuarioNombre}
+                      onChange={(e) => {
+                        const updatedParticipantes = [...editGastoData.participantes];
+                        updatedParticipantes[index].usuarioNombre = e.target.value;
+                        setEditGastoData({ ...editGastoData, participantes: updatedParticipantes });
+                      }}
+                    />
+                  </label>
+                  <label>
+                    Importe:
+                    <input
+                      type="number"
+                      value={participante.importeUsuario}
+                      onChange={(e) => {
+                        const updatedParticipantes = [...editGastoData.participantes];
+                        updatedParticipantes[index].importeUsuario = parseFloat(e.target.value);
+                        setEditGastoData({ ...editGastoData, participantes: updatedParticipantes });
+                      }}
+                    />
+                  </label>
+                </div>
+              ))}
+              <button type="submit" className="btn btn-primary">Guardar Cambios</button>
+              <button type="button" className="btn btn-secondary" onClick={cerrarModalEditarGasto}>
+                Cancelar
+              </button>
+            </form>
           </div>
         </div>
       )}

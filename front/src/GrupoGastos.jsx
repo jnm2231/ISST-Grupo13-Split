@@ -159,11 +159,11 @@ function GrupoGastos() {
       }
   
       // Obtener el token de autenticación
-      const token = localStorage.getItem('token');
+      /*const token = localStorage.getItem('token');
       if (!token) {
         alert("Error: No se ha encontrado el token de autenticación");
         return;
-      }
+      }*/
   
       const response = await fetch(`${CONFIG.api_grupos}/join`, {
         method: "POST",

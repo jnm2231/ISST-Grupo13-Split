@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import './App.css';
+import { LogOut } from 'lucide-react';
 
 function CrearGrupo() {
     const [groupName, setGroupName] = useState('');
@@ -8,6 +10,7 @@ function CrearGrupo() {
     const [participants, setParticipants] = useState([]);
     const [allUsers, setAllUsers] = useState([]); // Estado para almacenar todos los usuarios
     const navigate = useNavigate();
+    const user = JSON.parse(localStorage.getItem('usuario'));
 
     // Simulación de usuarios disponibles (esto debería venir del backend)
     //const allUsers = ['Olivia', 'Pedro', 'Cristina', 'Juan', 'Ana', 'Carlos'];
@@ -115,63 +118,81 @@ function CrearGrupo() {
     };
 
     return(
-        <div className="container">
-            <button type="button" className="boton-volver" onClick={() => navigate(-1)}>
-                &lt; Volver
-            </button>
-            <h1>Crear Nuevo Grupo</h1>
-            
-            <div className="form-container">
-            <form onSubmit={subirGrupo}>
-                <div className="form-group">
-                    <label className="form-titles" htmlFor="groupName">Nombre del Grupo</label>
-                    <input
-                        type="text"
-                        id="groupName"
-                        placeholder="Nombre del grupo"
-                        value={groupName}
-                        onChange={(e) => setGroupName(e.target.value)}
-                        required
-                    />
+        <div className="grupo-gastos-container">
+            <aside className="sidebar">
+                <div className="user-icon">
+                    {user && user.nombre ? user.nombre.charAt(0).toUpperCase() : "U"}
                 </div>
-
-                {/* Campo de búsqueda de participantes */}
-                <div className="form-group">
-                    <label className="form-titles" htmlFor="participantSearch">Participantes</label>
-                    <input
-                        type="text"
-                        id="participantSearch"
-                        value={searchTerm}
-                        onChange={handleSearchChange}
-                        placeholder="Nombre del participante"
-                    />
-                    {/* Lista de sugerencias */}
-                    {suggestions.length > 0 && (
-                        <ul className="suggestions">
-                            {suggestions.map((user) => (
-                                <li key={user.nombre} onClick={() => addParticipant(user)}>
-                                    {user.nombre}
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+                <div>
+                    <p className="nombreuser">¡Bienvenido, {user ? user.nombre : "Usuario"}!</p>
+                    <p className="emailuser">{user ? user.email : "email"}</p>
                 </div>
-
-                {/* Lista de participantes añadidos */}
-                <div className="participants-list">
-                    {participants.map((participant) => (
-                        <div key={participant.email} className="participant-item">
-                            {participant.nombre}
-                            <button type="button" onClick={() => removeParticipant(participant)}>✖</button>
+                <button className="boton" onClick={() => navigate('/infoPerfil')}>Perfil</button>
+                <button className="boton" onClick={() => navigate('/grupoGastos')}>Mis grupos</button>
+                <button
+                    className="boton-roja"
+                    onClick={() => {
+                        localStorage.removeItem('usuario');
+                        navigate('/');
+                    }}
+                >
+                    <LogOut size={20} className="logout-icon" /> Cerrar sesión
+                </button>
+            </aside>
+            <main className="main-content">
+                <h1>Crear Nuevo Grupo</h1>
+                <div className="form-container">
+                    <form onSubmit={subirGrupo}>
+                        <div className="form-group">
+                            <label className="form-titles" htmlFor="groupName">Nombre del Grupo</label>
+                            <input
+                                type="text"
+                                id="groupName"
+                                placeholder="Nombre del grupo"
+                                value={groupName}
+                                onChange={(e) => setGroupName(e.target.value)}
+                                required
+                            />
                         </div>
-                    ))}
+
+                        {/* Campo de búsqueda de participantes */}
+                        <div className="form-group">
+                            <label className="form-titles" htmlFor="participantSearch">Participantes</label>
+                            <input
+                                type="text"
+                                id="participantSearch"
+                                value={searchTerm}
+                                onChange={handleSearchChange}
+                                placeholder="Nombre del participante"
+                            />
+                            {/* Lista de sugerencias */}
+                            {suggestions.length > 0 && (
+                                <ul className="suggestions">
+                                    {suggestions.map((user) => (
+                                        <li key={user.nombre} onClick={() => addParticipant(user)}>
+                                            {user.nombre}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div>
+
+                        {/* Lista de participantes añadidos */}
+                        <div className="participants-list">
+                            {participants.map((participant) => (
+                                <div key={participant.email} className="participant-item">
+                                    {participant.nombre}
+                                    <button type="button" onClick={() => removeParticipant(participant)}>✖</button>
+                                </div>
+                            ))}
+                        </div>
+                        
+                        <div className="form-buttons">
+                            <button type="submit" className="btn">Crear Grupo</button>
+                        </div>
+                    </form>
                 </div>
-                
-                <div className="form-buttons">
-                    <button type="submit" className="btn">Crear Grupo</button>
-                </div>
-            </form>
-            </div>
+            </main>
         </div>
     );
 }

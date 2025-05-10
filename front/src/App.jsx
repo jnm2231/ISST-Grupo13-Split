@@ -101,7 +101,7 @@ function App() {
   <Route path="/" element={<InicioSesion />} />
   <Route path="/grupoGastos" element={<GrupoGastos />} />
   <Route path="/:grupoId/gastos" element={<Gastos />} />
-  <Route path="/:grupoId/gastos/:gastoId" element={<InfoGasto />} />
+  {/*<Route path="/:grupoId/gastos/:gastoId" element={<InfoGasto />} />*/}
   <Route path="/creargrupo" element={<CrearGrupo />} />
   <Route path="/:grupoId/gastos/anadirgasto" element={<AnadirGasto />} />
   <Route path="/infoPerfil" element={<InfoPerfil />} /> {/* Add this route */}

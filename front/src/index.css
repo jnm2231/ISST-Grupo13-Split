@@ -94,7 +94,7 @@ button:focus-visible {
 .navegar{
   display: flex;
   justify-content:space-between;
-  padding-right: 180px;
+  /*padding-right: 180px;*/
 }
 
 .texto-informacion {
@@ -501,4 +501,13 @@ input:focus, textarea:focus {
   color: #000;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.boton-compartir{
+  align-self: flex-start; /* Alinea el botón a la izquierda */
+  margin: 1rem; /* Espaciado para que no quede pegado al borde */
+  padding: 0.5rem 1rem; /* Tamaño normal del botón */
+  width: 163px; /* Evita que se estire a lo ancho */
+  background:#15738E;
+  color:#FFFFFF;
 }

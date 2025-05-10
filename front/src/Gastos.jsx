@@ -171,7 +171,7 @@ function Gastos() {
               <p className="importe">{gasto.importe.toFixed(2)}</p>
             </div>
             <p className="texto-informacion">
-              Pincha aquí para más información del gasto
+              Pincha para ver el detalle del gasto
             </p>
           </button>
         ))}

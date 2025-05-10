@@ -70,12 +70,12 @@ public class SplititController {
     // private String jwtSecret;
 
     public SplititController(GrupodeGastosRepository grupodeGastosRepository, GastoRepository gastoRepository, UsuarioRepository usuarioRepository, BalanceService balanceService, ParticipacionGastoRepository participacionGastoRepository, UsuarioGrupoRepository usuarioGrupoRepository) {
-        this.grupodeGastosRepository = grupodeGastosRepository;
-        this.gastoRepository = gastoRepository;
-        this.usuarioRepository = usuarioRepository;
-        this.balanceService = balanceService;
-        this.participacionGastoRepository = participacionGastoRepository;
-        this.usuarioGrupoRepository = usuarioGrupoRepository;
+        this.grupodeGastosRepository = grupodeGastosRepository; //Tabla con los grupos de gastos
+        this.gastoRepository = gastoRepository; //Tabla con los gastos
+        this.usuarioRepository = usuarioRepository; //Tabla con los usuarios
+        this.balanceService = balanceService; //Tabla para calcular balances y deudas
+        this.participacionGastoRepository = participacionGastoRepository;//Tabla que indica que usuarios participan en que gastos
+        this.usuarioGrupoRepository = usuarioGrupoRepository; //Tabla que indica que usuarios pertenecen a que grupos
     }
 
     /**
@@ -498,5 +498,73 @@ public class SplititController {
         log.info("Calculando deudas detalladas para el grupo con ID: {}", groupId);
         Map<String, Map<String, Float>> detailedDebts = balanceService.calcularDeudasDetalladas(groupId);
         return ResponseEntity.ok(detailedDebts);
+    }
+
+    /**
+     * Endpoint para añadir un nuevo participante a un grupo de gastos existente.
+     * 
+     * @param joinRequest Mapa con los datos necesarios para la unión (grupoId y
+     *                    usuarioNombre)
+     * @param token       Token de autenticación proporcionado en la cookie
+     * @return ResponseEntity con mensaje de confirmación de la operación
+     * @throws ResponseStatusException Si el token no es válido, el grupo no existe,
+     *                                 el usuario no existe,
+     *                                 o el usuario ya es miembro del grupo
+     */
+    @PostMapping("/grupos/join")
+    @Transactional
+    public ResponseEntity<String> joinGroup(@RequestBody Map<String, String> joinRequest,
+            @CookieValue(name = "token", required = false) String token) {
+        // Validar token
+        if (token == null || token.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token no proporcionado o inválido");
+        }
+
+        // Validar parámetros de entrada
+        String grupoId = joinRequest.get("grupoId");
+        String usuarioNombre = joinRequest.get("usuarioNombre");
+        String apodo = joinRequest.get("apodo");
+
+        if (apodo == null || apodo.isEmpty()) {
+            apodo = ""; //En caso de que no se proporcione un apodo, se asigna un valor vacío
+        }
+
+        if (grupoId == null || usuarioNombre == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "ID de grupo o nombre de usuario no proporcionados");
+        }
+
+        Integer groupId;
+        try {
+            groupId = Integer.parseInt(grupoId);
+        } catch (NumberFormatException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "ID de grupo inválido");
+        }
+
+        log.info("Usuario {} intentando unirse al grupo con ID: {}", usuarioNombre, groupId);
+
+        // Buscar el grupo de gastos
+        GrupodeGastos group = grupodeGastosRepository.findById(groupId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Grupo de gastos no encontrado"));
+
+        // Buscar el usuario en la base de datos
+        Usuario usuario = usuarioRepository.findById(usuarioNombre)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+
+        // Verificar si el usuario ya es miembro del grupo
+        boolean yaEsMiembro = usuarioGrupoRepository.findByUsuarioAndGrupo(usuario, group).isPresent();
+        if (yaEsMiembro) {
+            return ResponseEntity.badRequest().body("El usuario ya es miembro de este grupo");
+        }
+
+        // Crear la relación UsuarioGrupo
+        UsuarioGrupo usuarioGrupo = new UsuarioGrupo(usuario, group, apodo);
+
+        // Agregar la relación al grupo y al usuario
+        group.addUsuarioGrupo(usuarioGrupo);
+        usuario.addUsuarioGrupo(usuarioGrupo);
+        usuarioGrupoRepository.save(usuarioGrupo);
+
+        return ResponseEntity.ok("Usuario añadido al grupo correctamente.");
     }
 }

@@ -166,11 +166,11 @@ button:focus-visible {
 
 .tarjetagastos{
   background: #ffffff;
-  width: 60rem;
+  width: 30rem;
   text-align: left;
   padding: 4rem;
-  font-size: 30px;
-  border-radius: 30px;
+  font-size: 20px;
+  border-radius: 10px;
   color: #000000;
   margin: 1rem;
   font-weight: bold;

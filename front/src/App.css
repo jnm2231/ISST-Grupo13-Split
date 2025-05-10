@@ -286,7 +286,7 @@ body {
 .tarjetaGrupo {
   background: #ffffff;
   width: 200px;
-  height: 200px;
+  height: 100px; /* Reduce the height to make the cards narrower */
   text-align: right; /* Align text to the left */
   padding: 1rem;
   font-size: 1rem;
@@ -441,4 +441,30 @@ body {
     font-size: 20px;
     border-bottom-style: solid;
     border-bottom-width: 0.5rem;
+}
+
+.gasto-tarjetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem;
+  justify-content: center; /* Center the cards horizontally */
+}
+
+.tarjetagastos {
+  background: #ffffff;
+  width: 30rem;
+  text-align: left; /* Restore left alignment */
+  padding: 4rem; /* Restore original padding */
+  font-size: 18px;
+  border-radius: 10px;
+  color: #000000;
+  margin: 1rem;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.tarjetagastos:hover {
+  background-color: #f0f8ff;
+  transform: translateY(-5px);
 }

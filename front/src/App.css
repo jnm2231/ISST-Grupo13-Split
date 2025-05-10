@@ -365,6 +365,7 @@ body {
 
 .perfil-info p {
   margin: 0.5rem 0; /* Add spacing between name and email */
+  color: black;
 }
 
 .boton-cambiar {

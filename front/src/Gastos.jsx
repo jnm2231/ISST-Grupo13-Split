@@ -22,6 +22,8 @@ function Gastos() {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedGasto, setSelectedGasto] = useState(null);
   const [participantes, setParticipantes] = useState([]);
+  const [showShareModal, setShowShareModal] = useState(false); // Estado para controlar el modal de compartir grupo
+
   let params = useParams();
   let id = params.grupoId;
   console.log("Grupo ID:", id);
@@ -156,6 +158,25 @@ function Gastos() {
       }
       console.log("salgo del try")
   }
+
+  // Función para abrir el modal
+  const abrirModalCompartir = () => {
+    setShowShareModal(true);
+  };
+
+  // Función para cerrar el modal
+  const cerrarModalCompartir = () => {
+    setShowShareModal(false);
+  };
+
+  // Función para copiar el ID al portapapeles
+  const copiarAlPortapapeles = () => {
+    navigator.clipboard.writeText(grupo.id).then(() => {
+      alert('ID del grupo copiado al portapapeles');
+    }).catch((error) => {
+      console.error('Error al copiar el ID:', error);
+    });
+  };
 
   // Imprime las tarjetas pasando por el array de gastos dentro de grupo (esto solo se ve en gasto)
   function _imprimegasto() {
@@ -344,7 +365,7 @@ function Gastos() {
                 <button className={boton1} onClick={() => cambio()}>Gastos</button>
                 <button className={boton2} onClick={() => cambio()}>Balance</button>
               </ul>
-              <div></div>
+            <div></div>
           </div>
           <div className="fila">
             <div id="conjuntoTarjeta">
@@ -352,6 +373,9 @@ function Gastos() {
                 <>
                   <button className="boton-anadirgasto" onClick={_navegarAnadirGasto}>
                     Añadir Gasto
+                  </button>
+                  <button className="boton-anadirgasto" onClick={abrirModalCompartir}>
+                    Compartir Grupo
                   </button>
                   {_imprimegasto()}
                 </>
@@ -392,6 +416,22 @@ function Gastos() {
             <h4>Participantes:</h4>
             {renderParticipantes()}
             <button className="btn btn-secondary" onClick={cerrarModalGasto}>Cerrar</button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal de compartir grupo */}
+      {showShareModal && (
+        <div className="modal-overlay" onClick={cerrarModalCompartir}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h2>Compartir Grupo</h2>
+            <p><strong>ID del Grupo:</strong> {grupo.id}</p>
+            <button className="btn btn-primary" onClick={copiarAlPortapapeles}>
+              Copiar ID
+            </button>
+            <button className="btn btn-secondary" onClick={cerrarModalCompartir}>
+              Cerrar
+            </button>
           </div>
         </div>
       )}

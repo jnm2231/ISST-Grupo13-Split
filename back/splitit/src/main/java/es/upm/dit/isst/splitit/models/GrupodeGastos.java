@@ -59,18 +59,6 @@ public class GrupodeGastos implements Serializable {
         this.nombre = nombre;
     }
 
-    @PrePersist
-    private void generateId() {
-        if (this.id == null) {
-            this.id = generateRandomId();
-        }
-    }
-
-    private Integer generateRandomId() {
-        Random random = new Random();
-        return 10000000 + random.nextInt(90000000); // Genera un número entre 10000000 y 99999999
-    }
-    
     public Integer getId() {
         return id;
     }

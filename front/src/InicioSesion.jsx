@@ -231,7 +231,7 @@ function InicioSesion() {
                             Registrarse
                         </motion.button>
                         <GoogleLogin onSuccess={handleSuccess} onError={handleError}/>
-                        <button className="btn-demo" onClick={() => navigate('/grupoGastos')}>Continuar</button>
+                        {/*<button className="btn-demo" onClick={() => navigate('/grupoGastos')}>Continuar</button>*/}
                     </div>
                 </div>
             </motion.section>

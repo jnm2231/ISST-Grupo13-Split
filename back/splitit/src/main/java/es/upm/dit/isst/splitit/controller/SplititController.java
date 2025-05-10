@@ -46,6 +46,7 @@ import es.upm.dit.isst.splitit.repository.ParticipacionGastoRepository;
 import es.upm.dit.isst.splitit.repository.UsuarioGrupoRepository;
 import es.upm.dit.isst.splitit.repository.UsuarioRepository;
 import es.upm.dit.isst.splitit.service.BalanceService;
+import es.upm.dit.isst.splitit.service.IdGeneratorService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.transaction.Transactional;
@@ -60,6 +61,8 @@ public class SplititController {
     private final UsuarioGrupoRepository usuarioGrupoRepository;
     private final UsuarioRepository usuarioRepository;
     private final ParticipacionGastoRepository participacionGastoRepository;
+    //Este servicio se 
+    private final IdGeneratorService idGeneratorService;
 
     public static final Logger log = LoggerFactory.getLogger(SplititController.class);
 
@@ -69,13 +72,14 @@ public class SplititController {
     // @Value("${app.jwt.secret}")
     // private String jwtSecret;
 
-    public SplititController(GrupodeGastosRepository grupodeGastosRepository, GastoRepository gastoRepository, UsuarioRepository usuarioRepository, BalanceService balanceService, ParticipacionGastoRepository participacionGastoRepository, UsuarioGrupoRepository usuarioGrupoRepository) {
+    public SplititController(GrupodeGastosRepository grupodeGastosRepository, GastoRepository gastoRepository, UsuarioRepository usuarioRepository, BalanceService balanceService, ParticipacionGastoRepository participacionGastoRepository, UsuarioGrupoRepository usuarioGrupoRepository, IdGeneratorService idGeneratorService) {
         this.grupodeGastosRepository = grupodeGastosRepository; //Tabla con los grupos de gastos
         this.gastoRepository = gastoRepository; //Tabla con los gastos
         this.usuarioRepository = usuarioRepository; //Tabla con los usuarios
         this.balanceService = balanceService; //Tabla para calcular balances y deudas
         this.participacionGastoRepository = participacionGastoRepository;//Tabla que indica que usuarios participan en que gastos
         this.usuarioGrupoRepository = usuarioGrupoRepository; //Tabla que indica que usuarios pertenecen a que grupos
+        this.idGeneratorService = idGeneratorService;
     }
 
     /**
@@ -173,6 +177,11 @@ public class SplititController {
 
         // Crear el grupo de gastos
         GrupodeGastos newGroup = new GrupodeGastos(groupName);
+
+        // Llamar al servicio para generar el ID único
+        Integer uniqueId = idGeneratorService.generateUniqueId();
+        newGroup.setId(uniqueId);
+
         GrupodeGastos savedGroup = grupodeGastosRepository.save(newGroup);
 
         // Asociar usuarios al grupo

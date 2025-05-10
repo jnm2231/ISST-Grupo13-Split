@@ -1,114 +1,108 @@
-import { useState,useEffect } from 'react'
-import './App.css'
-import GrupoGastos from './GrupoGastos'
+import { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Header from './Header'
-import InicioSesion from './InicioSesion';
-import CONFIG from './config/config';
-import ErrorPagina from './ErrorPagina';
-import spin from './assets/spinner.png'
-import Gastos from './Gastos'
-import InfoGasto from './InfoGasto'
-import CrearGrupo from './CrearGrupo'
-import AnadirGasto from './AnadirGasto'
-import InfoPerfil from './InfoPerfil'; // Import the InfoPerfil component
+import { Loader2 } from 'lucide-react';
 
+// Components
+import Header from './components/Header';
+import LandingPage from './pages/LandingPage';
+import GroupsPage from './pages/GroupsPage';
+import ExpensesPage from './pages/ExpensesPage';
+import ExpenseDetailPage from './pages/ExpenseDetailPage';
+import CreateGroupPage from './pages/CreateGroupPage';
+import AddExpensePage from './pages/AddExpensePage';
+import ErrorPage from './pages/ErrorPage';
+
+// Utilities and data
+import { mockgrupos } from './constants/mockgrupos';
+import CONFIG from './config/config';
 
 function App() {
-  const [grupo, setGrupo] = useState(); // Aquí guardo lo que saque del servidor o del mock según lo configure
-  const [loading, setLoading] = useState(true); // Pongo esto a true para que funcione como temporizador en el useEffect
-  
-  /*-----------------Todo esto ya no va aquí, debe ir en el componente GrupoGastos.jsx-------------------*/
-  /*
-  // Obtener el usuario del localStorage y parsearlo
+  const [groups, setGroups] = useState();
+  const [loading, setLoading] = useState(true);
+
+  // Get user from localStorage or create a test user if none exists
   let usuario = localStorage.getItem('usuario');
   if (usuario == null) {
-    // Si no hay usuario, crear uno de prueba
-    localStorage.setItem('usuario', JSON.stringify({ id: 4, nombre: "Julio", email: "usuario4@example.com" }));
-    usuario = JSON.parse(localStorage.getItem('usuario')); // Parsear el JSON después de guardarlo
+    localStorage.setItem('usuario', JSON.stringify({ 
+      id: 4, 
+      nombre: "Julio", 
+      email: "usuario4@example.com" 
+    }));
+    usuario = JSON.parse(localStorage.getItem('usuario') || '');
   } else {
-    usuario = JSON.parse(usuario); // Parsear el JSON existente
+    usuario = JSON.parse(usuario);
   }
 
-  console.log(usuario);
-  console.log(usuario.id); // Ahora debería mostrar correctamente el ID del usuario
+  // Function to load data from API or mock data
+  async function loadData() {
+    console.log("Loading data...");
 
-  // Función para cargar los datos
-  //Los logs con App.cargar() vienen de esta funcion
-  async function cargar() {
-    console.log("App.cargar(): Ejecutando cargar()");
-
-    // Obtener el token del localStorage
     const token = localStorage.getItem("token");
-    if (!token) {
-      console.log("App.cargar(): No se encontró un token en localStorage");
-      //return; Este return estaba cerrando la función cargar antes de tiempo y no se llegaba a cargar el mockgrupos
-    }
-
-    if (CONFIG.use_server === true) {
+    
+    if (CONFIG.use_server === true && token) {
       try {
-        // Hacer llamada a la API de /grupos con el token en el encabezado Authorization
         const response = await fetch(`${CONFIG.api_grupos}`, {
           method: "GET",
           headers: {
-            "Authorization": `Bearer ${token}`, // Incluir el token en el encabezado
+            "Authorization": `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          credentials: "include", // Incluir credenciales (opcional)
+          credentials: "include",
         });
 
-        console.log("App.cargar():" + CONFIG.api_grupos);
-        console.log("App.cargar():" + response);
-
         if (response.status === 200) {
-          console.log("App.cargar(): Respuesta OK");
           const data = await response.json();
-          setGrupo(data);
+          setGroups(data);
         } else {
-          console.log("App.cargar(): espuesta de red OK pero respuesta de HTTP no OK");
           const dataError = await response.json();
-          console.log(`App.cargar(): Error: ${response.status} - ${dataError.error.message}`);
+          console.error(`Error: ${response.status} - ${dataError.error?.message}`);
         }
-      } catch (e) {
-        console.log("App.cargar(): ERROR", e);
+      } catch (error) {
+        console.error("ERROR", error);
       }
     } else {
-      setGrupo(mockgrupos.Grupos);
-      console.log("App.cargar(): Modo mock activado");
+      setGroups(mockgrupos.Grupos);
+      console.log("Mock mode activated");
     }
   }
 
   useEffect(() => {
-    cargar();
-    setTimeout(() => {
+    loadData();
+    const timer = setTimeout(() => {
       setLoading(false);
     }, 1000);
-  }, []);
-*/
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
+    
+    return () => clearTimeout(timer);
   }, []);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="flex flex-col items-center justify-center h-[calc(100vh-80px)]">
+          <Loader2 className="w-12 h-12 text-blue-500 animate-spin" />
+          <p className="mt-4 text-gray-600 font-medium">Cargando...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-  <div>
-    <Header/>
-    {loading ? <img className='spin' src={spin} alt="spinner"></img>
-    : 
-  //la ruta donde comienza es la que pone / y si la ruta no existe se va a la de *
-  <Routes>
-  <Route path="/" element={<InicioSesion />} />
-  <Route path="/grupoGastos" element={<GrupoGastos />} />
-  <Route path="/:grupoId/gastos" element={<Gastos />} />
-  <Route path="/:grupoId/gastos/:gastoId" element={<InfoGasto />} />
-  <Route path="/creargrupo" element={<CrearGrupo />} />
-  <Route path="/:grupoId/gastos/anadirgasto" element={<AnadirGasto />} />
-  <Route path="/infoPerfil" element={<InfoPerfil />} /> {/* Add this route */}
-  <Route path="*" element={<ErrorPagina />} />
-   </Routes>}
-  </div>
-  )
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      <main className="container mx-auto px-4 py-6 max-w-7xl">
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/grupoGastos" element={<GroupsPage groups={groups} />} />
+          <Route path="/:grupoId/gastos" element={<ExpensesPage />} />
+          <Route path="/:grupoId/gastos/:gastoId" element={<ExpenseDetailPage />} />
+          <Route path="/creargrupo" element={<CreateGroupPage />} />
+          <Route path="/:grupoId/gastos/anadirgasto" element={<AddExpensePage />} />
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
+      </main>
+    </div>
+  );
 }
 
 export default App;

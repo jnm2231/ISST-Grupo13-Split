@@ -8,6 +8,10 @@ function InfoPerfil() {
   const navigate = useNavigate();
   const [user, setUser] = useState();
   const [logeado, setLogeado] = useState(true);
+  const [showPasswordModal, setShowPasswordModal] = useState(false); // Estado para controlar el modal
+  const [password, setPassword] = useState('');
+  const [repeatPassword, setRepeatPassword] = useState('');
+
 
   useEffect(() => {
     if(!logeado){
@@ -27,6 +31,28 @@ function InfoPerfil() {
     }
     setUser(usuario);
   }, [logeado]);
+
+  // Función para abrir el modal
+  const abrirModalPassword = () => {
+    setShowPasswordModal(true);
+  };
+
+  // Función para cerrar el modal
+  const cerrarModalPassword = () => {
+    setShowPasswordModal(false);
+    setPassword('');
+    setRepeatPassword('');
+  };
+
+  // Función para manejar el cambio de contraseña (sin lógica de backend por ahora)
+  const handlePasswordChange = () => {
+    if (password !== repeatPassword) {
+      alert('Las contraseñas no coinciden');
+      return;
+    }
+    alert('Contraseña cambiada con éxito (simulado)');
+    cerrarModalPassword();
+  };
 
   return (
     <div className="grupo-gastos-container">
@@ -53,10 +79,47 @@ function InfoPerfil() {
               <p className="root"><strong>Nombre:</strong> {user ? user.nombre : "Usuario"}</p>
               <p className="root"><strong>Email:</strong> {user ? user.email : "email"}</p>
             </div>
-            <button className="boton-cambiar">Cambiar Contraseña</button>
+            <button className="boton-cambiar" onClick={abrirModalPassword}>Cambiar Contraseña</button>
           </div>
         
       </main>
+
+      {/* Modal para cambiar contraseña */}
+      {showPasswordModal && (
+        <div className="modal-overlay" onClick={cerrarModalPassword}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <h2>Cambiar Contraseña</h2>
+            <form>
+              <div className="form-group">
+                <label htmlFor="password">Nueva Contraseña:</label>
+                <input
+                  type="password"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="repeatPassword">Repetir Contraseña:</label>
+                <input
+                  type="password"
+                  id="repeatPassword"
+                  value={repeatPassword}
+                  onChange={(e) => setRepeatPassword(e.target.value)}
+                  required
+                />
+              </div>
+              <button type="button" className="btn btn-primary" onClick={handlePasswordChange}>
+                Cambiar Contraseña
+              </button>
+              <button type="button" className="btn btn-secondary" onClick={cerrarModalPassword}>
+                Cancelar
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

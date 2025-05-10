@@ -1,5 +1,5 @@
 body {
-  background-color: #ffffff; /* Change this to your desired background color */
+  background-color: #e5f1f8; /* Change this to your desired background color */
   margin: 0;
   font-family: Arial, sans-serif;
 }
@@ -423,8 +423,7 @@ body {
 .navegar button:not(.seleccionado) {
     display: inline;
     text-align: center;
-    padding: 1rem;
-    margin: 1rem;
+    margin-left: 1rem;
     font-size: 20px;
     border-bottom-color: #B2B2B2;
     border-bottom-style: solid;
@@ -436,8 +435,7 @@ body {
     border-bottom-color: #8a8888;
     display: inline;
     text-align: center;
-    padding: 1rem;
-    margin: 1rem;
+    margin-left: 1rem;
     font-size: 20px;
     border-bottom-style: solid;
     border-bottom-width: 0.5rem;

@@ -203,8 +203,8 @@ function GrupoGastos() {
         <p className="nombreuser">¡Bienvenido,  {user ? user.nombre : "Usuario"}!</p>
         <p className="emailuser">{user ? user.email : "email"}</p>
         </div>
-        <button className="boton" onClick={() => navigate('/infoPerfil')}>Perfil</button>
-        <button className="boton" onClick={() => navigate('/grupoGastos')}>Mis grupos</button>
+        <button className={`boton ${window.location.pathname === '/infoPerfil' ? 'active' : ''}`} onClick={() => navigate('/infoPerfil')}>Perfil</button>
+        <button className={`boton ${window.location.pathname === '/grupoGastos' ? 'active' : ''}`} onClick={() => navigate('/grupoGastos')}>Mis grupos</button>
         <button className="boton-roja" onClick={() => setLogeado(false)}>
           <LogOut size={20} className="logout-icon" />   Cerrar sesión
         </button>

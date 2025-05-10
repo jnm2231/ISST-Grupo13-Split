@@ -97,6 +97,16 @@ button:focus-visible {
   padding-right: 180px;
 }
 
+.texto-informacion {
+  position: absolute;
+  padding-left: 40px;
+  text-align: center; /* Centra el texto */
+  color: rgba(128, 128, 128, 0.8); /* Gris con un poco de transparencia */
+  font-size: 0.9rem; /* Tamaño de fuente ligeramente más pequeño */
+  cursor: pointer; /* Cambia el cursor al pasar por encima */
+  margin-top: 1rem; /* Añade un pequeño margen superior */
+  transition: color 0.3s ease; /* Transición suave para el hover */
+}
 
 .blue-background {
   width: 100%;

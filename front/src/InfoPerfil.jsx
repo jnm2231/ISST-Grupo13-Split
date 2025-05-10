@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import './index.css';
+import CONFIG from './config/config'
 import { useNavigate } from 'react-router-dom';
 import { LogOut } from 'lucide-react';
 
@@ -45,13 +46,42 @@ function InfoPerfil() {
   };
 
   // Función para manejar el cambio de contraseña (sin lógica de backend por ahora)
-  const handlePasswordChange = () => {
+  const handlePasswordChange = async () => {
     if (password !== repeatPassword) {
       alert('Las contraseñas no coinciden');
       return;
     }
-    alert('Contraseña cambiada con éxito (simulado)');
-    cerrarModalPassword();
+
+    try {
+      // Obtener el ID del usuario desde el estado o localStorage
+      const usuario = JSON.parse(localStorage.getItem('usuario'));
+      console.log(usuario);
+      const usuarioId = usuario?.nombre; // Suponiendo que el nombre es el ID único del usuario
+      console.log(usuarioId);
+
+      // Realizar la solicitud al backend
+      const response = await fetch(CONFIG.api_base_url + `/usuarios/${usuarioId}/password`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          nuevaPassword: password,
+          repetirPassword: repeatPassword,
+        }),
+      });
+
+      if (response.ok) {
+        alert('Contraseña cambiada con éxito');
+        cerrarModalPassword();
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.message || 'No se pudo cambiar la contraseña'}`);
+      }
+    } catch (error) {
+      console.error('Error al cambiar la contraseña:', error);
+      alert('Ocurrió un error al intentar cambiar la contraseña');
+    }
   };
 
   return (

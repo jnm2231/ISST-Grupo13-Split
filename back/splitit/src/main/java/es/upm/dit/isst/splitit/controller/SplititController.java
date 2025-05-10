@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -582,5 +583,36 @@ public class SplititController {
         usuarioGrupoRepository.save(usuarioGrupo);
 
         return ResponseEntity.ok("Usuario añadido al grupo correctamente.");
+    }
+
+    @PutMapping("/usuarios/{usuarioId}/password")
+    public ResponseEntity<String> updatePassword(@PathVariable String usuarioId,
+            @RequestBody Map<String, String> passwordData) {
+        log.info("Actualizando contraseña para el usuario: {}", usuarioId);
+
+        // Obtener las contraseñas del cuerpo de la solicitud
+        String nuevaPassword = passwordData.get("nuevaPassword");
+        String repetirPassword = passwordData.get("repetirPassword");
+
+        // Validar que las contraseñas no sean nulas o vacías
+        if (nuevaPassword == null || nuevaPassword.isEmpty() || repetirPassword == null || repetirPassword.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Las contraseñas no pueden estar vacías");
+        }
+
+        // Validar que las contraseñas coincidan
+        if (!nuevaPassword.equals(repetirPassword)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Las contraseñas no coinciden");
+        }
+
+        // Buscar el usuario en la base de datos
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+
+        // Actualizar la contraseña del usuario
+        usuario.setPassword(nuevaPassword);
+        usuarioRepository.save(usuario);
+
+        log.info("Contraseña actualizada correctamente para el usuario: {}", usuarioId);
+        return ResponseEntity.ok("Contraseña actualizada correctamente");
     }
 }

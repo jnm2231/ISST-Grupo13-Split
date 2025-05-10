@@ -247,6 +247,12 @@ body {
   width: 100%;
 }
 
+.sidebar .boton.active {
+  background-color: white; /* White background for the active button */
+  color: #15738E; /* Blue text for the active button */
+  font-weight: bold;
+}
+
 .main-content {
   width: 80%;
   padding: 2rem;

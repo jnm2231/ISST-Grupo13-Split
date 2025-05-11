@@ -186,7 +186,7 @@ function InicioSesion() {
                 transition={{ duration: 0.8 }}
             >
                 <div className="welcome-text">
-                    <h1>Gestiona gastos en grupo de forma sencilla</h1>
+                    <h1 style={{ fontSize: '2.5rem' }}>Gestiona gastos en grupo de forma sencilla</h1>
                     <p>La manera más fácil de compartir gastos con amigos, familia, compañeros de piso...</p>
                 </div>
                 <div className="features-grid">

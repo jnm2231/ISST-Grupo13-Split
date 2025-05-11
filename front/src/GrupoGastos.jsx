@@ -118,9 +118,9 @@ function GrupoGastos() {
           {grupo.nombre}
           <div>
             <p className='miembros-grupo'>{grupo.numeroDePersonas} miembros</p>
-            <p className={grupo.balance > 0 ? "verde" : grupo.balance < 0 ? "rojo" : ""}>
+            <strong><p className={grupo.balance > 0 ? "verde" : grupo.balance < 0 ? "rojo" : ""}>
               {grupo.balance?.toFixed(2) ?? "0.00"} €
-            </p>
+            </p></strong>
           </div>
         </button>
       ));

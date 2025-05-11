@@ -195,7 +195,7 @@ function Gastos() {
             </p>
             <div className='filagastos'>
               <p className="pagado">Pagado por: {gasto.pagadopor}</p>
-              <p className="importe">{gasto.importe.toFixed(2)}</p>
+              <p className="importe">{gasto.importe.toFixed(2)} €</p>
             </div>
             <p className="texto-informacion">
               Pincha para ver el detalle del gasto
@@ -263,7 +263,7 @@ function Gastos() {
               <div className='filagastos'>
                 <p className="importe">{usuario}</p>
                 <p className={deuda > 0 ? "verde" : deuda === 0 ? "" : "rojo"}>
-                  {deuda.toFixed(2)}
+                  {deuda.toFixed(2)} €
                 </p>
               </div>
               {deuda <0 && (<p className="texto-informacion">

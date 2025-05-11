@@ -194,7 +194,9 @@ function CrearGrupo() {
                         
                         <div className="form-buttons">
                             <button type="submit" className="btn">Crear Grupo</button>
+                            <button className="btn btn-secondary" onClick={() => navigate('/grupoGastos')}>Cerrar</button>
                         </div>
+                        
                     </form>
                 </div>
             </main>

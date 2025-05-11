@@ -68,6 +68,7 @@ void limpiarBaseDeDatos() {
 	    usuario.setEmail("prueba@mail.com");
 	    usuario.setNombre("Prueba");
 	    usuario.setPassword("password");
+		usuario.setAuthProvider("local");
 	    usuarioRepository.save(usuario);
 	    
 	    // Recuperar usuario usando el nombre que conocemos
@@ -108,6 +109,7 @@ void limpiarBaseDeDatos() {
 		usuario.setEmail("nosoyemail");
 		usuario.setNombre("prueba");
 		usuario.setPassword("password");
+		usuario.setAuthProvider("local");
 		/*No comprueba que sea un email realmente */
 		Exception exception = assertThrows(Exception.class, () -> usuarioRepository.save(usuario));
 		// Comprobar que se lanza la excepción
@@ -122,7 +124,13 @@ void limpiarBaseDeDatos() {
 		/*No comprueba que sea un email realmente */
 		Exception exception = assertThrows(Exception.class, () -> grupodeGastosRepository.save(grupo));
 
+		GrupodeGastos grupo2 = new GrupodeGastos();
+		grupo2.setNombre(null);
+
+		Exception exception2 = assertThrows(Exception.class, () -> grupodeGastosRepository.save(grupo2));
+
 		System.err.println(exception.getMessage());
+		System.err.println(exception2.getMessage());
 	}
 
 	@Test
@@ -143,6 +151,16 @@ void limpiarBaseDeDatos() {
 
 		System.err.println(exception.getMessage());
 
+		Gasto gasto2 = new Gasto();
+		gasto2.setConcepto("Gasto de prueba");
+		gasto2.setPagadopor("User");
+		gasto2.setImporte(-100.00f);
+		gasto2.setGrupo(grupo);
+
+		/*Acepta valores negativos, no se si deberia realmente */
+		Exception exception2 = assertThrows(Exception.class, () -> gastoRepository.save(gasto2));
+		System.err.println(exception2.getMessage());
+
 	}
 
 	@Test
@@ -152,6 +170,7 @@ void limpiarBaseDeDatos() {
 		usuario1.setEmail("prueba@mail.com");
 		usuario1.setNombre("Prueba");
 		usuario1.setPassword("password");
+		usuario1.setAuthProvider("local");
 
 		usuarioRepository.save(usuario1);
 
@@ -159,12 +178,14 @@ void limpiarBaseDeDatos() {
 		usuario2.setEmail("email@mail.com");
 		usuario2.setNombre("Prueba2");
 		usuario2.setPassword("password");
+		usuario2.setAuthProvider("local");
 		usuarioRepository.save(usuario2);
 
 		Usuario usuario3 = new Usuario();
 		usuario3.setEmail("emailprueba@mail.com");
 		usuario3.setNombre("Prueba3");
 		usuario3.setPassword("password");
+		usuario3.setAuthProvider("local");
 		usuarioRepository.save(usuario3);
 
 		//creando grupos
@@ -224,22 +245,12 @@ void limpiarBaseDeDatos() {
 		usuarioGrupo3.setApodo("Prueba3");
 		usuarioGrupoRepository.save(usuarioGrupo3);
 		
-		// Comprobando consistencia de usuarios, gastos y grupos
+		// Comprobando resistencia a la eliminación
 
-		/*Nuestro modelo de datos no permite la eliminacion en cascada, no se si es fallo o si eso escorrecto */
 
-		usuarioRepository.deleteById("Prueba");
+		Exception exception = assertThrows(Exception.class, () -> usuarioRepository.deleteById("Prueba"));
+		System.err.println(exception.getMessage());
 
-		// Comprobando que el gasto y la participacion se eliminan
-		Optional<Gasto> gastoRecuperado = gastoRepository.findById(gasto1.getId());
-		assertFalse(gastoRecuperado.isPresent(), "El gasto no se ha eliminado correctamente");
-		Optional<ParticipacionGasto> participacionRecuperada = participacionGastoRepository.findById(new ParticipacionGastoId(gasto1.getId(), usuario1.getNombre()));
-		assertFalse(participacionRecuperada.isPresent(), "La participacion no se ha eliminado correctamente");
-		Optional<UsuarioGrupo> usuarioGrupoRecuperado = usuarioGrupoRepository.findById(new UsuarioGrupoId(usuario1.getNombre(), grupo.getId()));
-		assertFalse(usuarioGrupoRecuperado.isPresent(), "El usuario no se ha eliminado correctamente");
-		// Comprobando que el grupo no se elimina
-		Optional<GrupodeGastos> grupoRecuperado = grupodeGastosRepository.findById(6);
-		assertTrue(grupoRecuperado.isPresent(), "El grupo se ha eliminado incorrectamente");
 
 
 

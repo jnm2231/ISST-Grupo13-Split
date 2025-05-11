@@ -3,6 +3,7 @@ package es.upm.dit.isst.splitit.models;
 import java.io.Serializable;
 import java.util.Objects;
 
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
@@ -15,6 +16,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 
 /**
  * Representa un gasto dentro de un grupo de gastos.
@@ -32,6 +34,7 @@ public class Gasto implements Serializable {
     private String concepto;
 
     @NotNull
+    @PositiveOrZero
     @Column(nullable = false)
     private Float importe;
 
@@ -86,7 +89,7 @@ public class Gasto implements Serializable {
 
     public void setImporte(Float importe) {
         if (importe == null) {
-            throw new IllegalArgumentException("El importe no puede ser nulo");
+            throw new IllegalArgumentException("El importe no puede ser nulo o negativo");
         }
         this.importe = importe;
     }

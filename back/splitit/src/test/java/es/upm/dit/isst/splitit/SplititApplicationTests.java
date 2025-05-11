@@ -79,6 +79,7 @@ void limpiarBaseDeDatos() {
 	    // Crear grupo de gastos
 	    GrupodeGastos grupo = new GrupodeGastos();
 	    grupo.setNombre("Grupo de prueba");
+		grupo.setId(10000000);
 	    grupodeGastosRepository.save(grupo);
 	    
 	    // Recuperar el grupo usando el ID que se generó automáticamente
@@ -110,7 +111,7 @@ void limpiarBaseDeDatos() {
 		usuario.setNombre("prueba");
 		usuario.setPassword("password");
 		usuario.setAuthProvider("local");
-		/*No comprueba que sea un email realmente */
+	
 		Exception exception = assertThrows(Exception.class, () -> usuarioRepository.save(usuario));
 		// Comprobar que se lanza la excepción
 		System.err.println(exception.getMessage());
@@ -121,11 +122,13 @@ void limpiarBaseDeDatos() {
 		// Crear un nuevo grupo de gastos
 		GrupodeGastos grupo = new GrupodeGastos();
 		grupo.setNombre("");
-		/*No comprueba que sea un email realmente */
+		grupo.setId(10000000);
+
 		Exception exception = assertThrows(Exception.class, () -> grupodeGastosRepository.save(grupo));
 
 		GrupodeGastos grupo2 = new GrupodeGastos();
 		grupo2.setNombre(null);
+		grupo.setId(10000001);
 
 		Exception exception2 = assertThrows(Exception.class, () -> grupodeGastosRepository.save(grupo2));
 
@@ -139,6 +142,7 @@ void limpiarBaseDeDatos() {
 
 		GrupodeGastos grupo = new GrupodeGastos();
 		grupo.setNombre("Grupo de prueba");
+		grupo.setId(10000000);
 		grupodeGastosRepository.save(grupo);
 
 		Gasto gasto = new Gasto();
@@ -146,7 +150,7 @@ void limpiarBaseDeDatos() {
 		gasto.setPagadopor("Descripción de prueba");
 		gasto.setImporte(100.00f);
 		gasto.setGrupo(grupo);
-		/*No comprueba que sea un email realmente */
+
 		Exception exception = assertThrows(Exception.class, () -> gastoRepository.save(gasto));
 
 		System.err.println(exception.getMessage());
@@ -157,7 +161,6 @@ void limpiarBaseDeDatos() {
 		gasto2.setImporte(-100.00f);
 		gasto2.setGrupo(grupo);
 
-		/*Acepta valores negativos, no se si deberia realmente */
 		Exception exception2 = assertThrows(Exception.class, () -> gastoRepository.save(gasto2));
 		System.err.println(exception2.getMessage());
 
@@ -191,10 +194,12 @@ void limpiarBaseDeDatos() {
 		//creando grupos
 		GrupodeGastos grupo = new GrupodeGastos();
 		grupo.setNombre("Grupo de prueba");
+		grupo.setId(10000000);
 		grupodeGastosRepository.save(grupo);
 
 		GrupodeGastos grupo2 = new GrupodeGastos();
 		grupo2.setNombre("Viaje a Italia");
+		grupo2.setId(10000001);
 		grupodeGastosRepository.save(grupo2);
 
 		//Creando Gastos
@@ -250,11 +255,6 @@ void limpiarBaseDeDatos() {
 
 		Exception exception = assertThrows(Exception.class, () -> usuarioRepository.deleteById("Prueba"));
 		System.err.println(exception.getMessage());
-
-
-
-
-
 
 	}
 

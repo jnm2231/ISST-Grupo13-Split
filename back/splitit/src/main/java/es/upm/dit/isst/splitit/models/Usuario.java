@@ -13,6 +13,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 
 @Entity
 @Table(name = "usuarios")
@@ -22,6 +23,7 @@ public class Usuario {
     @Id
     private String nombre;
 
+    @Email
     @Column(unique = true, nullable = false)
     private String email;
 

@@ -56,8 +56,8 @@ public class PruebacompletasinunirsegrupoTest {
   public void pruebacompletasinunirsegrupo() {
     driver.get("http://localhost:5173/");
     driver.manage().window().setSize(new Dimension(550, 692));
-    timeout(1000);
-    driver.findElement(By.cssSelector(".btn-register")).click();
+    WebDriverWait wait = new WebDriverWait(driver, java.time.Duration.ofSeconds(10)); // Espera hasta 10 segundos
+    wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".btn-register"))).click();
     driver.findElement(By.cssSelector(".form-group:nth-child(1) > .inputInicio")).click();
     driver.findElement(By.cssSelector(".form-group:nth-child(1) > .inputInicio")).sendKeys("Pepe");
     driver.findElement(By.cssSelector(".form-group:nth-child(2) > .inputInicio")).click();
@@ -67,7 +67,7 @@ public class PruebacompletasinunirsegrupoTest {
     driver.findElement(By.cssSelector(".form-group:nth-child(4) > .inputInicio")).click();
     driver.findElement(By.cssSelector(".form-group:nth-child(4) > .inputInicio")).sendKeys("password");
     driver.findElement(By.cssSelector(".btn-primary")).click();
-    WebDriverWait wait = new WebDriverWait(driver, java.time.Duration.ofSeconds(10)); // Espera hasta 10 segundos
+    
     wait.until(ExpectedConditions.alertIsPresent());
     Alert alert = driver.switchTo().alert();
     assertThat(alert.getText(), is("Usuario registrado correctamente. Iniciando sesión..."));

@@ -29,7 +29,7 @@
   .left-section {
     display: flex;
     flex: 1;
-    padding-left: 4rem;
+    align-items: center;
     color: white;
     position: relative;
     z-index: 1;
@@ -37,7 +37,6 @@
   
   .welcome-text {
     max-width: 600px;
-    padding-left: 8rem;
   }
   
   .welcome-text h1 {

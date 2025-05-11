@@ -55,9 +55,9 @@ public class PruebacompletasinunirsegrupoTest {
   @Test
   public void pruebacompletasinunirsegrupo() {
     driver.get("http://localhost:5173/");
-    driver.manage().window().setSize(new Dimension(550, 692));
-    timeout(1000);
-    driver.findElement(By.cssSelector(".btn-register")).click();
+    //driver.manage().window().setSize(new Dimension(550, 692));
+    WebDriverWait wait = new WebDriverWait(driver, java.time.Duration.ofSeconds(10)); // Espera hasta 10 segundos
+    wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".btn-register"))).click();
     driver.findElement(By.cssSelector(".form-group:nth-child(1) > .inputInicio")).click();
     driver.findElement(By.cssSelector(".form-group:nth-child(1) > .inputInicio")).sendKeys("Pepe");
     driver.findElement(By.cssSelector(".form-group:nth-child(2) > .inputInicio")).click();
@@ -67,7 +67,7 @@ public class PruebacompletasinunirsegrupoTest {
     driver.findElement(By.cssSelector(".form-group:nth-child(4) > .inputInicio")).click();
     driver.findElement(By.cssSelector(".form-group:nth-child(4) > .inputInicio")).sendKeys("password");
     driver.findElement(By.cssSelector(".btn-primary")).click();
-    WebDriverWait wait = new WebDriverWait(driver, java.time.Duration.ofSeconds(10)); // Espera hasta 10 segundos
+    
     wait.until(ExpectedConditions.alertIsPresent());
     Alert alert = driver.switchTo().alert();
     assertThat(alert.getText(), is("Usuario registrado correctamente. Iniciando sesión..."));
@@ -126,6 +126,7 @@ public class PruebacompletasinunirsegrupoTest {
     wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".noseleccionado")));
     driver.findElement(By.cssSelector(".noseleccionado")).click();
     driver.findElement(By.cssSelector(".tarjetagastos:nth-child(1) > .filagastos")).click();
+    wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input")));
     driver.findElement(By.cssSelector("input")).click();
     driver.findElement(By.cssSelector(".btn")).click();
     driver.findElement(By.cssSelector(".tarjetagastos:nth-child(2) > .filagastos")).click();
@@ -133,8 +134,38 @@ public class PruebacompletasinunirsegrupoTest {
     driver.findElement(By.cssSelector("input")).click();
     driver.findElement(By.cssSelector(".btn")).click();
     driver.findElement(By.cssSelector(".tarjetagastos:nth-child(4) > .filagastos")).click();
+    wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("input")));
     driver.findElement(By.cssSelector("input")).click();
     driver.findElement(By.cssSelector(".btn")).click();
     driver.findElement(By.cssSelector(".noseleccionado")).click();
+    driver.findElement(By.cssSelector(".tarjetagastos")).click();
+    driver.findElement(By.cssSelector(".btn-primary")).click();
+    driver.findElement(By.xpath("(//input)[1]")).clear();
+    driver.findElement(By.xpath("(//input)[1]")).sendKeys("gasto_modificado");
+    driver.findElement(By.xpath("(//input)[2]")).clear();
+    driver.findElement(By.xpath("(//input)[2]")).sendKeys("Pepe");
+    driver.findElement(By.xpath("(//input)[3]")).clear();
+    driver.findElement(By.xpath("(//input)[3]")).sendKeys("80");;
+    wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".btn-primary")));
+    WebElement button = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".btn-primary")));
+    //wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(".tarjetagastos")));
+    Actions actions = new Actions(driver);
+    WebElement button1 = driver.findElements(By.cssSelector(".btn-primary")).get(1);
+    actions.moveToElement(button1).click().perform();
+    wait.until(ExpectedConditions.alertIsPresent());
+    Alert alert5 = driver.switchTo().alert();
+    assertThat(alert5.getText(), is("Gasto actualizado correctamente"));
+    alert5.accept();
+    //driver.findElements(By.cssSelector(".tarjetagastos")).get(0).click();
+    driver.findElement(By.cssSelector(".btn-danger")).click();
+    wait.until(ExpectedConditions.alertIsPresent());
+    Alert alert4 = driver.switchTo().alert();
+    assertThat(alert4.getText(), is("¿Estás seguro de que deseas eliminar el gasto \"prueba_gasto\"?"));
+    alert4.accept();
+
+
+    
+
+
   }
 }

@@ -1,0 +1,989 @@
+{
+	"info": {
+		"_postman_id": "8111559e-9069-4e9a-a31f-a8281cedc945",
+		"name": "Pruebas Split.it_final",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "44573642",
+		"_collection_link": "https://juliocesarborregosaavedra.postman.co/workspace/Julio-Cesar-Borrego-saavedra's-~12655d0e-b0e1-48ed-8fe4-7c7f0511ec5e/collection/44573642-8111559e-9069-4e9a-a31f-a8281cedc945?action=share&source=collection_link&creator=44573642"
+	},
+	"item": [
+		{
+			"name": "localhost",
+			"item": [
+				{
+					"name": "Grupos",
+					"item": [
+						{
+							"name": "http://localhost:8080/myApi/grupos bien",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Host",
+										"value": "localhost:8080"
+									},
+									{
+										"key": "host",
+										"value": "localhost"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Origin",
+										"value": "http://localhost:5173"
+									},
+									{
+										"key": "Referer",
+										"value": "http://localhost:5173/"
+									},
+									{
+										"key": "Connection",
+										"value": "keep-alive"
+									},
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Sec-Fetch-Dest",
+										"value": "empty"
+									},
+									{
+										"key": "Sec-Fetch-Mode",
+										"value": "cors"
+									},
+									{
+										"key": "Sec-Fetch-Site",
+										"value": "same-site"
+									},
+									{
+										"key": "Accept-Encoding",
+										"value": "gzip, deflate, br, zstd"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombre\": \"probando\",\r\n    \"usuarios\": [\r\n        {\r\n            \"nombre\": \"Samuel\",\r\n            \"apodo\": \"Samuel\"\r\n        },\r\n        {\r\n            \"nombre\": \"Julio\",\r\n            \"apodo\": \"Julio\"\r\n        },\r\n        {\r\n            \"nombre\": \"Juan\",\r\n            \"apodo\": \"Juan\"\r\n        },\r\n        {\r\n            \"nombre\": \"Jesus\",\r\n            \"apodo\": \"Jesus\"\r\n        },\r\n        {\r\n            \"nombre\": \"Pepe\",\r\n            \"apodo\": \"Pepe\"\r\n        }\r\n    ]\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/myApi/grupos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"myApi",
+										"grupos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "http://localhost:8080/myApi/grupos mal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Host",
+										"value": "localhost:8080"
+									},
+									{
+										"key": "host",
+										"value": "localhost"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Origin",
+										"value": "http://localhost:5173"
+									},
+									{
+										"key": "Referer",
+										"value": "http://localhost:5173/"
+									},
+									{
+										"key": "Connection",
+										"value": "keep-alive"
+									},
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Sec-Fetch-Dest",
+										"value": "empty"
+									},
+									{
+										"key": "Sec-Fetch-Mode",
+										"value": "cors"
+									},
+									{
+										"key": "Sec-Fetch-Site",
+										"value": "same-site"
+									},
+									{
+										"key": "Accept-Encoding",
+										"value": "gzip, deflate, br, zstd"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombre\": \"probando\",\r\n    \"usuarios\": []\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/myApi/grupos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"myApi",
+										"grupos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "http://localhost:8080/myApi/grupos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Host",
+										"value": "localhost:8080"
+									},
+									{
+										"key": "host",
+										"value": "localhost"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Cookie",
+										"value": "token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJQZXBlIn0.l9jeLcIofNLuRqDaIBVq9xCUI76C5BDJAFzn5wT_cHw; Phpstorm-7232e59e=8da395d8-0ba6-4d89-bd7a-8445acd8350f"
+									},
+									{
+										"key": "Origin",
+										"value": "http://localhost:5173"
+									},
+									{
+										"key": "Referer",
+										"value": "http://localhost:5173/"
+									},
+									{
+										"key": "Connection",
+										"value": "keep-alive"
+									},
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0"
+									},
+									{
+										"key": "Sec-Fetch-Dest",
+										"value": "empty"
+									},
+									{
+										"key": "Sec-Fetch-Mode",
+										"value": "cors"
+									},
+									{
+										"key": "Sec-Fetch-Site",
+										"value": "same-site"
+									},
+									{
+										"key": "Accept-Encoding",
+										"value": "gzip, deflate, br, zstd"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/myApi/grupos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"myApi",
+										"grupos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "http://localhost:8080/myApi/grupos/join mal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test for status code 404\r",
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Host",
+										"value": "localhost:8080"
+									},
+									{
+										"key": "host",
+										"value": "localhost"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Cookie",
+										"value": "token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJWaW9sZXRhIn0.OZ_rbetXF3hcMT5pon3CpGYmJ_UavJLKMTkIFfBVDLc; Phpstorm-7232e59e=8da395d8-0ba6-4d89-bd7a-8445acd8350f"
+									},
+									{
+										"key": "Origin",
+										"value": "http://localhost:5173"
+									},
+									{
+										"key": "Referer",
+										"value": "http://localhost:5173/"
+									},
+									{
+										"key": "Connection",
+										"value": "keep-alive"
+									},
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Sec-Fetch-Dest",
+										"value": "empty"
+									},
+									{
+										"key": "Sec-Fetch-Mode",
+										"value": "cors"
+									},
+									{
+										"key": "Sec-Fetch-Site",
+										"value": "same-site"
+									},
+									{
+										"key": "Accept-Encoding",
+										"value": "gzip, deflate, br, zstd"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"grupoId\": \"3456789\",\r\n    \"usuarioNombre\": \"Violeta\",\r\n    \"apodo\": \"\"\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/myApi/grupos/join",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"myApi",
+										"grupos",
+										"join"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "http://localhost:8080/myApi/grupos/join bien",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Host",
+										"value": "localhost:8080"
+									},
+									{
+										"key": "host",
+										"value": "localhost"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Cookie",
+										"value": "token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJWaW9sZXRhIn0.OZ_rbetXF3hcMT5pon3CpGYmJ_UavJLKMTkIFfBVDLc; Phpstorm-7232e59e=8da395d8-0ba6-4d89-bd7a-8445acd8350f"
+									},
+									{
+										"key": "Origin",
+										"value": "http://localhost:5173"
+									},
+									{
+										"key": "Referer",
+										"value": "http://localhost:5173/"
+									},
+									{
+										"key": "Connection",
+										"value": "keep-alive"
+									},
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Sec-Fetch-Dest",
+										"value": "empty"
+									},
+									{
+										"key": "Sec-Fetch-Mode",
+										"value": "cors"
+									},
+									{
+										"key": "Sec-Fetch-Site",
+										"value": "same-site"
+									},
+									{
+										"key": "Accept-Encoding",
+										"value": "gzip, deflate, br, zstd"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"grupoId\": \"34567890\",\r\n    \"usuarioNombre\": \"Violeta\",\r\n    \"apodo\": \"\"\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/myApi/grupos/join",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"myApi",
+										"grupos",
+										"join"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "login",
+					"item": [
+						{
+							"name": "http://localhost:8080/myApi/login",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status is ok\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"// Extracting and checking if a cookie is received in the response\r",
+											"pm.test(\"Cookie is received\", function () {\r",
+											"    pm.expect(pm.response.headers.has('Set-Cookie')).to.be.true;\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Host",
+										"value": "localhost:8080"
+									},
+									{
+										"key": "host",
+										"value": "localhost"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Cookie",
+										"value": "token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJQZXBlIn0.l9jeLcIofNLuRqDaIBVq9xCUI76C5BDJAFzn5wT_cHw; Phpstorm-7232e59e=8da395d8-0ba6-4d89-bd7a-8445acd8350f"
+									},
+									{
+										"key": "Origin",
+										"value": "http://localhost:5173"
+									},
+									{
+										"key": "Referer",
+										"value": "http://localhost:5173/"
+									},
+									{
+										"key": "Connection",
+										"value": "keep-alive"
+									},
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Sec-Fetch-Dest",
+										"value": "empty"
+									},
+									{
+										"key": "Sec-Fetch-Mode",
+										"value": "cors"
+									},
+									{
+										"key": "Sec-Fetch-Site",
+										"value": "same-site"
+									},
+									{
+										"key": "Accept-Encoding",
+										"value": "gzip, deflate, br, zstd"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"acceso\": \"Samuel\",\r\n    \"password\": \"password1\"\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/myApi/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"myApi",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "signup",
+					"item": [
+						{
+							"name": "http://localhost:8080/myApi/signup",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test for status code 201\r",
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Host",
+										"value": "localhost:8080"
+									},
+									{
+										"key": "host",
+										"value": "localhost"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Origin",
+										"value": "http://localhost:5173"
+									},
+									{
+										"key": "Referer",
+										"value": "http://localhost:5173/"
+									},
+									{
+										"key": "Connection",
+										"value": "keep-alive"
+									},
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Sec-Fetch-Dest",
+										"value": "empty"
+									},
+									{
+										"key": "Sec-Fetch-Mode",
+										"value": "cors"
+									},
+									{
+										"key": "Sec-Fetch-Site",
+										"value": "same-site"
+									},
+									{
+										"key": "Accept-Encoding",
+										"value": "gzip, deflate, br, zstd"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nombre\": \"Pepe\",\r\n    \"email\": \"pepe@mail.com\",\r\n    \"password\": \"prueba\"\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/myApi/signup",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"myApi",
+										"signup"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "gastos",
+					"item": [
+						{
+							"name": "http://localhost:8080/myApi/grupos/12345678/gastos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Host",
+										"value": "localhost:8080"
+									},
+									{
+										"key": "host",
+										"value": "localhost"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Origin",
+										"value": "http://localhost:5173"
+									},
+									{
+										"key": "Referer",
+										"value": "http://localhost:5173/"
+									},
+									{
+										"key": "Connection",
+										"value": "keep-alive"
+									},
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Sec-Fetch-Dest",
+										"value": "empty"
+									},
+									{
+										"key": "Sec-Fetch-Mode",
+										"value": "cors"
+									},
+									{
+										"key": "Sec-Fetch-Site",
+										"value": "same-site"
+									},
+									{
+										"key": "Accept-Encoding",
+										"value": "gzip, deflate, br, zstd"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"concepto\": \"Deuda pagada por Samuel a Juan\",\r\n    \"pagadopor\": \"Samuel\",\r\n    \"importe\": 1.05,\r\n    \"participantes\": [\r\n        {\r\n            \"usuarioNombre\": \"Juan\",\r\n            \"importeUsuario\": 1.05\r\n        }\r\n    ]\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/myApi/grupos/12345678/gastos",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"myApi",
+										"grupos",
+										"12345678",
+										"gastos"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "http://localhost:8080/myApi/gastos/2/actualizar bien",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test for status code\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Host",
+										"value": "localhost:8080"
+									},
+									{
+										"key": "host",
+										"value": "localhost"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Origin",
+										"value": "http://localhost:5173"
+									},
+									{
+										"key": "Referer",
+										"value": "http://localhost:5173/"
+									},
+									{
+										"key": "Connection",
+										"value": "keep-alive"
+									},
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Sec-Fetch-Dest",
+										"value": "empty"
+									},
+									{
+										"key": "Sec-Fetch-Mode",
+										"value": "cors"
+									},
+									{
+										"key": "Sec-Fetch-Site",
+										"value": "same-site"
+									},
+									{
+										"key": "Accept-Encoding",
+										"value": "gzip, deflate, br, zstd"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"concepto\": \"Compra en supermercado\",\r\n    \"pagadopor\": \"Samuel\",\r\n    \"importe\": 20.00,\r\n    \"participantes\": [\r\n        {\r\n            \"usuarioNombre\": \"Samuel\",\r\n            \"importeUsuario\": 10\r\n        },\r\n        {\r\n            \"usuarioNombre\": \"Violeta\",\r\n            \"importeUsuario\": 10\r\n        }\r\n    ]\r\n}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/myApi/gastos/2/actualizar",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"myApi",
+										"gastos",
+										"2",
+										"actualizar"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "http://localhost:8080/myApi/gastos/2/actualizar prueba",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Host",
+										"value": "localhost:8080"
+									},
+									{
+										"key": "host",
+										"value": "localhost"
+									},
+									{
+										"key": "Accept",
+										"value": "*/*"
+									},
+									{
+										"key": "Origin",
+										"value": "http://localhost:5173"
+									},
+									{
+										"key": "Referer",
+										"value": "http://localhost:5173/"
+									},
+									{
+										"key": "Connection",
+										"value": "keep-alive"
+									},
+									{
+										"key": "User-Agent",
+										"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Sec-Fetch-Dest",
+										"value": "empty"
+									},
+									{
+										"key": "Sec-Fetch-Mode",
+										"value": "cors"
+									},
+									{
+										"key": "Sec-Fetch-Site",
+										"value": "same-site"
+									},
+									{
+										"key": "Accept-Encoding",
+										"value": "gzip, deflate, br, zstd"
+									},
+									{
+										"key": "Accept-Language",
+										"value": "es-ES,es;q=0.8,en-US;q=0.5,en;q=0.3"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"concepto\":\"Compra en supermercado\",\"pagadopor\":\"Samuel\",\"importe\":20.00,\"participantes\":[{\"usuarioNombre\": \"Samuel\", \"importeUsuario\": 10},{\"usuarioNombre\":\"Violeta\",\"importeUsuario\":10}]}"
+								},
+								"url": {
+									"raw": "http://localhost:8080/myApi/gastos/2/actualizar",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"myApi",
+										"gastos",
+										"2",
+										"actualizar"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

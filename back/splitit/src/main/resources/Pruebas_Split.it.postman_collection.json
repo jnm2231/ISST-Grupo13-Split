@@ -15,6 +15,21 @@
 					"item": [
 						{
 							"name": "http://localhost:8080/myApi/grupos bien",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [
@@ -92,6 +107,21 @@
 						},
 						{
 							"name": "http://localhost:8080/myApi/grupos mal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 400\", function () {\r",
+											"    pm.response.to.have.status(400);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"request": {
 								"auth": {
 									"type": "noauth"
@@ -172,6 +202,21 @@
 						},
 						{
 							"name": "http://localhost:8080/myApi/grupos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"request": {
 								"method": "GET",
 								"header": [
@@ -245,6 +290,22 @@
 						},
 						{
 							"name": "http://localhost:8080/myApi/grupos/join mal",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test for status code 404\r",
+											"pm.test(\"Status code is 404\", function () {\r",
+											"    pm.response.to.have.status(404);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [
@@ -327,6 +388,21 @@
 						},
 						{
 							"name": "http://localhost:8080/myApi/grupos/join bien",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"request": {
 								"auth": {
 									"type": "noauth"
@@ -425,6 +501,11 @@
 											"pm.test(\"Response status is ok\", function () {\r",
 											"    pm.response.to.have.status(200);\r",
 											"});\r",
+											"// Extracting and checking if a cookie is received in the response\r",
+											"pm.test(\"Cookie is received\", function () {\r",
+											"    pm.expect(pm.response.headers.has('Set-Cookie')).to.be.true;\r",
+											"});\r",
+											"\r",
 											""
 										],
 										"type": "text/javascript",
@@ -518,6 +599,22 @@
 					"item": [
 						{
 							"name": "http://localhost:8080/myApi/signup",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test for status code 201\r",
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [
@@ -600,6 +697,21 @@
 					"item": [
 						{
 							"name": "http://localhost:8080/myApi/grupos/12345678/gastos",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 201\", function () {\r",
+											"    pm.response.to.have.status(201);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [
@@ -679,6 +791,22 @@
 						},
 						{
 							"name": "http://localhost:8080/myApi/gastos/2/actualizar bien",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Test for status code\r",
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"request": {
 								"method": "POST",
 								"header": [
@@ -757,7 +885,22 @@
 							"response": []
 						},
 						{
-							"name": "http://localhost:8080/myApi/gastos/2/actualizar mal",
+							"name": "http://localhost:8080/myApi/gastos/2/actualizar prueba",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
 							"request": {
 								"auth": {
 									"type": "noauth"

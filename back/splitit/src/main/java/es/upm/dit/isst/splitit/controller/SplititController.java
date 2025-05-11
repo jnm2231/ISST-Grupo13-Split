@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.Key;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -13,14 +11,11 @@ import javax.crypto.SecretKey;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,11 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
 
 import es.upm.dit.isst.splitit.models.Gasto;
 import es.upm.dit.isst.splitit.models.GrupodeGastos;
@@ -614,5 +604,31 @@ public class SplititController {
 
         log.info("Contraseña actualizada correctamente para el usuario: {}", usuarioId);
         return ResponseEntity.ok("Contraseña actualizada correctamente");
+    }
+
+    @DeleteMapping("/gastos/{gastoId}")
+    @Transactional
+    public ResponseEntity<String> deleteGasto(@PathVariable Integer gastoId) {
+        log.info("Eliminando gasto con ID: {}", gastoId);
+
+        // Buscar el gasto existente
+        Gasto gasto = gastoRepository.findById(gastoId)
+                .orElseThrow(() -> {
+                    log.error("Gasto no encontrado con ID: {}", gastoId);
+                    return new ResponseStatusException(HttpStatus.NOT_FOUND, "Gasto no encontrado");
+                });
+
+        // Eliminar las participaciones asociadas al gasto
+        List<ParticipacionGasto> participaciones = participacionGastoRepository.findByGastoId(gastoId);
+        log.info("Eliminando {} participaciones asociadas al gasto con ID: {}", participaciones.size(), gastoId);
+        for (ParticipacionGasto participacion : participaciones) {
+            participacionGastoRepository.delete(participacion);
+        }
+
+        // Eliminar el gasto
+        gastoRepository.delete(gasto);
+        log.info("Gasto con ID: {} eliminado correctamente", gastoId);
+
+        return ResponseEntity.ok("Gasto eliminado correctamente");
     }
 }

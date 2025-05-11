@@ -88,7 +88,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"nombre\": \"probando\",\r\n    \"usuarios\": [\r\n        {\r\n            \"nombre\": \"Samuel\",\r\n            \"apodo\": \"Samuel\"\r\n        },\r\n        {\r\n            \"nombre\": \"Julio\",\r\n            \"apodo\": \"Julio\"\r\n        },\r\n        {\r\n            \"nombre\": \"Juan\",\r\n            \"apodo\": \"Juan\"\r\n        },\r\n        {\r\n            \"nombre\": \"Jesus\",\r\n            \"apodo\": \"Jesus\"\r\n        },\r\n        {\r\n            \"nombre\": \"Pepe\",\r\n            \"apodo\": \"Pepe\"\r\n        }\r\n    ]\r\n}"
+									"raw": "{\r\n    \"nombre\": \"probando\",\r\n    \"usuarios\": [\r\n        {\r\n            \"nombre\": \"Samuel\",\r\n            \"apodo\": \"Samuel\"\r\n        },\r\n        {\r\n            \"nombre\": \"Julio\",\r\n            \"apodo\": \"Julio\"\r\n        },\r\n        {\r\n            \"nombre\": \"Juan\",\r\n            \"apodo\": \"Juan\"\r\n        },\r\n        {\r\n            \"nombre\": \"Jesus\",\r\n            \"apodo\": \"Jesus\"\r\n        }\r\n    ]\r\n}"
 								},
 								"url": {
 									"raw": "http://localhost:8080/myApi/grupos",
@@ -234,7 +234,7 @@
 									},
 									{
 										"key": "Cookie",
-										"value": "token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJQZXBlIn0.l9jeLcIofNLuRqDaIBVq9xCUI76C5BDJAFzn5wT_cHw; Phpstorm-7232e59e=8da395d8-0ba6-4d89-bd7a-8445acd8350f"
+										"value": "token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTYW11ZWwifQ.XXjsKBy3ukbIfRvFgXSm2jiKYCcMtoZvseXgpUZ6G6s"
 									},
 									{
 										"key": "Origin",
@@ -323,7 +323,7 @@
 									},
 									{
 										"key": "Cookie",
-										"value": "token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJWaW9sZXRhIn0.OZ_rbetXF3hcMT5pon3CpGYmJ_UavJLKMTkIFfBVDLc; Phpstorm-7232e59e=8da395d8-0ba6-4d89-bd7a-8445acd8350f"
+										"value": "token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJTYW11ZWwifQ.XXjsKBy3ukbIfRvFgXSm2jiKYCcMtoZvseXgpUZ6G6s"
 									},
 									{
 										"key": "Origin",
